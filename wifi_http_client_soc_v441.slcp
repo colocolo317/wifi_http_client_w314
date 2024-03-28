@@ -1,0 +1,71 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: wifi_http_client_soc_v441
+label: wifi_http_client_soc_v441
+description: |
+  Demonstrates how to create HTTP client and do PUT, GET and POST operations with the server opened on remote peer
+category: Example|Wi-Fi
+filter:
+- name: Project Difficulty
+  value: [Beginner]
+- name: Wireless Technology
+  value: [Wi-Fi]
+package: wifi
+quality: production
+readme:
+- {path: readme.md}
+source:
+- {path: app.c}
+- {path: main.c}
+include:
+- path: ''
+  file_list:
+  - {path: app.h}
+sdk: {id: gecko_sdk, version: 4.4.1}
+toolchain_settings:
+- {value: -Wall -Werror, option: gcc_compiler_option}
+component:
+- {from: wiseconnect3_sdk, id: SIWG917M111MGTBA}
+- {from: wiseconnect3_sdk, id: brd4338a}
+- {from: wiseconnect3_sdk, id: si917_memory_default_config}
+- {from: wiseconnect3_sdk, id: si91x_debug}
+- {from: wiseconnect3_sdk, id: sl_si91x_mem_pool_buffers}
+- {from: wiseconnect3_sdk, id: syscalls}
+other_file:
+- {path: resources/readme/http_client_output.png}
+- {path: resources/readme/http_client_soc_ncp.png}
+define:
+- {name: SL_SI91X_PRINT_DBG_LOG}
+requires:
+- {name: sl_system}
+- {name: http_client}
+- {name: network_manager}
+- {name: basic_network_config_manager}
+- {name: wiseconnect3_common}
+- {name: wifi}
+- {name: sl_si91x_wireless}
+- {name: sl_si91x_internal_stack}
+- {name: wifi_resources}
+- {name: freertos}
+- {name: slist}
+- condition: [device_has_devinfo]
+  name: iostream_retarget_stdio
+- condition: [device_has_devinfo]
+  name: iostream_recommended_stream
+- condition: [device_has_devinfo]
+  name: iostream_stdlib_config
+- condition: [device_has_devinfo]
+  name: device_init
+- condition: [device_has_devinfo]
+  name: emlib_common
+- condition: [device_has_devinfo]
+  name: emlib_ldma
+configuration:
+- {name: SL_BOARD_ENABLE_VCOM, value: '1'}
+ui_hints:
+  highlight:
+  - {path: readme.md, focus: true}
+sdk_extension:
+- {id: wiseconnect3_sdk, version: 3.1.4}
+post_build: {path: ../../SDKs/gecko_sdk_2/extension/wiseconnect/utilities/postbuild_profile/wiseconnect_soc.slpb,
+  profile: wiseconnect_soc}
+
