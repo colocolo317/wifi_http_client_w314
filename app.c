@@ -79,7 +79,7 @@
 
 //! HTTP request configurations
 //! Set HTTP Server IP Address
-#define HTTP_SERVER_IP "192.168.0.100"
+#define HTTP_SERVER_IP "10.10.28.166"
 
 //! Server port number
 #if HTTPS_ENABLE
@@ -91,7 +91,7 @@
 #endif
 
 //! HTTP resource name
-#define HTTP_URL "/index.html"
+#define HTTP_URL "/dev/upload/wr10K.txt"
 
 //! HTTP post data
 #define HTTP_DATA "employee_name=MR.REDDY&employee_id=RSXYZ123&designation=Engineer&company=SILABS&location=Hyderabad"
@@ -127,8 +127,8 @@
 /******************************************************
  *               Variable Definitions
  ******************************************************/
-const osThreadAttr_t thread_attributes = {
-  .name       = "app",
+const osThreadAttr_t http_client_thread_attributes = {
+  .name       = "http_client_thread",
   .attr_bits  = 0,
   .cb_mem     = 0,
   .cb_size    = 0,
@@ -138,6 +138,8 @@ const osThreadAttr_t thread_attributes = {
   .tz_module  = 0,
   .reserved   = 0,
 };
+
+osSemaphoreId_t http_client_thread_sem;
 
 static const sl_wifi_device_configuration_t http_client_configuration = {
   .boot_option = LOAD_NWP_FW,
@@ -175,11 +177,12 @@ sl_status_t callback_status        = SL_STATUS_OK;
 static void application_start(void *argument);
 sl_status_t http_client_application(void);
 sl_status_t http_response_status(volatile uint8_t *response);
-sl_status_t http_put_response_callback_handler(const sl_http_client_t *client,
+sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
                                                sl_http_client_event_t event,
                                                void *data,
                                                void *request_context);
-sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
+#if !AMPAK_HTTP_GET_ONLY
+sl_status_t http_put_response_callback_handler(const sl_http_client_t *client,
                                                sl_http_client_event_t event,
                                                void *data,
                                                void *request_context);
@@ -187,6 +190,7 @@ sl_status_t http_post_response_callback_handler(const sl_http_client_t *client,
                                                 sl_http_client_event_t event,
                                                 void *data,
                                                 void *request_context);
+#endif
 static void reset_http_handles(void);
 
 /******************************************************
@@ -195,7 +199,12 @@ static void reset_http_handles(void);
 void app_init(const void *unused)
 {
   UNUSED_PARAMETER(unused);
-  osThreadNew((osThreadFunc_t)application_start, NULL, &thread_attributes);
+  http_client_thread_sem = osSemaphoreNew(1, 0, NULL);
+  if (http_client_thread_sem == NULL) {
+      printf("Failed to create http_client_thread_sem\r\n");
+      return;
+  }
+  osThreadNew((osThreadFunc_t)application_start, NULL, &http_client_thread_attributes);
 }
 
 static void application_start(void *argument)
@@ -203,6 +212,7 @@ static void application_start(void *argument)
   UNUSED_PARAMETER(argument);
   sl_status_t status;
 
+//#if !AMPAK_HTTP_GET_ONLY
   status = sl_net_init(SL_NET_WIFI_CLIENT_INTERFACE, &http_client_configuration, NULL, NULL);
   if (status != SL_STATUS_OK) {
     printf("Failed to start Wi-Fi client interface: 0x%lx\r\n", status);
@@ -217,6 +227,9 @@ static void application_start(void *argument)
   }
   printf("\r\nWi-Fi Client Connected\r\n");
 
+  osSemaphoreRelease(http_client_thread_sem); //do once
+//#endif //!AMPAK_HTTP_GET_ONLY
+
 #if HTTPS_ENABLE && LOAD_CERTIFICATE
   // Load SSL CA certificate
   status = sl_net_set_credential(SL_NET_TLS_SERVER_CREDENTIAL_ID(CERTIFICATE_INDEX),
@@ -230,12 +243,15 @@ static void application_start(void *argument)
   printf("\r\nLoad TLS CA certificate at index %d Success\r\n", CERTIFICATE_INDEX);
 #endif
 
-  status = http_client_application();
-  if (status != SL_STATUS_OK) {
-    printf("\r\nUnexpected error while HTTP client operation: 0x%lX\r\n", status);
-    return;
-  }
-  printf("\r\nApplication Demonstration Completed Successfully!\r\n");
+  do {
+    osSemaphoreAcquire(http_client_thread_sem, osWaitForever);
+    status = http_client_application();
+    if (status != SL_STATUS_OK) {
+      printf("\r\nUnexpected error while HTTP client operation: 0x%lX\r\n", status);
+      //return;
+    }
+  } while (1);
+
 }
 
 sl_status_t http_client_application(void)
@@ -275,6 +291,7 @@ sl_status_t http_client_application(void)
   client_configuration.network_interface = SL_NET_WIFI_CLIENT_INTERFACE;
   client_configuration.ip_version        = IP_VERSION;
   client_configuration.http_version      = HTTP_VERSION;
+
 #if HTTPS_ENABLE
   client_configuration.https_enable      = true;
   client_configuration.tls_version       = TLS_VERSION;
@@ -291,6 +308,7 @@ sl_status_t http_client_application(void)
   VERIFY_STATUS_AND_RETURN(status);
   printf("\r\nHTTP Client init success\r\n");
 
+#if !AMPAK_HTTP_GET_ONLY
   //! Configure HTTP PUT request
   client_request.http_method_type = SL_HTTP_PUT;
   client_request.body             = NULL;
@@ -300,6 +318,7 @@ sl_status_t http_client_application(void)
   status = sl_http_client_request_init(&client_request, http_put_response_callback_handler, "This is HTTP client");
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   printf("\r\nHTTP PUT request init success\r\n");
+#endif
 
 #if EXTENDED_HEADER_ENABLE
   //! Add extended headers
@@ -316,6 +335,7 @@ sl_status_t http_client_application(void)
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
 #endif
 
+#if !AMPAK_HTTP_GET_ONLY
   //! Send HTTP PUT request
   status = sl_http_client_send_request(&client_handle, &client_request);
   if (status == SL_STATUS_IN_PROGRESS) {
@@ -345,7 +365,8 @@ sl_status_t http_client_application(void)
   }
 
   printf("\r\nHTTP PUT request Success!\r\n");
-  reset_http_handles();
+#endif
+  reset_http_handles(); // reset once
 
   //! Configure HTTP GET request
   client_request.http_method_type = SL_HTTP_GET;
@@ -364,11 +385,12 @@ sl_status_t http_client_application(void)
     CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   }
 
-  SL_DEBUG_LOG("\r\nGET Data response:\n%s \nOffset: %ld\r\n", app_buffer, app_buff_index);
+  printf("\r\nGET Data response:\n%s \nOffset: %ld\r\n", app_buffer, app_buff_index);
 
   printf("\r\nHTTP GET request Success\r\n");
-  reset_http_handles();
+  reset_http_handles(); // reset twice
 
+#if !AMPAK_HTTP_GET_ONLY
   //! Configure HTTP POST request
   client_request.http_method_type = SL_HTTP_POST;
   client_request.body             = (uint8_t *)HTTP_DATA;
@@ -390,6 +412,7 @@ sl_status_t http_client_application(void)
 
   printf("\r\nHTTP POST request Success\r\n");
   reset_http_handles();
+#endif
 
 #if EXTENDED_HEADER_ENABLE
   status = sl_http_client_delete_all_headers(&client_request);
@@ -399,11 +422,59 @@ sl_status_t http_client_application(void)
   status = sl_http_client_deinit(&client_handle);
   VERIFY_STATUS_AND_RETURN(status);
   printf("\r\nHTTP Client deinit success\r\n");
+#if !AMPAK_HTTP_GET_ONLY
   free(client_credentials);
+#endif
 
-  return status;
+  return status; // no return maybe
 }
 
+sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
+                                               sl_http_client_event_t event,
+                                               void *data,
+                                               void *request_context)
+{
+  UNUSED_PARAMETER(client);
+  UNUSED_PARAMETER(event);
+
+  sl_http_client_response_t *get_response = (sl_http_client_response_t *)data;
+  callback_status                         = get_response->status;
+
+  printf("\r\n===========HTTP GET RESPONSE START===========\r\n");
+  printf(
+    "\r\n> Status: 0x%X\n> GET response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
+    get_response->status,
+    get_response->http_response_code,
+    get_response->end_of_data,
+    get_response->data_length,
+    (char *)request_context);
+
+  if (get_response->status != SL_STATUS_OK
+      || (get_response->http_response_code >= 400 && get_response->http_response_code <= 599
+          && get_response->http_response_code != 0)) {
+    http_rsp_received = HTTP_FAILURE_RESPONSE;
+    printf("\r\nget_response->http_response_code: %u\r\n");
+    return get_response->status;
+  }
+
+  if (!get_response->end_of_data) {
+    //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
+    // copy to ring buffer for sd card write
+    app_buff_index += get_response->data_length;
+    printf(">");
+  } else {
+    if (get_response->data_length) {
+      //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
+      // copy to ring buffer for sd card write
+      app_buff_index += get_response->data_length;
+      printf(".\r\n");
+    }
+    http_rsp_received = HTTP_SUCCESS_RESPONSE;
+  }
+
+  return SL_STATUS_OK;
+}
+#if !AMPAK_HTTP_GET_ONLY
 sl_status_t http_put_response_callback_handler(const sl_http_client_t *client,
                                                sl_http_client_event_t event,
                                                void *data,
@@ -415,8 +486,8 @@ sl_status_t http_put_response_callback_handler(const sl_http_client_t *client,
   sl_http_client_response_t *put_response = (sl_http_client_response_t *)data;
   callback_status                         = put_response->status;
 
-  SL_DEBUG_LOG("\r\n===========HTTP PUT RESPONSE START===========\r\n");
-  SL_DEBUG_LOG(
+  printf("\r\n===========HTTP PUT RESPONSE START===========\r\n");
+  printf(
     "\r\n> Status: 0x%X\n> PUT response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
     put_response->status,
     put_response->http_response_code,
@@ -445,47 +516,6 @@ sl_status_t http_put_response_callback_handler(const sl_http_client_t *client,
   return SL_STATUS_OK;
 }
 
-sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
-                                               sl_http_client_event_t event,
-                                               void *data,
-                                               void *request_context)
-{
-  UNUSED_PARAMETER(client);
-  UNUSED_PARAMETER(event);
-
-  sl_http_client_response_t *get_response = (sl_http_client_response_t *)data;
-  callback_status                         = get_response->status;
-
-  SL_DEBUG_LOG("\r\n===========HTTP GET RESPONSE START===========\r\n");
-  SL_DEBUG_LOG(
-    "\r\n> Status: 0x%X\n> GET response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
-    get_response->status,
-    get_response->http_response_code,
-    get_response->end_of_data,
-    get_response->data_length,
-    (char *)request_context);
-
-  if (get_response->status != SL_STATUS_OK
-      || (get_response->http_response_code >= 400 && get_response->http_response_code <= 599
-          && get_response->http_response_code != 0)) {
-    http_rsp_received = HTTP_FAILURE_RESPONSE;
-    return get_response->status;
-  }
-
-  if (!get_response->end_of_data) {
-    memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
-    app_buff_index += get_response->data_length;
-  } else {
-    if (get_response->data_length) {
-      memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
-      app_buff_index += get_response->data_length;
-    }
-    http_rsp_received = HTTP_SUCCESS_RESPONSE;
-  }
-
-  return SL_STATUS_OK;
-}
-
 sl_status_t http_post_response_callback_handler(const sl_http_client_t *client,
                                                 sl_http_client_event_t event,
                                                 void *data,
@@ -497,8 +527,8 @@ sl_status_t http_post_response_callback_handler(const sl_http_client_t *client,
   sl_http_client_response_t *post_response = (sl_http_client_response_t *)data;
   callback_status                          = post_response->status;
 
-  SL_DEBUG_LOG("\r\n===========HTTP POST RESPONSE START===========\r\n");
-  SL_DEBUG_LOG(
+  printf("\r\n===========HTTP POST RESPONSE START===========\r\n");
+  printf(
     "\r\n> Status: 0x%X\n> POST response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
     post_response->status,
     post_response->http_response_code,
@@ -519,7 +549,7 @@ sl_status_t http_post_response_callback_handler(const sl_http_client_t *client,
 
   return SL_STATUS_OK;
 }
-
+#endif
 sl_status_t http_response_status(volatile uint8_t *response)
 {
   while (!(*response)) {
