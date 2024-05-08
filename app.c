@@ -35,6 +35,7 @@
 #include <string.h>
 #include "gspi_util.h"
 #include "mux_debug.h"
+#include "ring_buff.h"
 
 //! Include index html page
 #include "index.html.h"
@@ -232,6 +233,8 @@ void app_init(const void *unused)
       printf("Failed to create gspi_thread_sem\r\n");
       return;
   }
+
+  ringBuffer_Init(pRingBuff);
 
   if(osThreadNew((osThreadFunc_t)application_start, NULL, &http_client_thread_attributes) == NULL)
   {
@@ -494,17 +497,34 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
     return get_response->status;
   }
 
-  osSemaphoreRelease(gspi_thread_sem);
-
   if (!get_response->end_of_data) {
     //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
     // copy to ring buffer for sd card write
+    while(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != true)
+    {
+        MUX_LOG("r");
+    }
+    if(ringBuffer_IsOne(pRingBuff) != true)
+    {
+       osSemaphoreRelease(gspi_thread_sem);
+    }
+
     app_buff_index += get_response->data_length;
     MUX_LOG(">");
   } else {
     if (get_response->data_length) {
       //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
       // copy to ring buffer for sd card write
+      while(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != true)
+      {
+          MUX_LOG("r");
+      }
+      if(ringBuffer_IsEmpty(pRingBuff) != true)
+      {
+          osSemaphoreRelease(gspi_thread_sem);
+          // do clear feature
+      }
+
       app_buff_index += get_response->data_length;
       MUX_LOG(".\r\n");
     }

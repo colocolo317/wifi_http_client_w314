@@ -10,11 +10,12 @@
 #include "gspi_util.h"
 #include "rsi_debug.h"
 #include "mux_debug.h"
+#include "ring_buff.h"
 
 /*******************************************************************************
  ***************************  Defines / Macros  ********************************
  ******************************************************************************/
-#define GSPI_BUFFER_SIZE             10240      // Size of buffer
+#define GSPI_BUFFER_SIZE             1024      // Size of buffer
 #define GSPI_INTF_PLL_CLK            180000000 // Intf pll clock frequency
 #define GSPI_INTF_PLL_REF_CLK        40000000  // Intf pll reference clock frequency
 #define GSPI_SOC_PLL_CLK             20000000  // Soc pll clock frequency
@@ -41,6 +42,8 @@ uint16_t gspi_data_in[GSPI_BUFFER_SIZE];
 static uint16_t gspi_division_factor       = 1;
 static sl_gspi_handle_t gspi_driver_handle = NULL;
 static boolean_t transfer_complete  = false;
+
+static osSemaphoreId_t gspi_transfer_complete_sem;
 /*******************************************************************************
  **********************  Local Function prototypes   ***************************
  ******************************************************************************/
@@ -56,6 +59,7 @@ void callback_event(uint32_t event)
     case SL_GSPI_TRANSFER_COMPLETE:
       MUX_LOG("GSPI transfer_complete \r\n");
       transfer_complete = true;
+      osSemaphoreRelease(gspi_transfer_complete_sem);
       break;
     case SL_GSPI_DATA_LOST:
       break;
@@ -141,7 +145,12 @@ void gspi_init(void)
         gspi_division_factor = sizeof(gspi_data_out[0]);
       }
 
-      transfer_complete = true;
+      gspi_transfer_complete_sem = osSemaphoreNew(1, 1, NULL);
+      if(gspi_transfer_complete_sem == NULL)
+      {
+          MUX_LOG("Failed to new semaphore gspi_transfer_complete_sem\r\n");
+          break;
+      }
   }while(false);
 
 }
@@ -152,15 +161,26 @@ void gspi_task(void* arguments)
   while(1)
   {
     osSemaphoreAcquire(gspi_thread_sem, osWaitForever);
-    if(transfer_complete)
+    if(ringBuffer_IsOne(pRingBuff) != true)
     {
       transfer_complete = false;
-      MUX_LOG("GSPI transfer start\r\n");
-      status = gspi_transfer_test();
-    }
-    else
-    {
-      //task yield
+      osSemaphoreAcquire(gspi_transfer_complete_sem, osWaitForever);
+      status = sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
+      status = sl_si91x_gspi_transfer_data(gspi_driver_handle,
+                                           pRingBuff->buffer[pRingBuff->tail],
+                                           gspi_data_in,
+                                           pRingBuff->data_len[pRingBuff->tail]);
+      if (status != SL_STATUS_OK)
+      {
+        // If it fails to execute the API, it will not execute rest of the things
+        MUX_LOG("sl_si91x_gspi_transfer_data: Error Code : %lu \r\n", status);
+
+      }
+      else{
+        MUX_LOG("w");
+        if(ringBuffer_reduce(pRingBuff) == false)
+        { MUX_LOG("[GSPI] Failed to reduce ring buffer\r\n");}
+      }
     }
   }
 }
@@ -179,7 +199,6 @@ sl_status_t gspi_transfer_test(void)
     MUX_LOG("sl_si91x_gspi_transfer_data: Error Code : %lu \r\n", status);
     return status;
   }
-  MUX_LOG("GSPI transfer begin successfully \r\n");
-
+  MUX_LOG("w");
   return status;
 }

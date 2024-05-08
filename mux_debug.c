@@ -11,6 +11,7 @@ osMutexId_t debug_prints_mutex = NULL;
 osMutexId_t mux_debug_init(void)
 {
   debug_prints_mutex = osMutexNew(NULL);
+  printf("\r\nmux debug init ok\r\n");
   return debug_prints_mutex;
 }
 

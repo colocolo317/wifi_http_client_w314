@@ -9,14 +9,20 @@
 #define MUX_DEBUG_H_
 
 #include "cmsis_os2.h"
-
+#include "stdio.h"
 
 #if defined(AMPAK_OS_DEBUG_LOG)
 #define MUX_LOG(...)                                \
   {                                                   \
-    osMutexAcquire(debug_prints_mutex, 0xFFFFFFFFUL); \
-    printf(__VA_ARGS__);                              \
-    osMutexRelease(debug_prints_mutex);               \
+    if(osMutexAcquire(debug_prints_mutex, 1000) == osOK) \
+    {                                                   \
+        printf(__VA_ARGS__);                              \
+        osMutexRelease(debug_prints_mutex);               \
+    }   \
+    else \
+    { \
+        printf("F");\
+    } \
   }
 #else
 #define MUX_LOG(...)
