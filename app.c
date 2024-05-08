@@ -33,6 +33,7 @@
 #include "sl_net.h"
 #include "sl_http_client.h"
 #include <string.h>
+#include "gspi_util.h"
 
 //! Include index html page
 #include "index.html.h"
@@ -91,7 +92,7 @@
 #endif
 
 //! HTTP resource name
-#define HTTP_URL "/dev/upload/wr10K.txt"
+#define HTTP_URL "/dev/upload/wr10k.txt"
 
 //! HTTP post data
 #define HTTP_DATA "employee_name=MR.REDDY&employee_id=RSXYZ123&designation=Engineer&company=SILABS&location=Hyderabad"
@@ -139,7 +140,22 @@ const osThreadAttr_t http_client_thread_attributes = {
   .reserved   = 0,
 };
 
+const osThreadAttr_t gspi_thread_attributes = {
+  .name       = "gspi_thread",
+  .attr_bits  = 0,
+  .cb_mem     = 0,
+  .cb_size    = 0,
+  .stack_mem  = 0,
+  .stack_size = 2048,
+  .priority   = osPriorityLow,
+  .tz_module  = 0,
+  .reserved   = 0,
+};
+
 osSemaphoreId_t http_client_thread_sem;
+osSemaphoreId_t gspi_thread_sem;
+osThreadId_t http_client_tid;
+osThreadId_t gspi_tid;
 
 static const sl_wifi_device_configuration_t http_client_configuration = {
   .boot_option = LOAD_NWP_FW,
@@ -204,7 +220,22 @@ void app_init(const void *unused)
       printf("Failed to create http_client_thread_sem\r\n");
       return;
   }
-  osThreadNew((osThreadFunc_t)application_start, NULL, &http_client_thread_attributes);
+  gspi_thread_sem = osSemaphoreNew(1, 0, NULL);
+  if (gspi_thread_sem == NULL) {
+      printf("Failed to create gspi_thread_sem\r\n");
+      return;
+  }
+
+  if(osThreadNew((osThreadFunc_t)application_start, NULL, &http_client_thread_attributes) == NULL)
+  {
+      printf("Failed to new thread http client\r\n");
+  }
+  if(osThreadNew((osThreadFunc_t)gspi_task, NULL, &gspi_thread_attributes) == NULL)
+  {
+      printf("Failed to new thread gspi\r\n");
+  }
+
+  gspi_init();
 }
 
 static void application_start(void *argument)
@@ -218,14 +249,14 @@ static void application_start(void *argument)
     printf("Failed to start Wi-Fi client interface: 0x%lx\r\n", status);
     return;
   }
-  printf("\r\nWi-Fi Init Success\r\n");
+  printf("Wi-Fi Init Success\r\n");
 
   status = sl_net_up(SL_NET_WIFI_CLIENT_INTERFACE, 0);
   if (status != SL_STATUS_OK) {
     printf("Failed to bring Wi-Fi client interface up: 0x%lx\r\n", status);
     return;
   }
-  printf("\r\nWi-Fi Client Connected\r\n");
+  printf("Wi-Fi Client Connected\r\n");
 
   osSemaphoreRelease(http_client_thread_sem); //do once
 //#endif //!AMPAK_HTTP_GET_ONLY
@@ -306,7 +337,7 @@ sl_status_t http_client_application(void)
 
   status = sl_http_client_init(&client_configuration, &client_handle);
   VERIFY_STATUS_AND_RETURN(status);
-  printf("\r\nHTTP Client init success\r\n");
+  printf("HTTP Client init success\r\n");
 
 #if !AMPAK_HTTP_GET_ONLY
   //! Configure HTTP PUT request
@@ -374,7 +405,7 @@ sl_status_t http_client_application(void)
   //! Initialize callback method for HTTP GET request
   status = sl_http_client_request_init(&client_request, http_get_response_callback_handler, "This is HTTP client");
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
-  printf("\r\nHTTP Get request init success\r\n");
+  printf("HTTP Get request init success\r\n");
 
   //! Send HTTP GET request
   status = sl_http_client_send_request(&client_handle, &client_request);
@@ -385,9 +416,9 @@ sl_status_t http_client_application(void)
     CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   }
 
-  printf("\r\nGET Data response:\n%s \nOffset: %ld\r\n", app_buffer, app_buff_index);
+  printf("File length: %ld\r\n", app_buff_index);
 
-  printf("\r\nHTTP GET request Success\r\n");
+  printf("HTTP GET request Success\r\n");
   reset_http_handles(); // reset twice
 
 #if !AMPAK_HTTP_GET_ONLY
@@ -399,7 +430,7 @@ sl_status_t http_client_application(void)
   //! Initialize callback method for HTTP POST request
   status = sl_http_client_request_init(&client_request, http_post_response_callback_handler, "This is HTTP client");
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
-  printf("\r\nHTTP Post request init success\r\n");
+  printf("HTTP Post request init success\r\n");
 
   //! Send HTTP POST request
   status = sl_http_client_send_request(&client_handle, &client_request);
@@ -410,7 +441,7 @@ sl_status_t http_client_application(void)
     CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   }
 
-  printf("\r\nHTTP POST request Success\r\n");
+  printf("HTTP POST request Success\r\n");
   reset_http_handles();
 #endif
 
@@ -421,7 +452,7 @@ sl_status_t http_client_application(void)
 
   status = sl_http_client_deinit(&client_handle);
   VERIFY_STATUS_AND_RETURN(status);
-  printf("\r\nHTTP Client deinit success\r\n");
+  printf("HTTP Client deinit success\r\n");
 #if !AMPAK_HTTP_GET_ONLY
   free(client_credentials);
 #endif
@@ -439,21 +470,20 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
 
   sl_http_client_response_t *get_response = (sl_http_client_response_t *)data;
   callback_status                         = get_response->status;
-
-  printf("\r\n===========HTTP GET RESPONSE START===========\r\n");
+#if AMPAK_HTTP_RESPONSE_CHECK
   printf(
-    "\r\n> Status: 0x%X\n> GET response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
+    "\r\n[HTTP GET RESPONSE] Status: 0x%X | GET response: %u | End of data: %lu | Data Length: %u | Request Context: %s\r\n",
     get_response->status,
     get_response->http_response_code,
     get_response->end_of_data,
     get_response->data_length,
     (char *)request_context);
-
+#endif
   if (get_response->status != SL_STATUS_OK
       || (get_response->http_response_code >= 400 && get_response->http_response_code <= 599
           && get_response->http_response_code != 0)) {
     http_rsp_received = HTTP_FAILURE_RESPONSE;
-    printf("\r\nget_response->http_response_code: %u\r\n");
+    printf("get_response->http_response_code: %u\r\n", get_response->http_response_code);
     return get_response->status;
   }
 
