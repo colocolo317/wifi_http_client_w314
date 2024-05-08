@@ -34,6 +34,7 @@
 #include "sl_http_client.h"
 #include <string.h>
 #include "gspi_util.h"
+#include "mux_debug.h"
 
 //! Include index html page
 #include "index.html.h"
@@ -215,6 +216,12 @@ static void reset_http_handles(void);
 void app_init(const void *unused)
 {
   UNUSED_PARAMETER(unused);
+
+  if(mux_debug_init() == NULL)
+  {
+      printf("Failed to init mux log\r\n");
+  }
+
   http_client_thread_sem = osSemaphoreNew(1, 0, NULL);
   if (http_client_thread_sem == NULL) {
       printf("Failed to create http_client_thread_sem\r\n");
@@ -246,17 +253,17 @@ static void application_start(void *argument)
 //#if !AMPAK_HTTP_GET_ONLY
   status = sl_net_init(SL_NET_WIFI_CLIENT_INTERFACE, &http_client_configuration, NULL, NULL);
   if (status != SL_STATUS_OK) {
-    printf("Failed to start Wi-Fi client interface: 0x%lx\r\n", status);
+    MUX_LOG("Failed to start Wi-Fi client interface: 0x%lx\r\n", status);
     return;
   }
-  printf("Wi-Fi Init Success\r\n");
+  MUX_LOG("Wi-Fi Init Success\r\n");
 
   status = sl_net_up(SL_NET_WIFI_CLIENT_INTERFACE, 0);
   if (status != SL_STATUS_OK) {
-    printf("Failed to bring Wi-Fi client interface up: 0x%lx\r\n", status);
+    MUX_LOG("Failed to bring Wi-Fi client interface up: 0x%lx\r\n", status);
     return;
   }
-  printf("Wi-Fi Client Connected\r\n");
+  MUX_LOG("Wi-Fi Client Connected\r\n");
 
   osSemaphoreRelease(http_client_thread_sem); //do once
 //#endif //!AMPAK_HTTP_GET_ONLY
@@ -268,17 +275,17 @@ static void application_start(void *argument)
                                  cacert,
                                  sizeof(cacert) - 1);
   if (status != SL_STATUS_OK) {
-    printf("\r\nLoading TLS CA certificate in to FLASH Failed, Error Code : 0x%lX\r\n", status);
+    MUX_LOG("\r\nLoading TLS CA certificate in to FLASH Failed, Error Code : 0x%lX\r\n", status);
     return;
   }
-  printf("\r\nLoad TLS CA certificate at index %d Success\r\n", CERTIFICATE_INDEX);
+  MUX_LOG("\r\nLoad TLS CA certificate at index %d Success\r\n", CERTIFICATE_INDEX);
 #endif
 
   do {
     osSemaphoreAcquire(http_client_thread_sem, osWaitForever);
     status = http_client_application();
     if (status != SL_STATUS_OK) {
-      printf("\r\nUnexpected error while HTTP client operation: 0x%lX\r\n", status);
+      MUX_LOG("\r\nUnexpected error while HTTP client operation: 0x%lX\r\n", status);
       //return;
     }
   } while (1);
@@ -337,7 +344,7 @@ sl_status_t http_client_application(void)
 
   status = sl_http_client_init(&client_configuration, &client_handle);
   VERIFY_STATUS_AND_RETURN(status);
-  printf("HTTP Client init success\r\n");
+  MUX_LOG("HTTP Client init success\r\n");
 
 #if !AMPAK_HTTP_GET_ONLY
   //! Configure HTTP PUT request
@@ -348,7 +355,7 @@ sl_status_t http_client_application(void)
   //! Initialize callback method for HTTP PUT request
   status = sl_http_client_request_init(&client_request, http_put_response_callback_handler, "This is HTTP client");
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
-  printf("\r\nHTTP PUT request init success\r\n");
+  MUX_LOG("\r\nHTTP PUT request init success\r\n");
 #endif
 
 #if EXTENDED_HEADER_ENABLE
@@ -395,7 +402,7 @@ sl_status_t http_client_application(void)
     }
   }
 
-  printf("\r\nHTTP PUT request Success!\r\n");
+  MUX_LOG("\r\nHTTP PUT request Success!\r\n");
 #endif
   reset_http_handles(); // reset once
 
@@ -405,7 +412,7 @@ sl_status_t http_client_application(void)
   //! Initialize callback method for HTTP GET request
   status = sl_http_client_request_init(&client_request, http_get_response_callback_handler, "This is HTTP client");
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
-  printf("HTTP Get request init success\r\n");
+  MUX_LOG("HTTP Get request init success\r\n");
 
   //! Send HTTP GET request
   status = sl_http_client_send_request(&client_handle, &client_request);
@@ -416,9 +423,9 @@ sl_status_t http_client_application(void)
     CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   }
 
-  printf("File length: %ld\r\n", app_buff_index);
+  MUX_LOG("File length: %ld\r\n", app_buff_index);
 
-  printf("HTTP GET request Success\r\n");
+  MUX_LOG("HTTP GET request Success\r\n");
   reset_http_handles(); // reset twice
 
 #if !AMPAK_HTTP_GET_ONLY
@@ -430,7 +437,7 @@ sl_status_t http_client_application(void)
   //! Initialize callback method for HTTP POST request
   status = sl_http_client_request_init(&client_request, http_post_response_callback_handler, "This is HTTP client");
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
-  printf("HTTP Post request init success\r\n");
+  MUX_LOG("HTTP Post request init success\r\n");
 
   //! Send HTTP POST request
   status = sl_http_client_send_request(&client_handle, &client_request);
@@ -441,7 +448,7 @@ sl_status_t http_client_application(void)
     CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   }
 
-  printf("HTTP POST request Success\r\n");
+  MUX_LOG("HTTP POST request Success\r\n");
   reset_http_handles();
 #endif
 
@@ -452,7 +459,7 @@ sl_status_t http_client_application(void)
 
   status = sl_http_client_deinit(&client_handle);
   VERIFY_STATUS_AND_RETURN(status);
-  printf("HTTP Client deinit success\r\n");
+  MUX_LOG("HTTP Client deinit success\r\n");
 #if !AMPAK_HTTP_GET_ONLY
   free(client_credentials);
 #endif
@@ -471,7 +478,7 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
   sl_http_client_response_t *get_response = (sl_http_client_response_t *)data;
   callback_status                         = get_response->status;
 #if AMPAK_HTTP_RESPONSE_CHECK
-  printf(
+  MUX_LOG(
     "\r\n[HTTP GET RESPONSE] Status: 0x%X | GET response: %u | End of data: %lu | Data Length: %u | Request Context: %s\r\n",
     get_response->status,
     get_response->http_response_code,
@@ -483,7 +490,7 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
       || (get_response->http_response_code >= 400 && get_response->http_response_code <= 599
           && get_response->http_response_code != 0)) {
     http_rsp_received = HTTP_FAILURE_RESPONSE;
-    printf("get_response->http_response_code: %u\r\n", get_response->http_response_code);
+    MUX_LOG("get_response->http_response_code: %u\r\n", get_response->http_response_code);
     return get_response->status;
   }
 
@@ -493,13 +500,13 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
     //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
     // copy to ring buffer for sd card write
     app_buff_index += get_response->data_length;
-    printf(">");
+    MUX_LOG(">");
   } else {
     if (get_response->data_length) {
       //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
       // copy to ring buffer for sd card write
       app_buff_index += get_response->data_length;
-      printf(".\r\n");
+      MUX_LOG(".\r\n");
     }
     http_rsp_received = HTTP_SUCCESS_RESPONSE;
   }
@@ -518,8 +525,8 @@ sl_status_t http_put_response_callback_handler(const sl_http_client_t *client,
   sl_http_client_response_t *put_response = (sl_http_client_response_t *)data;
   callback_status                         = put_response->status;
 
-  printf("\r\n===========HTTP PUT RESPONSE START===========\r\n");
-  printf(
+  MUX_LOG("\r\n===========HTTP PUT RESPONSE START===========\r\n");
+  MUX_LOG(
     "\r\n> Status: 0x%X\n> PUT response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
     put_response->status,
     put_response->http_response_code,
@@ -559,8 +566,8 @@ sl_status_t http_post_response_callback_handler(const sl_http_client_t *client,
   sl_http_client_response_t *post_response = (sl_http_client_response_t *)data;
   callback_status                          = post_response->status;
 
-  printf("\r\n===========HTTP POST RESPONSE START===========\r\n");
-  printf(
+  MUX_LOG("\r\n===========HTTP POST RESPONSE START===========\r\n");
+  MUX_LOG(
     "\r\n> Status: 0x%X\n> POST response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
     post_response->status,
     post_response->http_response_code,
