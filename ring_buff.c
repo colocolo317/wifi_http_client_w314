@@ -77,7 +77,7 @@ bool ringBuffer_reduce(RingBuffer *rb)
   //osMutexRelease(rb->space);
   osMutexRelease(rb->lock);
 
-  MUX_LOG("reduce_rb\r\n");
+  printf("R");
   return true;
 }
 
@@ -85,10 +85,7 @@ bool ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
 {
   if(ringBuffer_IsFull(rb))
   {
-      //if(osMutexAcquire(rb->space, 300) != osOK)
-      //{
-      //  MUX_LOG("[ring buff] failed to lock mutex space\r\n");
-      //}
+      printf("F");
       return false;
   }
 

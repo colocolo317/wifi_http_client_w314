@@ -57,7 +57,7 @@ void callback_event(uint32_t event)
   switch (event)
   {
     case SL_GSPI_TRANSFER_COMPLETE:
-      MUX_LOG("GSPI transfer_complete \r\n");
+      printf("T");
       transfer_complete = true;
       osSemaphoreRelease(gspi_transfer_complete_sem);
       break;
@@ -177,7 +177,7 @@ void gspi_task(void* arguments)
 
       }
       else{
-        MUX_LOG("w");
+        printf("W");
         if(ringBuffer_reduce(pRingBuff) == false)
         { MUX_LOG("[GSPI] Failed to reduce ring buffer\r\n");}
       }

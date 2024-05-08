@@ -21,7 +21,7 @@
     }   \
     else \
     { \
-        printf("F");\
+        printf("%s",__func__);\
     } \
   }
 #else

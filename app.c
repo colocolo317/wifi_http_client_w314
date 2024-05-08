@@ -94,7 +94,7 @@
 #endif
 
 //! HTTP resource name
-#define HTTP_URL "/dev/upload/wr10k.txt"
+#define HTTP_URL "/dev/upload/wr20k.txt"
 
 //! HTTP post data
 #define HTTP_DATA "employee_name=MR.REDDY&employee_id=RSXYZ123&designation=Engineer&company=SILABS&location=Hyderabad"
@@ -500,9 +500,11 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
   if (!get_response->end_of_data) {
     //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
     // copy to ring buffer for sd card write
-    while(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != true)
+    if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != true)
     {
-        MUX_LOG("r");
+        printf("X");
+        osSemaphoreRelease(gspi_thread_sem);
+        return SL_STATUS_FAIL;
     }
     if(ringBuffer_IsOne(pRingBuff) != true)
     {
@@ -510,14 +512,16 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
     }
 
     app_buff_index += get_response->data_length;
-    MUX_LOG(">");
+    printf(">");
   } else {
     if (get_response->data_length) {
       //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
       // copy to ring buffer for sd card write
-      while(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != true)
+      if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != true)
       {
-          MUX_LOG("r");
+          printf("Z");
+          osSemaphoreRelease(gspi_thread_sem);
+          return SL_STATUS_FAIL;
       }
       if(ringBuffer_IsEmpty(pRingBuff) != true)
       {
@@ -526,7 +530,7 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
       }
 
       app_buff_index += get_response->data_length;
-      MUX_LOG(".\r\n");
+      printf(".\r\n");
     }
     http_rsp_received = HTTP_SUCCESS_RESPONSE;
   }
