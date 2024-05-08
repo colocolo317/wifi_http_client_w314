@@ -4,7 +4,7 @@
  *  Created on: 2024/5/8
  *      Author: ch.wang
  */
-
+#include "cmsis_os2.h"
 #include "sl_si91x_gspi.h"
 #include "sl_si91x_gspi_common_config.h"
 #include "gspi_util.h"
@@ -27,6 +27,11 @@
 #define GSPI_BIT_WIDTH               8         // Default Bit width
 #define GSPI_MAX_BIT_WIDTH           16        // Maximum Bit width
 
+/**
+ * GLOBAL VARIABLES
+ */
+extern osSemaphoreId_t gspi_thread_sem;
+
 /*******************************************************************************
  *************************** LOCAL VARIABLES   *******************************
  ******************************************************************************/
@@ -48,6 +53,7 @@ void callback_event(uint32_t event)
   switch (event)
   {
     case SL_GSPI_TRANSFER_COMPLETE:
+      printf("GSPI transfer_complete \r\n");
       transfer_complete = true;
       break;
     case SL_GSPI_DATA_LOST:
@@ -77,59 +83,59 @@ void gspi_init(void)
   do {
       // Version information of GSPI driver
       version = sl_si91x_gspi_get_version();
-      printf("GSPI version is fetched successfully \n");
+      printf("GSPI version is fetched successfully \r\n");
       printf("API version is %d.%d.%d\n", version.release, version.major, version.minor);
       // Filling up the structure with the default clock parameters
 
 #if AMPAK_GSPI_MODIFY_CLOCK
       status = init_clock_configuration_structure(&clock_config);
       if (status != SL_STATUS_OK) {
-        printf("init_clock_configuration_structure: Error Code : %lu \n", status);
+        printf("init_clock_configuration_structure: Error Code : %lu \r\n", status);
         break;
       }
       // Configuration of clock with the default clock parameters
       status = sl_si91x_gspi_configure_clock(&clock_config);
       if (status != SL_STATUS_OK) {
-        printf("sl_si91x_gspi_clock_configuration: Error Code : %lu \n", status);
+        printf("sl_si91x_gspi_clock_configuration: Error Code : %lu \r\n", status);
         break;
       }
-      printf("Clock configuration is successful \n");
+      printf("Clock configuration is successful \r\n");
       // Pass the address of void pointer, it will be updated with the address
       // of GSPI instance which can be used in other APIs.
 #endif
       status = sl_si91x_gspi_init(SL_GSPI_MASTER, &gspi_driver_handle);
       if (status != SL_STATUS_OK) {
-        printf("sl_si91x_gspi_init: Error Code : %lu \n", status);
+        printf("sl_si91x_gspi_init: Error Code : %lu \r\n", status);
         break;
       }
-      printf("GSPI initialization is successful \n");
+      printf("GSPI initialization is successful \r\n");
       // Fetching the status of GSPI i.e., busy, data lost and mode fault
       gspi_status = sl_si91x_gspi_get_status(gspi_driver_handle);
-      printf("GSPI status is fetched successfully \n");
-      printf("Busy: %d\n", gspi_status.busy);
-      printf("Data_Lost: %d\n", gspi_status.data_lost);
-      printf("Mode_Fault: %d\n", gspi_status.mode_fault);
+      printf("GSPI status is fetched successfully \r\n");
+      printf("Busy: %d\r\n", gspi_status.busy);
+      printf("Data_Lost: %d\r\n", gspi_status.data_lost);
+      printf("Mode_Fault: %d\r\n", gspi_status.mode_fault);
       //Configuration of all other parameters that are required by GSPI
       // gspi_configuration structure is from sl_si91x_gspi_init.h file.
       // The user can modify this structure with the configuration of
       // his choice by filling this structure.
       status = sl_si91x_gspi_set_configuration(gspi_driver_handle, &config);
       if (status != SL_STATUS_OK) {
-        printf("sl_si91x_gspi_control: Error Code : %lu \n", status);
+        printf("sl_si91x_gspi_control: Error Code : %lu \r\n", status);
         break;
       }
-      printf("GSPI configuration is successful \n");
+      printf("GSPI configuration is successful \r\n");
       // Register user callback function
       status = sl_si91x_gspi_register_event_callback(gspi_driver_handle, callback_event);
       if (status != SL_STATUS_OK) {
-        printf("sl_si91x_gspi_register_event_callback: Error Code : %lu \n", status);
+        printf("sl_si91x_gspi_register_event_callback: Error Code : %lu \r\n", status);
         break;
       }
-      printf("GSPI user event callback registered successfully \n");
+      printf("GSPI user event callback registered successfully \r\n");
       // Fetching and printing the current clock division factor
-      printf("Current Clock division factor is %lu \n", sl_si91x_gspi_get_clock_division_factor(gspi_driver_handle));
+      printf("Current Clock division factor is %lu \r\n", sl_si91x_gspi_get_clock_division_factor(gspi_driver_handle));
       // Fetching and printing the current frame length
-      printf("Current Frame Length is %lu \n", sl_si91x_gspi_get_frame_length());
+      printf("Current Frame Length is %lu \r\n", sl_si91x_gspi_get_frame_length());
       if (sl_si91x_gspi_get_frame_length() > GSPI_BIT_WIDTH) {
         gspi_division_factor = sizeof(gspi_data_out[0]);
       }
@@ -144,6 +150,7 @@ void gspi_task(void* arguments)
   sl_status_t status;
   while(1)
   {
+    osSemaphoreAcquire(gspi_thread_sem, osWaitForever);
     if(transfer_complete)
     {
       transfer_complete = false;
@@ -160,6 +167,7 @@ void gspi_task(void* arguments)
 sl_status_t gspi_transfer_test(void)
 {
   sl_status_t status;
+  status = sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
   status = sl_si91x_gspi_transfer_data(gspi_driver_handle,
                                        gspi_data_out,
                                        gspi_data_in,
@@ -167,10 +175,10 @@ sl_status_t gspi_transfer_test(void)
   if (status != SL_STATUS_OK)
   {
     // If it fails to execute the API, it will not execute rest of the things
-    printf("sl_si91x_gspi_transfer_data: Error Code : %lu \n", status);
+    printf("sl_si91x_gspi_transfer_data: Error Code : %lu \r\n", status);
     return status;
   }
-  printf("GSPI transfer begin successfully \n");
+  printf("GSPI transfer begin successfully \r\n");
 
   return status;
 }

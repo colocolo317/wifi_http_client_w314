@@ -487,6 +487,8 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
     return get_response->status;
   }
 
+  osSemaphoreRelease(gspi_thread_sem);
+
   if (!get_response->end_of_data) {
     //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
     // copy to ring buffer for sd card write
