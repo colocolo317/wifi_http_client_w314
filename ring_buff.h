@@ -16,8 +16,10 @@
 #define RINGBUFF_OK       0
 #define RINGBUFF_FAILED   1
 
+#define RINGBUFF_ACQ_WRITE_RETRY 5
+
 #define RING_BUFFER_SLOTS 2
-#define RING_BUFFER_LENGTH 2048
+#define RING_BUFFER_LENGTH 8192
 #define MAX_WRITE_SIZE 512
 #define RING_BUFFER_INCREASE_LEVEL (RING_BUFFER_LENGTH - MAX_WRITE_SIZE)
 
@@ -56,7 +58,11 @@ bool ringBuffer_IsFull(RingBuffer *rb);
 bool ringBuffer_expand(RingBuffer *rb);
 /* Drop tail item */
 ringbuff_status ringBuffer_reduce(RingBuffer *rb);
-ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len);
 
+ringbuff_status ringBuffer_check_ready_to_write(RingBuffer *rb);
+ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len);
+ringbuff_status ringBuffer_readTailSlot(RingBuffer *rb, void* receive_buff, size_t *len);
+
+void ringBuffer_debug(char* format, ...);
 
 #endif /* RING_BUFF_H_ */

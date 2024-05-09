@@ -37,7 +37,7 @@ extern osSemaphoreId_t gspi_thread_sem;
 /*******************************************************************************
  *************************** LOCAL VARIABLES   *******************************
  ******************************************************************************/
-uint16_t gspi_data_out[GSPI_BUFFER_SIZE];
+uint8_t gspi_data_out[RING_BUFFER_LENGTH];
 uint16_t gspi_data_in[GSPI_BUFFER_SIZE];
 static uint16_t gspi_division_factor       = 1;
 static sl_gspi_handle_t gspi_driver_handle = NULL;
@@ -57,7 +57,7 @@ void callback_event(uint32_t event)
   switch (event)
   {
     case SL_GSPI_TRANSFER_COMPLETE:
-      printf("T");
+      http_debug_log("T");
       transfer_complete = true;
       osSemaphoreRelease(gspi_transfer_complete_sem);
       break;
@@ -159,32 +159,33 @@ void gspi_init(void)
 void gspi_task(void* arguments)
 {
   sl_status_t status;
+  ringbuff_status rb_status;
+  size_t data_len;
   while(1)
   {
     osSemaphoreAcquire(pRingBuff->read, osWaitForever);
-    if(ringBuffer_IsOne(pRingBuff) != true)
+
+    rb_status = ringBuffer_readTailSlot(pRingBuff, gspi_data_out, &data_len);
+    if(rb_status != RINGBUFF_OK)
     {
-      transfer_complete = false;
-      while(osSemaphoreAcquire(gspi_transfer_complete_sem, 100) != osOK)
-      {
-          osThreadYield();
-      }
+        printf("S");
+    }
 
-      status = sl_si91x_gspi_transfer_data(gspi_driver_handle,
-                                           pRingBuff->buffer[pRingBuff->tail],
-                                           gspi_data_in,
-                                           pRingBuff->data_len[pRingBuff->tail]);
-      if (status != SL_STATUS_OK)
-      {
-        // If it fails to execute the API, it will not execute rest of the things
-        MUX_LOG("sl_si91x_gspi_transfer_data: Error Code : %lu \r\n", status);
+    transfer_complete = false;
+    while(osSemaphoreAcquire(gspi_transfer_complete_sem, 100) != osOK)
+    {
+        osThreadYield();
+    }
 
-      }
-      else{
-        printf("W");
-        if(ringBuffer_reduce(pRingBuff) != RINGBUFF_OK)
-        { MUX_LOG("[GSPI] Failed to reduce ring buffer\r\n");}
-      }
+    status = sl_si91x_gspi_transfer_data(gspi_driver_handle,
+                                         gspi_data_out,
+                                         gspi_data_in,
+                                         data_len);
+    if (status != SL_STATUS_OK)
+    {
+      // If it fails to execute the API, it will not execute rest of the things
+      MUX_LOG("sl_si91x_gspi_transfer_data: Error Code : %lu \r\n", status);
+
     }
   }
 }

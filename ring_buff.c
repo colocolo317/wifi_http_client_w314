@@ -8,9 +8,22 @@
 #include "ring_buff.h"
 #include "mux_debug.h"
 #include <string.h>
+#include <stdarg.h>
 
 RingBuffer ringBuff;
 RingBuffer* pRingBuff = &ringBuff;
+#if 0
+inline void ringBuffer_debug(char* format, ...)
+{
+  va_list args;
+  va_start(args, format);
+  vprintf(format, args);
+  va_end(args);
+}
+#else
+inline void ringBuffer_debug(char* format, ...)
+{}
+#endif
 
 void ringBuffer_Init(RingBuffer *rb) {
   rb->head = 0;
@@ -25,7 +38,7 @@ void ringBuffer_Init(RingBuffer *rb) {
     return;
   }
 
-  rb->write = osSemaphoreNew((RING_BUFFER_SLOTS -1), (RING_BUFFER_SLOTS -1), NULL);
+  rb->write = osSemaphoreNew(1, 1, NULL);
   if(rb->write == NULL)
   {
     MUX_LOG("Fail to new rb->write Mux\r\n");
@@ -89,12 +102,46 @@ ringbuff_status ringBuffer_reduce(RingBuffer *rb)
     rb->data_len[rb->tail] = 0;
     rb->tail = ((rb->tail + 1) % RING_BUFFER_SLOTS);
     osSemaphoreRelease(rb->write);
-    printf("R");
+    ringBuffer_debug("R");
   }
   while(false);
 
   osMutexRelease(rb->lock);
 
+  return status;
+}
+
+ringbuff_status ringBuffer_check_ready_to_write(RingBuffer *rb)
+{
+  ringbuff_status status = RINGBUFF_OK;
+  osStatus_t write_Sem_Acq;
+  if(ringBuffer_IsFull(rb))
+  {
+      do
+      {
+          for(uint8_t i = 0 ; i < RINGBUFF_ACQ_WRITE_RETRY ; i++)
+          {
+              write_Sem_Acq = osSemaphoreAcquire(rb->write, 100);
+              if(write_Sem_Acq == osOK)
+              {
+                  ringBuffer_debug("P");
+                  break;
+              }
+          }
+
+          if(write_Sem_Acq != osOK)
+          {
+              ringBuffer_debug("N");
+              status = RINGBUFF_FAILED;
+              break;
+          }
+      }
+      while(false);
+  }
+  else
+  {
+      ringBuffer_debug("C");
+  }
   return status;
 }
 
@@ -108,7 +155,8 @@ ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
   {
     if(ringBuffer_IsFull(rb))
     {
-        printf("F");
+        ringBuffer_debug("F");
+
         status = RINGBUFF_FAILED;
         break;
     }
@@ -116,21 +164,6 @@ ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
     // expand slot if over increase level
     if(rb->data_len[rb->head] >= RING_BUFFER_INCREASE_LEVEL)
     {
-      osStatus_t write_Sem_Acq;
-      for(uint8_t i = 0 ; i < 5 ; i++)
-      {
-          write_Sem_Acq = osSemaphoreAcquire(rb->write, 100);
-          if(write_Sem_Acq == osOK)
-          {  break; }
-          printf("E");
-      }
-
-      if(write_Sem_Acq != osOK)
-      {
-          status = RINGBUFF_FAILED;
-          break;
-      }
-
       /* ring buffer expand */
       rb->head = ((rb->head + 1) % RING_BUFFER_SLOTS);
       /* reset new buffer data length*/
@@ -139,9 +172,19 @@ ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
       /* ready to read*/
       osSemaphoreRelease(rb->read);
     }
-    memcpy(rb->buffer[rb->head] + rb->data_len[rb->head] , data, len );
 
+    /* copy content */
+    memcpy(rb->buffer[rb->head] + rb->data_len[rb->head] , data, len );
     rb->data_len[rb->head] += len;
+
+    /* take write sem while full after write */
+    if(ringBuffer_IsFull(rb))
+    {
+      if(osSemaphoreAcquire(rb->write, 0) == osOK)
+      {
+        ringBuffer_debug("A");
+      }
+    }
   }
   while(false);
 
@@ -151,9 +194,34 @@ ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
   return status;
 }
 
-#if 0
-void ringBuffer_getTailBuff(RingBuffer *rb, size_t* len)
+
+ringbuff_status ringBuffer_readTailSlot(RingBuffer *rb, void* receive_buff, size_t *len)
 {
-  // No implement, directly memcpy to sdcard
+  ringbuff_status status = RINGBUFF_OK;
+  *len = 0;
+  osMutexAcquire(rb->lock, osWaitForever);
+  do
+  {
+      if(ringBuffer_IsOne(rb) == true)
+      {
+        status = RINGBUFF_FAILED;
+        break;
+      }
+      /* copy content and data len */
+      memcpy(receive_buff, pRingBuff->buffer[pRingBuff->tail], pRingBuff->data_len[pRingBuff->tail]);
+      *len = pRingBuff->data_len[pRingBuff->tail];
+
+      /* reduce ring buffer */
+      rb->data_len[rb->tail] = 0;
+      rb->tail = ((rb->tail + 1) % RING_BUFFER_SLOTS);
+
+      osSemaphoreRelease(rb->write);
+      ringBuffer_debug("R");
+  }
+  while(false);
+
+  osMutexRelease(rb->lock);
+
+  return status;
 }
-#endif
+

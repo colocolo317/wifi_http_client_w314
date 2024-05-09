@@ -94,7 +94,7 @@
 #endif
 
 //! HTTP resource name
-#define HTTP_URL "/dev/upload/wr50k.txt"
+#define HTTP_URL "/dev/upload/wr2m.txt"
 
 //! HTTP post data
 #define HTTP_DATA "employee_name=MR.REDDY&employee_id=RSXYZ123&designation=Engineer&company=SILABS&location=Hyderabad"
@@ -501,38 +501,44 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
     //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
     // copy to ring buffer for sd card write
 
-#if AMPAK_DEAL_RING_BUFFER_FULL
-#else
-    if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
+    if(ringBuffer_check_ready_to_write(pRingBuff) == RINGBUFF_OK)
     {
-        printf("X");
+       if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
+       {
+           http_debug_log("X");
+           return SL_STATUS_FAIL;
+       }
+    }
+    else
+    {
+        http_debug_log("x");
         return SL_STATUS_FAIL;
     }
-#endif
 
     app_buff_index += get_response->data_length;
-    printf(">");
+    http_debug_log(">");
   } else {
     if (get_response->data_length) {
       //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
       // copy to ring buffer for sd card write
-#if AMPAK_DEAL_RING_BUFFER_FULL
-#else
-      if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
+      if(ringBuffer_check_ready_to_write(pRingBuff) == RINGBUFF_OK)
       {
-          printf("Z");
+         if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
+         {
+             http_debug_log("Z");
+             return SL_STATUS_FAIL;
+         }
+      }
+      else
+      {
+          http_debug_log("z");
           return SL_STATUS_FAIL;
       }
-#endif
-      /*
-      if(ringBuffer_IsEmpty(pRingBuff) != true)
-      {
-          // do clear feature
-      }
-      */
+
+      /* TODO clear buffer last data */
 
       app_buff_index += get_response->data_length;
-      printf(".\r\n");
+      http_debug_log(".\r\n");
     }
     http_rsp_received = HTTP_SUCCESS_RESPONSE;
   }
