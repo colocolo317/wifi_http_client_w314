@@ -151,6 +151,7 @@ void gspi_init(void)
           MUX_LOG("Failed to new semaphore gspi_transfer_complete_sem\r\n");
           break;
       }
+      status = sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
   }while(false);
 
 }
@@ -160,12 +161,15 @@ void gspi_task(void* arguments)
   sl_status_t status;
   while(1)
   {
-    osSemaphoreAcquire(gspi_thread_sem, osWaitForever);
+    osSemaphoreAcquire(pRingBuff->read, osWaitForever);
     if(ringBuffer_IsOne(pRingBuff) != true)
     {
       transfer_complete = false;
-      osSemaphoreAcquire(gspi_transfer_complete_sem, osWaitForever);
-      status = sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
+      while(osSemaphoreAcquire(gspi_transfer_complete_sem, 100) != osOK)
+      {
+          osThreadYield();
+      }
+
       status = sl_si91x_gspi_transfer_data(gspi_driver_handle,
                                            pRingBuff->buffer[pRingBuff->tail],
                                            gspi_data_in,
@@ -178,7 +182,7 @@ void gspi_task(void* arguments)
       }
       else{
         printf("W");
-        if(ringBuffer_reduce(pRingBuff) == false)
+        if(ringBuffer_reduce(pRingBuff) != RINGBUFF_OK)
         { MUX_LOG("[GSPI] Failed to reduce ring buffer\r\n");}
       }
     }

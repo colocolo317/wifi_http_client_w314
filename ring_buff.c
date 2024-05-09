@@ -25,10 +25,16 @@ void ringBuffer_Init(RingBuffer *rb) {
     return;
   }
 
-  rb->space = osMutexNew(NULL);
-  if(rb->space == NULL)
+  rb->write = osSemaphoreNew((RING_BUFFER_SLOTS -1), (RING_BUFFER_SLOTS -1), NULL);
+  if(rb->write == NULL)
   {
-    MUX_LOG("Fail to new rb->space Mux\r\n");
+    MUX_LOG("Fail to new rb->write Mux\r\n");
+    return;
+  }
+  rb->read = osSemaphoreNew((RING_BUFFER_SLOTS -1), 0, NULL);
+  if(rb->read == NULL)
+  {
+    MUX_LOG("Fail to new rb->read Mux\r\n");
     return;
   }
 
@@ -58,6 +64,8 @@ bool ringBuffer_expand(RingBuffer *rb)
   { return false; }
 
   osMutexAcquire(rb->lock, osWaitForever);
+  osSemaphoreAcquire(rb->write, 100);
+
   rb->head = ((rb->head + 1) % RING_BUFFER_SLOTS);
   /* reset new buffer data length*/
   rb->data_len[rb->head] = 0;
@@ -66,44 +74,81 @@ bool ringBuffer_expand(RingBuffer *rb)
   return true;
 }
 
-bool ringBuffer_reduce(RingBuffer *rb)
+ringbuff_status ringBuffer_reduce(RingBuffer *rb)
 {
-  if(ringBuffer_IsOne(rb))
-  { return false; }
+  ringbuff_status status = RINGBUFF_OK;
 
   osMutexAcquire(rb->lock, osWaitForever);
-  rb->data_len[rb->tail] = 0;
-  rb->tail = ((rb->tail + 1) % RING_BUFFER_SLOTS);
-  //osMutexRelease(rb->space);
+  do
+  {
+    if(ringBuffer_IsOne(rb))
+    {
+      status = RINGBUFF_FAILED;
+      break;
+    }
+    rb->data_len[rb->tail] = 0;
+    rb->tail = ((rb->tail + 1) % RING_BUFFER_SLOTS);
+    osSemaphoreRelease(rb->write);
+    printf("R");
+  }
+  while(false);
+
   osMutexRelease(rb->lock);
 
-  printf("R");
-  return true;
+  return status;
 }
 
-bool ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
+ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
 {
-  if(ringBuffer_IsFull(rb))
-  {
-      printf("F");
-      return false;
-  }
+  ringbuff_status status = RINGBUFF_OK;
+
 
   osMutexAcquire(rb->lock, osWaitForever);
-  if(rb->data_len[rb->head] >= RING_BUFFER_INCREASE_LEVEL)
+  do
   {
-    /* ring buffer expand */
-    rb->head = ((rb->head + 1) % RING_BUFFER_SLOTS);
-    /* reset new buffer data length*/
-    rb->data_len[rb->head] = 0;
-  }
-  memcpy(rb->buffer[rb->head] + rb->data_len[rb->head] , data, len );
+    if(ringBuffer_IsFull(rb))
+    {
+        printf("F");
+        status = RINGBUFF_FAILED;
+        break;
+    }
 
-  rb->data_len[rb->head] += len;
+    // expand slot if over increase level
+    if(rb->data_len[rb->head] >= RING_BUFFER_INCREASE_LEVEL)
+    {
+      osStatus_t write_Sem_Acq;
+      for(uint8_t i = 0 ; i < 5 ; i++)
+      {
+          write_Sem_Acq = osSemaphoreAcquire(rb->write, 100);
+          if(write_Sem_Acq == osOK)
+          {  break; }
+          printf("E");
+      }
+
+      if(write_Sem_Acq != osOK)
+      {
+          status = RINGBUFF_FAILED;
+          break;
+      }
+
+      /* ring buffer expand */
+      rb->head = ((rb->head + 1) % RING_BUFFER_SLOTS);
+      /* reset new buffer data length*/
+      rb->data_len[rb->head] = 0;
+
+      /* ready to read*/
+      osSemaphoreRelease(rb->read);
+    }
+    memcpy(rb->buffer[rb->head] + rb->data_len[rb->head] , data, len );
+
+    rb->data_len[rb->head] += len;
+  }
+  while(false);
+
   osMutexRelease(rb->lock);
 
   //MUX_LOG("[RB write ok] H: %u,T: %u,HL: %u,TL: %u\r\n", rb->head, rb->tail, rb->data_len[rb->head], rb->data_len[rb->tail]);
-  return true;
+  return status;
 }
 
 #if 0
