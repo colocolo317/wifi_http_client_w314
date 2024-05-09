@@ -94,7 +94,7 @@
 #endif
 
 //! HTTP resource name
-#define HTTP_URL "/dev/upload/wr2m.txt"
+#define HTTP_URL "/dev/upload/sample.bin"
 
 //! HTTP post data
 #define HTTP_DATA "employee_name=MR.REDDY&employee_id=RSXYZ123&designation=Engineer&company=SILABS&location=Hyderabad"
@@ -516,7 +516,7 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
     }
 
     app_buff_index += get_response->data_length;
-    http_debug_log(">");
+    //http_debug_log(">");
   } else {
     if (get_response->data_length) {
       //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);

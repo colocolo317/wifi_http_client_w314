@@ -15,8 +15,8 @@ osMutexId_t mux_debug_init(void)
   return debug_prints_mutex;
 }
 
-#if defined(AMPAK_OS_DEBUG_LOG)
-inline void MUX_LOG(char* format, ...)
+
+inline void _MUX_LOG(char* format, ...)
 {
   if(osMutexAcquire(debug_prints_mutex, 200) == osOK)
   {
@@ -32,21 +32,19 @@ inline void MUX_LOG(char* format, ...)
   }
 
 }
-#else
-inline void MUX_LOG(char* format, ...)
-{}
-#endif
 
-#if 0
-inline void http_debug_log(char* format, ...)
+inline void _http_debug_log(char* format, ...)
 {
   va_list args;
   va_start(args, format);
   vprintf(format, args);
   va_end(args);
 }
-#else
-inline void http_debug_log(char* format, ...)
-{}
-#endif
 
+inline void _ringBuffer_debug(char* format, ...)
+{
+  va_list args;
+  va_start(args, format);
+  vprintf(format, args);
+  va_end(args);
+}

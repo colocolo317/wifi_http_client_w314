@@ -44,6 +44,9 @@ static sl_gspi_handle_t gspi_driver_handle = NULL;
 static boolean_t transfer_complete  = false;
 
 static osSemaphoreId_t gspi_transfer_complete_sem;
+
+/* TODO make control flag for http status*/
+//uint8_t http_client_status= HTTP_STANDBY;
 /*******************************************************************************
  **********************  Local Function prototypes   ***************************
  ******************************************************************************/
@@ -158,9 +161,11 @@ void gspi_init(void)
 
 void gspi_task(void* arguments)
 {
+  UNUSED_PARAMETER(arguments);
   sl_status_t status;
   ringbuff_status rb_status;
   size_t data_len;
+
   while(1)
   {
     osSemaphoreAcquire(pRingBuff->read, osWaitForever);
@@ -168,12 +173,13 @@ void gspi_task(void* arguments)
     rb_status = ringBuffer_readTailSlot(pRingBuff, gspi_data_out, &data_len);
     if(rb_status != RINGBUFF_OK)
     {
-        printf("S");
+        ringBuffer_debug("S");
     }
 
     transfer_complete = false;
     while(osSemaphoreAcquire(gspi_transfer_complete_sem, 100) != osOK)
     {
+        ringBuffer_debug("t");
         osThreadYield();
     }
 
@@ -190,6 +196,7 @@ void gspi_task(void* arguments)
   }
 }
 
+#if 0
 sl_status_t gspi_transfer_test(void)
 {
   sl_status_t status;
@@ -207,3 +214,4 @@ sl_status_t gspi_transfer_test(void)
   MUX_LOG("w");
   return status;
 }
+#endif
