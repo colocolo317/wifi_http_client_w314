@@ -117,11 +117,9 @@
 									<listOptionValue builtIn="false" value="DEBUG_ENABLE=1"/>
 									<listOptionValue builtIn="false" value="DEBUG_UART=1"/>
 									<listOptionValue builtIn="false" value="ENABLE_DEBUG_MODULE=1"/>
-									<listOptionValue builtIn="false" value="SL_SI91X_DMA=1"/>
 									<listOptionValue builtIn="false" value="GSPI_CONFIG=1"/>
 									<listOptionValue builtIn="false" value="GSPI_MULTI_SLAVE=1"/>
 									<listOptionValue builtIn="false" value="SLI_SI91X_MCU_MOV_ROM_API_TO_FLASH=1"/>
-									<listOptionValue builtIn="false" value="SL_SI91X_GSPI_DMA=1"/>
 									<listOptionValue builtIn="false" value="SLI_SI91X_OFFLOAD_NETWORK_STACK=1"/>
 									<listOptionValue builtIn="false" value="SI917=1"/>
 									<listOptionValue builtIn="false" value="SLI_SI91X_ENABLE_OS=1"/>
@@ -224,11 +222,9 @@
 									<listOptionValue builtIn="false" value="DEBUG_ENABLE=1"/>
 									<listOptionValue builtIn="false" value="DEBUG_UART=1"/>
 									<listOptionValue builtIn="false" value="ENABLE_DEBUG_MODULE=1"/>
-									<listOptionValue builtIn="false" value="SL_SI91X_DMA=1"/>
 									<listOptionValue builtIn="false" value="GSPI_CONFIG=1"/>
 									<listOptionValue builtIn="false" value="GSPI_MULTI_SLAVE=1"/>
 									<listOptionValue builtIn="false" value="SLI_SI91X_MCU_MOV_ROM_API_TO_FLASH=1"/>
-									<listOptionValue builtIn="false" value="SL_SI91X_GSPI_DMA=1"/>
 									<listOptionValue builtIn="false" value="SLI_SI91X_OFFLOAD_NETWORK_STACK=1"/>
 									<listOptionValue builtIn="false" value="SI917=1"/>
 									<listOptionValue builtIn="false" value="SLI_SI91X_ENABLE_OS=1"/>
