@@ -29,6 +29,7 @@
  ******************************************************************************/
 #include "sl_board_configuration.h"
 #include "cmsis_os2.h"
+#include "FreeRTOS.h"
 #include "sl_wifi.h"
 #include "sl_net.h"
 #include "sl_http_client.h"
@@ -217,6 +218,10 @@ static void reset_http_handles(void);
 void app_init(const void *unused)
 {
   UNUSED_PARAMETER(unused);
+
+  MUX_LOG("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
+  MUX_LOG("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
+  MUX_LOG("pdMS_TO_TICKS(1000): (%lu ticks)\r\n", pdMS_TO_TICKS(1000));
 
   if(mux_debug_init() == NULL)
   {
@@ -417,6 +422,11 @@ sl_status_t http_client_application(void)
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   MUX_LOG("HTTP Get request init success\r\n");
 
+  MUX_LOG("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
+  MUX_LOG("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
+  MUX_LOG("pdMS_TO_TICKS(1000): (%lu ticks)\r\n", pdMS_TO_TICKS(1000));
+
+  uint32_t starttime = osKernelGetTickCount();
   //! Send HTTP GET request
   status = sl_http_client_send_request(&client_handle, &client_request);
   if (status == SL_STATUS_IN_PROGRESS) {
@@ -426,7 +436,10 @@ sl_status_t http_client_application(void)
     CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   }
 
-  MUX_LOG("File length: %ld\r\n", app_buff_index);
+  uint32_t duration = osKernelGetTickCount() - starttime;
+
+  MUX_LOG("Length\t\t| Time\t\t| Datarate\r\n");
+  MUX_LOG("%lu\t\t| %lu\t\t| %lu\r\n", app_buff_index, duration, app_buff_index / duration);
 
   MUX_LOG("HTTP GET request Success\r\n");
   reset_http_handles(); // reset twice
