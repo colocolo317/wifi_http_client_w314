@@ -62,32 +62,32 @@ ringbuff_status ringBuffer_check_ready_to_write(RingBuffer *rb)
   osStatus_t write_Sem_Acq;
   if(ringBuffer_IsFull(rb))
   {
-      do
+    do
+    {
+      for(uint8_t i = 0 ; i < RINGBUFF_ACQ_WRITE_RETRY ; i++)
       {
-          for(uint8_t i = 0 ; i < RINGBUFF_ACQ_WRITE_RETRY ; i++)
-          {
-              write_Sem_Acq = osSemaphoreAcquire(rb->write, RINGBUFF_ACQ_WRITE_TIME);
-              if(write_Sem_Acq == osOK)
-              {
-                  ringBuffer_debug("P");
-                  break;
-              }
-              ringBuffer_debug("p");
-          }
-
-          if(write_Sem_Acq != osOK)
-          {
-              ringBuffer_debug("N");
-              status = RINGBUFF_FAILED;
-              break;
-          }
+        write_Sem_Acq = osSemaphoreAcquire(rb->write, RINGBUFF_ACQ_WRITE_TIME);
+        if(write_Sem_Acq == osOK)
+        {
+          ringBuffer_debug("P");
+          break;
+        }
+        ringBuffer_debug("p");
       }
-      while(false);
+
+      if(write_Sem_Acq != osOK)
+      {
+        ringBuffer_debug("N");
+        status = RINGBUFF_FAILED;
+        break;
+      }
+    }
+    while(false);
   }
 #if AMPAK_RINGBUFF_DEBUG_LOG
   else
   {
-      ringBuffer_debug(">");
+    ringBuffer_debug(">");
   }
 #endif
 

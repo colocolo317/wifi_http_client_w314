@@ -2720,7 +2720,7 @@ END GROUP
 LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtend.o
 LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtn.o
 
-.text           0x08202000    0x126e7
+.text           0x08202000    0x126c7
  *(.isr_vector)
  .isr_vector    0x08202000      0x16c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/startup_si91x.o
                 0x08202000                __Vectors
@@ -4451,238 +4451,237 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2
  .rodata.gspi_init.str1.1
                 0x082133e4      0x21b ./gspi_control.o
  .rodata.gspi_task.str1.1
-                0x082135ff       0x31 ./gspi_control.o
-                                 0x35 (size before relaxing)
+                0x082135ff       0x17 ./gspi_control.o
+                                 0x1b (size before relaxing)
  .rodata.mux_debug_init.str1.1
-                0x08213630       0x15 ./mux_debug.o
+                0x08213616       0x15 ./mux_debug.o
  .rodata._MUX_LOG.str1.1
-                0x08213645        0x3 ./mux_debug.o
+                0x0821362b        0x3 ./mux_debug.o
  .rodata.__func__.0
-                0x08213648        0x9 ./mux_debug.o
+                0x0821362e        0x9 ./mux_debug.o
  .rodata.ringBuffer_Init.str1.1
-                0x08213651       0x68 ./ring_buff.o
+                0x08213637       0x68 ./ring_buff.o
  .rodata.ringBuffer_check_ready_to_write.str1.1
-                0x082136b9        0x4 ./ring_buff.o
+                0x0821369f        0x4 ./ring_buff.o
                                   0x8 (size before relaxing)
  .rodata.ringBuffer_write.str1.1
-                0x082136bd        0x4 ./ring_buff.o
+                0x082136a3        0x4 ./ring_buff.o
                                   0x6 (size before relaxing)
  .rodata.ringBuffer_readTailSlot.str1.1
-                0x082136c1        0x2 ./ring_buff.o
+                0x082136a7        0x2 ./ring_buff.o
  .rodata.vTaskStartScheduler.str1.1
-                0x082136c3        0x5 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x082136a9        0x5 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .rodata.prvCheckForValidListAndQueue.str1.1
-                0x082136c8        0x5 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x082136ae        0x5 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .rodata.xTimerCreateTimerTask.str1.1
-                0x082136cd        0x8 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
- *fill*         0x082136d5        0x3 
+                0x082136b3        0x8 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+ *fill*         0x082136bb        0x1 
  .rodata.Driver_GSPI_MASTER
-                0x082136d8       0x2c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
-                0x082136d8                Driver_GSPI_MASTER
+                0x082136bc       0x2c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x082136bc                Driver_GSPI_MASTER
  .rodata.GSPI_MASTER_Resources
-                0x08213704       0x3c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x082136e8       0x3c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.gspi_miso
-                0x08213740        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x08213724        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.gspi_mosi
-                0x08213744        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x08213728        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.gspi_cs2
-                0x08213748        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x0821372c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.gspi_cs1
-                0x0821374c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x08213730        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.gspi_cs0
-                0x08213750        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x08213734        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.gspi_clock
-                0x08213754        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x08213738        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.DriverVersion
-                0x08213758        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x0821373c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .rodata.Driver_ULP_UART
-                0x0821375c       0x38 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
-                0x0821375c                Driver_ULP_UART
+                0x08213740       0x38 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213740                Driver_ULP_UART
  .rodata.ulp_uart_rts
-                0x08213794        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213778        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.ulp_uart_cts
-                0x08213798        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x0821377c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.ulp_uart_rx
-                0x0821379c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213780        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.ulp_uart_tx
-                0x082137a0        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213784        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.uart1_rts
-                0x082137a4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213788        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.uart1_cts
-                0x082137a8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x0821378c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.uart1_rx
-                0x082137ac        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213790        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.uart1_tx
-                0x082137b0        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213794        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.usart0_ir_rx
-                0x082137b4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x08213798        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.usart0_ir_tx
-                0x082137b8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x0821379c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.usart0_rts
-                0x082137bc        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x082137a0        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.usart0_cts
-                0x082137c0        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x082137a4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.usart0_rx
-                0x082137c4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x082137a8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.usart0_tx
-                0x082137c8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x082137ac        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.usart0_clock
-                0x082137cc        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x082137b0        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.UsartDriverVersion
-                0x082137d0        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x082137b4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .rodata.CSWTCH.14
-                0x082137d4        0xc ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
+                0x082137b8        0xc ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
  .rodata.sli_m4_interrupt_isr.str1.1
-                0x082137e0       0xbb ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
+                0x082137c4       0xbb ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
  .rodata.__func__.0
-                0x0821389b       0x15 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
+                0x0821387f       0x15 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
  .rodata.CSWTCH.5
-                0x082138b0       0x1d ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_platform.o
+                0x08213894       0x1d ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_platform.o
  .rodata.sli_si91x_submit_rx_pkt.str1.1
-                0x082138cd       0xc4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+                0x082138b1       0xc4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
  .rodata.sli_si91x_config_m4_dma_desc_on_reset.str1.1
-                0x08213991       0x25 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+                0x08213975       0x25 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
  .rodata.__func__.0
-                0x082139b6       0x26 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+                0x0821399a       0x26 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
  .rodata.__func__.1
-                0x082139dc       0x18 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+                0x082139c0       0x18 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
  .rodata.sl_net_si91x_event_dispatch_handler.str1.1
-                0x082139f4       0xf3 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_si91x_integration_handler.o
+                0x082139d8       0xf3 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_si91x_integration_handler.o
  .rodata.__func__.0
-                0x08213ae7       0x24 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_si91x_integration_handler.o
+                0x08213acb       0x24 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_si91x_integration_handler.o
  .rodata.si91x_socket_identification_function.str1.1
-                0x08213b0b       0x96 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
+                0x08213aef       0x96 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
                                  0xc8 (size before relaxing)
  .rodata.__func__.0
-                0x08213ba1       0x25 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
+                0x08213b85       0x25 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
  .rodata.sl_si91x_platform_init.str1.1
-                0x08213bc6       0x16 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x08213baa       0x16 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
  .rodata.sl_si91x_driver_wait_for_response_packet.str1.1
-                0x08213bdc       0xb5 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x08213bc0       0xb5 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
  .rodata.sl_si91x_set_device_region.str1.1
-                0x08213c91       0x14 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x08213c75       0x14 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
  .rodata.__func__.3
-                0x08213ca5       0x29 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
- *fill*         0x08213cce        0x2 
+                0x08213c89       0x29 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+ *fill*         0x08213cb2        0x2 
  .rodata.response_event_map
-                0x08213cd0       0x14 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x08213cb4       0x14 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
  .rodata.firmware_queue_id
-                0x08213ce4        0x5 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
- *fill*         0x08213ce9        0x3 
- .rodata        0x08213cec       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x08213cc8        0x5 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+ *fill*         0x08213ccd        0x3 
+ .rodata        0x08213cd0       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
  .rodata.sl_http_client_default_event_handler.str1.1
-                0x08213cfc       0xbe ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
+                0x08213ce0       0xbe ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
  .rodata.__func__.0
-                0x08213dba       0x25 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
+                0x08213d9e       0x25 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
  .rodata.sl_create_generic_rx_packet_from_params.str1.1
-                0x08213ddf       0x95 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
+                0x08213dc3       0x95 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
                                  0xc7 (size before relaxing)
  .rodata.si91x_bus_thread.str1.1
-                0x08213e74       0xcd ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
+                0x08213e58       0xcd ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
  .rodata.__func__.0
-                0x08213f41       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
+                0x08213f25       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
  .rodata.__func__.1
-                0x08213f51       0x11 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
+                0x08213f35       0x11 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
  .rodata.__func__.2
-                0x08213f62       0x28 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
+                0x08213f46       0x28 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
  .rodata.sl_wifi_connect.str1.1
-                0x08213f8a       0x1f ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x08213f6e       0x1f ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
                                  0x24 (size before relaxing)
  .rodata.sl_wifi_btr_set_channel.str1.1
-                0x08213fa9       0xc1 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x08213f8d       0xc1 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
  .rodata.sl_wifi_btr_up.str1.1
-                0x0821406a      0x1fd ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x0821404e      0x1fd ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
  .rodata.__func__.0
-                0x08214267        0xf ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x0821424b        0xf ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
  .rodata.__func__.1
-                0x08214276       0x1a ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x0821425a       0x1a ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
  .rodata.__func__.2
-                0x08214290       0x18 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x08214274       0x18 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
  .rodata.sli_si91x_load_extended_headers_into_request_buffer.str1.1
-                0x082142a8        0x3 ./wiseconnect3_sdk_3.1.4/components/service/http_client/si91x_socket/sl_http_client.o
+                0x0821428c        0x3 ./wiseconnect3_sdk_3.1.4/components/service/http_client/si91x_socket/sl_http_client.o
  .rodata.sl_wifi_default_btr_configuration
-                0x082142a8       0x38 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
+                0x0821428c       0x38 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
  .rodata.sl_wifi_default_ap_configuration
-                0x082142e0       0x38 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
+                0x082142c4       0x38 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
  .rodata.sl_wifi_default_client_configuration
-                0x08214318       0x38 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
- .rodata        0x08214350       0x20 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
+                0x082142fc       0x38 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
+ .rodata        0x08214334       0x20 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
  .rodata._ctype_
-                0x08214370      0x101 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-ctype_.o)
-                0x08214370                _ctype_
+                0x08214354      0x101 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-ctype_.o)
+                0x08214354                _ctype_
  .rodata._printf_float.str1.1
-                0x08214471       0x12 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-vfprintf_float.o)
+                0x08214455       0x12 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-vfprintf_float.o)
  .rodata._printf_i.str1.1
-                0x08214483       0x22 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-vfprintf_i.o)
+                0x08214467       0x22 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-vfprintf_i.o)
  .rodata._dtoa_r.str1.1
-                0x082144a5       0x8e c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-dtoa.o)
+                0x08214489       0x8e c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-dtoa.o)
                                  0x90 (size before relaxing)
  .rodata._Balloc.str1.1
-                0x08214533       0x5a c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
+                0x08214517       0x5a c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
                                  0x71 (size before relaxing)
  .rodata.__multadd.str1.1
-                0x0821458d       0x11 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
- *fill*         0x0821458d        0x3 
- .rodata.p05.0  0x08214590        0xc c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
- *fill*         0x0821459c        0x4 
+                0x08214571       0x11 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
+ *fill*         0x08214571        0x3 
+ .rodata.p05.0  0x08214574        0xc c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
  .rodata.__mprec_bigtens
-                0x082145a0       0x28 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
-                0x082145a0                __mprec_bigtens
+                0x08214580       0x28 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
+                0x08214580                __mprec_bigtens
  .rodata.__mprec_tens
-                0x082145c8       0xc8 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
-                0x082145c8                __mprec_tens
+                0x082145a8       0xc8 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mprec.o)
+                0x082145a8                __mprec_tens
  .rodata._svfprintf_r.str1.1
-                0x08214690       0x11 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-svfprintf.o)
+                0x08214670       0x11 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-svfprintf.o)
  .rodata._vfprintf_r.str1.1
-                0x082146a1       0x11 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-vfprintf.o)
+                0x08214681       0x11 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-nano-vfprintf.o)
  .rodata._setlocale_r.str1.1
-                0x082146a1        0x8 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-locale.o)
+                0x08214681        0x8 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-locale.o)
                                   0x9 (size before relaxing)
  .rodata.str1.1
-                0x082146a9        0x2 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-locale.o)
+                0x08214689        0x2 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-locale.o)
  .rodata.__assert_func.str1.1
-                0x082146ab       0x3c c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-assert.o)
+                0x0821468b       0x3c c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-assert.o)
                                  0x3d (size before relaxing)
  *(.eh_fram e*)
 
-.eh_frame       0x082146e8        0x0
- .eh_frame      0x082146e8        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
+.eh_frame       0x082146c8        0x0
+ .eh_frame      0x082146c8        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
 
-.glue_7         0x082146e8        0x0
- .glue_7        0x082146e8        0x0 linker stubs
+.glue_7         0x082146c8        0x0
+ .glue_7        0x082146c8        0x0 linker stubs
 
-.glue_7t        0x082146e8        0x0
- .glue_7t       0x082146e8        0x0 linker stubs
+.glue_7t        0x082146c8        0x0
+ .glue_7t       0x082146c8        0x0 linker stubs
 
-.vfp11_veneer   0x082146e8        0x0
- .vfp11_veneer  0x082146e8        0x0 linker stubs
+.vfp11_veneer   0x082146c8        0x0
+ .vfp11_veneer  0x082146c8        0x0 linker stubs
 
-.v4_bx          0x082146e8        0x0
- .v4_bx         0x082146e8        0x0 linker stubs
+.v4_bx          0x082146c8        0x0
+ .v4_bx         0x082146c8        0x0 linker stubs
 
-.iplt           0x082146e8        0x0
- .iplt          0x082146e8        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
+.iplt           0x082146c8        0x0
+ .iplt          0x082146c8        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
 
 .common_tcm_code
-                0x082146e8      0x21c
+                0x082146c8      0x21c
  .common_tcm_code
-                0x082146e8      0x21c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
-                0x082146e8                update_ipmu_calib_data
+                0x082146c8      0x21c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
+                0x082146c8                update_ipmu_calib_data
 
-.rel.dyn        0x08214904        0x0
- .rel.iplt      0x08214904        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
+.rel.dyn        0x082148e4        0x0
+ .rel.iplt      0x082148e4        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08214904                __exidx_start = .
+                0x082148e4                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x08214904                __exidx_end = .
-                0x08214904                __etext = .
-                0x08214904                _sidata = __etext
+                0x082148e4                __exidx_end = .
+                0x082148e4                __etext = .
+                0x082148e4                _sidata = __etext
 
-.data           0x0000000c      0x7f0 load address 0x08214904
+.data           0x0000000c      0x7f0 load address 0x082148e4
                 0x0000000c                __data_start__ = .
                 0x0000000c                _sdata = __data_start__
  *(.data*)
@@ -4886,16 +4885,16 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2
                 0x000007fc                _edata = __data_end__
 
 .tm_clone_table
-                0x000007fc        0x0 load address 0x082150f4
+                0x000007fc        0x0 load address 0x082150d4
  .tm_clone_table
                 0x000007fc        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
  .tm_clone_table
                 0x000007fc        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtend.o
 
-.igot.plt       0x000007fc        0x0 load address 0x082150f4
+.igot.plt       0x000007fc        0x0 load address 0x082150d4
  .igot.plt      0x000007fc        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
 
-.bss            0x000007fc    0x1b408 load address 0x082150f4
+.bss            0x000007fc    0x1b408 load address 0x082150d4
                 0x000007fc                . = ALIGN (0x4)
                 0x000007fc                __bss_start__ = .
  *(.bss*)
@@ -5223,7 +5222,7 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2
                 0x0001bc04                . = ALIGN (0x4)
                 0x0001bc04                __bss_end__ = .
 
-.stack          0x0001bc08     0x3000 load address 0x082150f4
+.stack          0x0001bc08     0x3000 load address 0x082150d4
                 0x0001bc08                __StackLimit = .
  *(.stack*)
  .stack         0x0001bc08     0x3000 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/sl_si91x_stack_object_declare.o
@@ -5231,7 +5230,7 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2
                 0x0001ec08                __StackTop = .
                 0x0001ec08                PROVIDE (__stack = __StackTop)
 
-.heap           0x0001ec08    0x11004 load address 0x082150f4
+.heap           0x0001ec08    0x11004 load address 0x082150d4
                 0x0001ec08                __HeapBase = .
                 0x0001ec08                __end__ = .
                 0x0001ec08                end = __end__
@@ -5242,12 +5241,12 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2
                 0x0002fc0c                __HeapLimit = .
                 0x00011004                __heap_size = (__HeapLimit - __HeapBase)
 
-.udma_addr0     0x0002fc00      0x400 load address 0x082150f4
+.udma_addr0     0x0002fc00      0x400 load address 0x082150d4
  *(.udma_addr0*)
  .udma_addr0    0x0002fc00      0x400 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
                 0x0002fc00                UDMA0_Table
 
-.udma_addr1     0x24061c00      0x180 load address 0x082154f4
+.udma_addr1     0x24061c00      0x180 load address 0x082154d4
  *(.udma_addr1*)
  .udma_addr1    0x24061c00      0x180 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
                 0x24061c00                UDMA1_Table
@@ -6017,77 +6016,77 @@ LOAD linker stubs
  .debug_ranges  0x00004590       0x48 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_credentials.o
  .debug_ranges  0x000045d8       0x20 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
 
-.debug_line     0x00000000    0x377e5
- .debug_line    0x00000000      0xbd6 ./app.o
- .debug_line    0x00000bd6      0x69c ./gspi_control.o
- .debug_line    0x00001272       0xd3 ./main.o
- .debug_line    0x00001345      0x340 ./mux_debug.o
- .debug_line    0x00001685      0x5e6 ./ring_buff.o
- .debug_line    0x00001c6b      0x6ef ./autogen/sl_event_handler.o
- .debug_line    0x0000235a      0x29d ./gecko_sdk_4.4.1/platform/common/src/sl_slist.o
- .debug_line    0x000025f7      0x3da ./gecko_sdk_4.4.1/platform/common/src/sli_cmsis_os2_ext_task_register.o
- .debug_line    0x000029d1      0x877 ./gecko_sdk_4.4.1/platform/emlib/src/em_core.o
- .debug_line    0x00003248      0x373 ./gecko_sdk_4.4.1/platform/service/mem_pool/src/sl_mem_pool.o
- .debug_line    0x000035bb      0x10e ./gecko_sdk_4.4.1/platform/service/system/src/sl_system_init.o
- .debug_line    0x000036c9       0xfd ./gecko_sdk_4.4.1/platform/service/system/src/sl_system_kernel.o
- .debug_line    0x000037c6     0x3606 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
- .debug_line    0x00006dcc      0xbbb ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/event_groups.o
- .debug_line    0x00007987      0x402 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/list.o
- .debug_line    0x00007d89     0x205d ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/queue.o
- .debug_line    0x00009de6     0x2de6 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
- .debug_line    0x0000cbcc      0xeda ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
- .debug_line    0x0000daa6      0x7d9 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/GCC/ARM_CM4F/port.o
- .debug_line    0x0000e27f      0x7ce ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
- .debug_line    0x0000ea4d      0x404 ./wiseconnect3_sdk_3.1.4/components/board/silabs/src/rsi_board.o
- .debug_line    0x0000ee51      0xb3c ./wiseconnect3_sdk_3.1.4/components/common/src/sl_utility.o
- .debug_line    0x0000f98d      0xca4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
- .debug_line    0x00010631      0x24b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/rsi_system_config_917.o
- .debug_line    0x0001087c      0xd04 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/rsi_deepsleep_soc.o
- .debug_line    0x00011580      0x303 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/startup_si91x.o
- .debug_line    0x00011883      0x688 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
- .debug_line    0x00011f0b      0x5ca ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/rsi_debug.o
- .debug_line    0x000124d5       0xbc ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/sl_si91x_stack_object_declare.o
- .debug_line    0x00012591      0xa9b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/syscalls.o
- .debug_line    0x0001302c      0x30e ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/config/src/rsi_nvic_priorities_config.o
- .debug_line    0x0001333a      0x78b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
- .debug_line    0x00013ac5      0x70a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
- .debug_line    0x000141cf      0xced ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
- .debug_line    0x00014ebc      0x9c7 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/clock_update.o
- .debug_line    0x00015883      0xe0a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_egpio.o
- .debug_line    0x0001668d     0x2017 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_gspi.o
- .debug_line    0x000186a4     0x11de ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_udma.o
- .debug_line    0x00019882      0xb1d ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_udma_wrapper.o
- .debug_line    0x0001a39f     0x2747 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_usart.o
- .debug_line    0x0001cae6     0x18e6 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/systemlevel/src/rsi_ipmu.o
- .debug_line    0x0001e3cc     0x33c6 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/systemlevel/src/rsi_pll.o
- .debug_line    0x00021792     0x10ff ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/systemlevel/src/rsi_ulpss_clk.o
- .debug_line    0x00022891      0xfde ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
- .debug_line    0x0002386f      0x34d ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_ram.o
- .debug_line    0x00023bbc      0x706 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
- .debug_line    0x000242c2      0x6fb ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_platform.o
- .debug_line    0x000249bd      0xf76 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_platform_wireless.o
- .debug_line    0x00025933      0x6c2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
- .debug_line    0x00025ff5      0xa3c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sli_siwx917_soc.o
- .debug_line    0x00026a31      0x2f4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/errno/src/sl_si91x_errno.o
- .debug_line    0x00026d25      0x51c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/host_mcu/si91x/siwx917_soc_ncp_host.o
- .debug_line    0x00027241      0x56b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
- .debug_line    0x000277ac      0x76b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_rsi_utility.o
- .debug_line    0x00027f17      0x8d3 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_si91x_integration_handler.o
- .debug_line    0x000287ea      0x605 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_si91x_net_credentials.o
- .debug_line    0x00028def      0x853 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_si91x_net_internal_stack.o
- .debug_line    0x00029642     0x132a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
- .debug_line    0x0002a96c     0x16d6 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
- .debug_line    0x0002c042      0x68a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_callback_framework.o
- .debug_line    0x0002c6cc     0x2a43 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
- .debug_line    0x0002f10f      0x846 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
- .debug_line    0x0002f955     0x161a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
- .debug_line    0x00030f6f     0x2bc9 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
- .debug_line    0x00033b38      0x718 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/src/sl_wifi_callback_framework.o
- .debug_line    0x00034250     0x1581 ./wiseconnect3_sdk_3.1.4/components/service/http_client/si91x_socket/sl_http_client.o
- .debug_line    0x000357d1      0xa40 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/si91x/sl_net_si91x.o
- .debug_line    0x00036211      0x719 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
- .debug_line    0x0003692a      0x7c4 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_credentials.o
- .debug_line    0x000370ee      0x6f7 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
+.debug_line     0x00000000    0x377d3
+ .debug_line    0x00000000      0xbce ./app.o
+ .debug_line    0x00000bce      0x694 ./gspi_control.o
+ .debug_line    0x00001262       0xd3 ./main.o
+ .debug_line    0x00001335      0x340 ./mux_debug.o
+ .debug_line    0x00001675      0x5e4 ./ring_buff.o
+ .debug_line    0x00001c59      0x6ef ./autogen/sl_event_handler.o
+ .debug_line    0x00002348      0x29d ./gecko_sdk_4.4.1/platform/common/src/sl_slist.o
+ .debug_line    0x000025e5      0x3da ./gecko_sdk_4.4.1/platform/common/src/sli_cmsis_os2_ext_task_register.o
+ .debug_line    0x000029bf      0x877 ./gecko_sdk_4.4.1/platform/emlib/src/em_core.o
+ .debug_line    0x00003236      0x373 ./gecko_sdk_4.4.1/platform/service/mem_pool/src/sl_mem_pool.o
+ .debug_line    0x000035a9      0x10e ./gecko_sdk_4.4.1/platform/service/system/src/sl_system_init.o
+ .debug_line    0x000036b7       0xfd ./gecko_sdk_4.4.1/platform/service/system/src/sl_system_kernel.o
+ .debug_line    0x000037b4     0x3606 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
+ .debug_line    0x00006dba      0xbbb ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/event_groups.o
+ .debug_line    0x00007975      0x402 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/list.o
+ .debug_line    0x00007d77     0x205d ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/queue.o
+ .debug_line    0x00009dd4     0x2de6 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+ .debug_line    0x0000cbba      0xeda ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+ .debug_line    0x0000da94      0x7d9 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/GCC/ARM_CM4F/port.o
+ .debug_line    0x0000e26d      0x7ce ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+ .debug_line    0x0000ea3b      0x404 ./wiseconnect3_sdk_3.1.4/components/board/silabs/src/rsi_board.o
+ .debug_line    0x0000ee3f      0xb3c ./wiseconnect3_sdk_3.1.4/components/common/src/sl_utility.o
+ .debug_line    0x0000f97b      0xca4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
+ .debug_line    0x0001061f      0x24b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/rsi_system_config_917.o
+ .debug_line    0x0001086a      0xd04 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/rsi_deepsleep_soc.o
+ .debug_line    0x0001156e      0x303 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/startup_si91x.o
+ .debug_line    0x00011871      0x688 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
+ .debug_line    0x00011ef9      0x5ca ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/rsi_debug.o
+ .debug_line    0x000124c3       0xbc ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/sl_si91x_stack_object_declare.o
+ .debug_line    0x0001257f      0xa9b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/syscalls.o
+ .debug_line    0x0001301a      0x30e ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/config/src/rsi_nvic_priorities_config.o
+ .debug_line    0x00013328      0x78b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+ .debug_line    0x00013ab3      0x70a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
+ .debug_line    0x000141bd      0xced ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+ .debug_line    0x00014eaa      0x9c7 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/clock_update.o
+ .debug_line    0x00015871      0xe0a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_egpio.o
+ .debug_line    0x0001667b     0x2017 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_gspi.o
+ .debug_line    0x00018692     0x11de ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_udma.o
+ .debug_line    0x00019870      0xb1d ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_udma_wrapper.o
+ .debug_line    0x0001a38d     0x2747 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_usart.o
+ .debug_line    0x0001cad4     0x18e6 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/systemlevel/src/rsi_ipmu.o
+ .debug_line    0x0001e3ba     0x33c6 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/systemlevel/src/rsi_pll.o
+ .debug_line    0x00021780     0x10ff ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/systemlevel/src/rsi_ulpss_clk.o
+ .debug_line    0x0002287f      0xfde ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
+ .debug_line    0x0002385d      0x34d ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_ram.o
+ .debug_line    0x00023baa      0x706 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
+ .debug_line    0x000242b0      0x6fb ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_platform.o
+ .debug_line    0x000249ab      0xf76 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_platform_wireless.o
+ .debug_line    0x00025921      0x6c2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+ .debug_line    0x00025fe3      0xa3c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sli_siwx917_soc.o
+ .debug_line    0x00026a1f      0x2f4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/errno/src/sl_si91x_errno.o
+ .debug_line    0x00026d13      0x51c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/host_mcu/si91x/siwx917_soc_ncp_host.o
+ .debug_line    0x0002722f      0x56b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
+ .debug_line    0x0002779a      0x76b ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_rsi_utility.o
+ .debug_line    0x00027f05      0x8d3 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_net_si91x_integration_handler.o
+ .debug_line    0x000287d8      0x605 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_si91x_net_credentials.o
+ .debug_line    0x00028ddd      0x853 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/sl_net/src/sl_si91x_net_internal_stack.o
+ .debug_line    0x00029630     0x132a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
+ .debug_line    0x0002a95a     0x16d6 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+ .debug_line    0x0002c030      0x68a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_callback_framework.o
+ .debug_line    0x0002c6ba     0x2a43 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+ .debug_line    0x0002f0fd      0x846 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
+ .debug_line    0x0002f943     0x161a ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/threading/sli_si91x_multithreaded.o
+ .debug_line    0x00030f5d     0x2bc9 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+ .debug_line    0x00033b26      0x718 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/src/sl_wifi_callback_framework.o
+ .debug_line    0x0003423e     0x1581 ./wiseconnect3_sdk_3.1.4/components/service/http_client/si91x_socket/sl_http_client.o
+ .debug_line    0x000357bf      0xa40 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/si91x/sl_net_si91x.o
+ .debug_line    0x000361ff      0x719 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net.o
+ .debug_line    0x00036918      0x7c4 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_credentials.o
+ .debug_line    0x000370dc      0x6f7 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
 
 .debug_str      0x00000000    0x25e1e
  .debug_str     0x00000000     0x191d ./app.o

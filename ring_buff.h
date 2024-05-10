@@ -61,6 +61,11 @@ bool ringBuffer_expand(RingBuffer *rb);
 ringbuff_status ringBuffer_reduce(RingBuffer *rb);
 #endif
 
+/*
+ * TODO implement acquire read function
+ * For acquire read semaphore and retry
+ */
+ringbuff_status ringBuffer_acquire_read(RingBuffer *rb);
 ringbuff_status ringBuffer_check_ready_to_write(RingBuffer *rb);
 ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len);
 ringbuff_status ringBuffer_readTailSlot(RingBuffer *rb, void* receive_buff, size_t *len);

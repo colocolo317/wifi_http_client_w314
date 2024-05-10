@@ -495,57 +495,62 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
   callback_status                         = get_response->status;
 #if AMPAK_HTTP_RESPONSE_CHECK
   MUX_LOG(
-    "\r\n[HTTP GET RESPONSE] Status: 0x%X | GET response: %u | End of data: %lu | Data Length: %u | Request Context: %s\r\n",
-    get_response->status,
-    get_response->http_response_code,
-    get_response->end_of_data,
-    get_response->data_length,
-    (char *)request_context);
+      "\r\n[HTTP GET RESPONSE] Status: 0x%X | GET response: %u | End of data: %lu | Data Length: %u | Request Context: %s\r\n",
+      get_response->status,
+      get_response->http_response_code,
+      get_response->end_of_data,
+      get_response->data_length,
+      (char *)request_context);
 #endif
   if (get_response->status != SL_STATUS_OK
       || (get_response->http_response_code >= 400 && get_response->http_response_code <= 599
-          && get_response->http_response_code != 0)) {
+          && get_response->http_response_code != 0))
+  {
     http_rsp_received = HTTP_FAILURE_RESPONSE;
     MUX_LOG("get_response->http_response_code: %u\r\n", get_response->http_response_code);
     return get_response->status;
   }
 
-  if (!get_response->end_of_data) {
+  if (!get_response->end_of_data)
+  {
     //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
     // copy to ring buffer for sd card write
 
     if(ringBuffer_check_ready_to_write(pRingBuff) == RINGBUFF_OK)
     {
-       if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
-       {
-           http_debug_log("X");
-           return SL_STATUS_FAIL;
-       }
+      if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
+      {
+        http_debug_log("X");
+        return SL_STATUS_FAIL;
+      }
     }
     else
     {
-        http_debug_log("x");
-        return SL_STATUS_FAIL;
+      http_debug_log("x");
+      return SL_STATUS_FAIL;
     }
 
     app_buff_index += get_response->data_length;
     //http_debug_log(">");
-  } else {
-    if (get_response->data_length) {
+  }
+  else
+  {
+    if (get_response->data_length)
+    {
       //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
       // copy to ring buffer for sd card write
       if(ringBuffer_check_ready_to_write(pRingBuff) == RINGBUFF_OK)
       {
-         if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
-         {
-             http_debug_log("Z");
-             return SL_STATUS_FAIL;
-         }
+        if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
+        {
+          http_debug_log("Z");
+          return SL_STATUS_FAIL;
+        }
       }
       else
       {
-          http_debug_log("z");
-          return SL_STATUS_FAIL;
+        http_debug_log("z");
+        return SL_STATUS_FAIL;
       }
 
       /* TODO clear buffer last data */

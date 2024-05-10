@@ -88,73 +88,74 @@ void gspi_init(void)
   config.slave_select_mode = SL_GSPI_MASTER_HW_OUTPUT;
   config.swap_read         = GSPI_SWAP_READ_DATA;
   config.swap_write        = GSPI_SWAP_WRITE_DATA;
-  do {
-      // Version information of GSPI driver
-      version = sl_si91x_gspi_get_version();
-      MUX_LOG("GSPI version is fetched successfully \r\n");
-      MUX_LOG("API version is %d.%d.%d\n", version.release, version.major, version.minor);
-      // Filling up the structure with the default clock parameters
+  do
+  {
+    // Version information of GSPI driver
+    version = sl_si91x_gspi_get_version();
+    MUX_LOG("GSPI version is fetched successfully \r\n");
+    MUX_LOG("API version is %d.%d.%d\n", version.release, version.major, version.minor);
+    // Filling up the structure with the default clock parameters
 
 #if AMPAK_GSPI_MODIFY_CLOCK
-      status = init_clock_configuration_structure(&clock_config);
-      if (status != SL_STATUS_OK) {
-        MUX_LOG("init_clock_configuration_structure: Error Code : %lu \r\n", status);
-        break;
-      }
-      // Configuration of clock with the default clock parameters
-      status = sl_si91x_gspi_configure_clock(&clock_config);
-      if (status != SL_STATUS_OK) {
-        MUX_LOG("sl_si91x_gspi_clock_configuration: Error Code : %lu \r\n", status);
-        break;
-      }
-      MUX_LOG("Clock configuration is successful \r\n");
-      // Pass the address of void pointer, it will be updated with the address
-      // of GSPI instance which can be used in other APIs.
+    status = init_clock_configuration_structure(&clock_config);
+    if (status != SL_STATUS_OK) {
+      MUX_LOG("init_clock_configuration_structure: Error Code : %lu \r\n", status);
+      break;
+    }
+    // Configuration of clock with the default clock parameters
+    status = sl_si91x_gspi_configure_clock(&clock_config);
+    if (status != SL_STATUS_OK) {
+      MUX_LOG("sl_si91x_gspi_clock_configuration: Error Code : %lu \r\n", status);
+      break;
+    }
+    MUX_LOG("Clock configuration is successful \r\n");
+    // Pass the address of void pointer, it will be updated with the address
+    // of GSPI instance which can be used in other APIs.
 #endif
-      status = sl_si91x_gspi_init(SL_GSPI_MASTER, &gspi_driver_handle);
-      if (status != SL_STATUS_OK) {
-        MUX_LOG("sl_si91x_gspi_init: Error Code : %lu \r\n", status);
-        break;
-      }
-      MUX_LOG("GSPI initialization is successful \r\n");
-      // Fetching the status of GSPI i.e., busy, data lost and mode fault
-      gspi_status = sl_si91x_gspi_get_status(gspi_driver_handle);
-      MUX_LOG("GSPI status is fetched successfully \r\n");
-      MUX_LOG("Busy: %d\r\n", gspi_status.busy);
-      MUX_LOG("Data_Lost: %d\r\n", gspi_status.data_lost);
-      MUX_LOG("Mode_Fault: %d\r\n", gspi_status.mode_fault);
-      //Configuration of all other parameters that are required by GSPI
-      // gspi_configuration structure is from sl_si91x_gspi_init.h file.
-      // The user can modify this structure with the configuration of
-      // his choice by filling this structure.
-      status = sl_si91x_gspi_set_configuration(gspi_driver_handle, &config);
-      if (status != SL_STATUS_OK) {
-        MUX_LOG("sl_si91x_gspi_control: Error Code : %lu \r\n", status);
-        break;
-      }
-      MUX_LOG("GSPI configuration is successful \r\n");
-      // Register user callback function
-      status = sl_si91x_gspi_register_event_callback(gspi_driver_handle, callback_event);
-      if (status != SL_STATUS_OK) {
-        MUX_LOG("sl_si91x_gspi_register_event_callback: Error Code : %lu \r\n", status);
-        break;
-      }
-      MUX_LOG("GSPI user event callback registered successfully \r\n");
-      // Fetching and printing the current clock division factor
-      MUX_LOG("Current Clock division factor is %lu \r\n", sl_si91x_gspi_get_clock_division_factor(gspi_driver_handle));
-      // Fetching and printing the current frame length
-      MUX_LOG("Current Frame Length is %lu \r\n", sl_si91x_gspi_get_frame_length());
-      if (sl_si91x_gspi_get_frame_length() > GSPI_BIT_WIDTH) {
-        gspi_division_factor = sizeof(gspi_data_out[0]);
-      }
+    status = sl_si91x_gspi_init(SL_GSPI_MASTER, &gspi_driver_handle);
+    if (status != SL_STATUS_OK) {
+      MUX_LOG("sl_si91x_gspi_init: Error Code : %lu \r\n", status);
+      break;
+    }
+    MUX_LOG("GSPI initialization is successful \r\n");
+    // Fetching the status of GSPI i.e., busy, data lost and mode fault
+    gspi_status = sl_si91x_gspi_get_status(gspi_driver_handle);
+    MUX_LOG("GSPI status is fetched successfully \r\n");
+    MUX_LOG("Busy: %d\r\n", gspi_status.busy);
+    MUX_LOG("Data_Lost: %d\r\n", gspi_status.data_lost);
+    MUX_LOG("Mode_Fault: %d\r\n", gspi_status.mode_fault);
+    //Configuration of all other parameters that are required by GSPI
+    // gspi_configuration structure is from sl_si91x_gspi_init.h file.
+    // The user can modify this structure with the configuration of
+    // his choice by filling this structure.
+    status = sl_si91x_gspi_set_configuration(gspi_driver_handle, &config);
+    if (status != SL_STATUS_OK) {
+      MUX_LOG("sl_si91x_gspi_control: Error Code : %lu \r\n", status);
+      break;
+    }
+    MUX_LOG("GSPI configuration is successful \r\n");
+    // Register user callback function
+    status = sl_si91x_gspi_register_event_callback(gspi_driver_handle, callback_event);
+    if (status != SL_STATUS_OK) {
+      MUX_LOG("sl_si91x_gspi_register_event_callback: Error Code : %lu \r\n", status);
+      break;
+    }
+    MUX_LOG("GSPI user event callback registered successfully \r\n");
+    // Fetching and printing the current clock division factor
+    MUX_LOG("Current Clock division factor is %lu \r\n", sl_si91x_gspi_get_clock_division_factor(gspi_driver_handle));
+    // Fetching and printing the current frame length
+    MUX_LOG("Current Frame Length is %lu \r\n", sl_si91x_gspi_get_frame_length());
+    if (sl_si91x_gspi_get_frame_length() > GSPI_BIT_WIDTH) {
+      gspi_division_factor = sizeof(gspi_data_out[0]);
+    }
 
-      gspi_transfer_complete_sem = osSemaphoreNew(1, 1, NULL);
-      if(gspi_transfer_complete_sem == NULL)
-      {
-          MUX_LOG("Failed to new semaphore gspi_transfer_complete_sem\r\n");
-          break;
-      }
-      status = sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
+    gspi_transfer_complete_sem = osSemaphoreNew(1, 1, NULL);
+    if(gspi_transfer_complete_sem == NULL)
+    {
+      MUX_LOG("Failed to new semaphore gspi_transfer_complete_sem\r\n");
+      break;
+    }
+    status = sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
   }while(false);
 
 }
@@ -173,14 +174,14 @@ void gspi_task(void* arguments)
     rb_status = ringBuffer_readTailSlot(pRingBuff, gspi_data_out, &data_len);
     if(rb_status != RINGBUFF_OK)
     {
-        ringBuffer_debug("S");
+      ringBuffer_debug("S");
     }
 
     transfer_complete = false;
     while(osSemaphoreAcquire(gspi_transfer_complete_sem, 100) != osOK)
     {
-        ringBuffer_debug("t");
-        osThreadYield();
+      ringBuffer_debug("t");
+      osThreadYield();
     }
 
     status = sl_si91x_gspi_transfer_data(gspi_driver_handle,
@@ -190,7 +191,7 @@ void gspi_task(void* arguments)
     if (status != SL_STATUS_OK)
     {
       // If it fails to execute the API, it will not execute rest of the things
-      MUX_LOG("sl_si91x_gspi_transfer_data: Error Code : %lu \r\n", status);
+      MUX_LOG("gspi trans Error:%0X\r\n", status);
 
     }
   }
