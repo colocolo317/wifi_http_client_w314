@@ -4900,7 +4900,7 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2
 .igot.plt       0x000007fc        0x0 load address 0x082150fc
  .igot.plt      0x000007fc        0x0 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp/crtbegin.o
 
-.bss            0x000007fc    0x1b408 load address 0x082150fc
+.bss            0x000007fc    0x1d408 load address 0x082150fc
                 0x000007fc                . = ALIGN (0x4)
                 0x000007fc                __bss_start__ = .
  *(.bss*)
@@ -4935,317 +4935,317 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2
                 0x00000834      0x800 ./gspi_control.o
                 0x00000834                gspi_data_in
  .bss.gspi_data_out
-                0x00001034     0x2a00 ./gspi_control.o
+                0x00001034     0x3200 ./gspi_control.o
                 0x00001034                gspi_data_out
  .bss.debug_prints_mutex
-                0x00003a34        0x4 ./mux_debug.o
-                0x00003a34                debug_prints_mutex
- .bss.ringBuff  0x00003a38     0x7e14 ./ring_buff.o
-                0x00003a38                ringBuff
+                0x00004234        0x4 ./mux_debug.o
+                0x00004234                debug_prints_mutex
+ .bss.ringBuff  0x00004238     0x9614 ./ring_buff.o
+                0x00004238                ringBuff
  .bss.Timer_Stack.0
-                0x0000b84c      0x800 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
+                0x0000d84c      0x800 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
  .bss.Timer_TCB.1
-                0x0000c04c       0x78 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
+                0x0000e04c       0x78 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
  .bss.Idle_Stack.2
-                0x0000c0c4      0x400 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
+                0x0000e0c4      0x400 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
  .bss.Idle_TCB.3
-                0x0000c4c4       0x78 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
+                0x0000e4c4       0x78 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
  .bss.KernelState
-                0x0000c53c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
+                0x0000e53c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/cmsis/Source/cmsis_os2.o
  .bss.xQueueRegistry
-                0x0000c540       0x40 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/queue.o
-                0x0000c540                xQueueRegistry
+                0x0000e540       0x40 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/queue.o
+                0x0000e540                xQueueRegistry
  .bss.uxSchedulerSuspended
-                0x0000c580        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e580        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xNextTaskUnblockTime
-                0x0000c584        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e584        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.uxTaskNumber
-                0x0000c588        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e588        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xNumOfOverflows
-                0x0000c58c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e58c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xYieldPending
-                0x0000c590        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e590        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xPendedTicks
-                0x0000c594        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e594        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xSchedulerRunning
-                0x0000c598        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e598        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.uxTopReadyPriority
-                0x0000c59c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e59c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xTickCount
-                0x0000c5a0        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5a0        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.uxCurrentNumberOfTasks
-                0x0000c5a4        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5a4        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.FreeRTOS_errno
-                0x0000c5a8        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
-                0x0000c5a8                FreeRTOS_errno
+                0x0000e5a8        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5a8                FreeRTOS_errno
  .bss.xSuspendedTaskList
-                0x0000c5ac       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5ac       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.uxDeletedTasksWaitingCleanUp
-                0x0000c5c0        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5c0        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xTasksWaitingTermination
-                0x0000c5c4       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5c4       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xPendingReadyList
-                0x0000c5d8       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5d8       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.pxOverflowDelayedTaskList
-                0x0000c5ec        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5ec        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.pxDelayedTaskList
-                0x0000c5f0        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5f0        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xDelayedTaskList2
-                0x0000c5f4       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e5f4       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.xDelayedTaskList1
-                0x0000c608       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e608       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.pxReadyTasksLists
-                0x0000c61c      0x460 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000e61c      0x460 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
  .bss.pxCurrentTCB
-                0x0000ca7c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
-                0x0000ca7c                pxCurrentTCB
+                0x0000ea7c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/tasks.o
+                0x0000ea7c                pxCurrentTCB
  .bss.xStaticTimerQueue.0
-                0x0000ca80       0x50 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000ea80       0x50 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.ucStaticTimerQueueStorage.1
-                0x0000cad0       0x50 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000ead0       0x50 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.xLastTime.2
-                0x0000cb20        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000eb20        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.xTimerTaskHandle
-                0x0000cb24        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000eb24        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.xTimerQueue
-                0x0000cb28        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000eb28        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.pxOverflowTimerList
-                0x0000cb2c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000eb2c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.pxCurrentTimerList
-                0x0000cb30        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000eb30        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.xActiveTimerList2
-                0x0000cb34       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000eb34       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.xActiveTimerList1
-                0x0000cb48       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
+                0x0000eb48       0x14 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/timers.o
  .bss.ulMaxPRIGROUPValue
-                0x0000cb5c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/GCC/ARM_CM4F/port.o
+                0x0000eb5c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/GCC/ARM_CM4F/port.o
  .bss.ucMaxSysCallPriority
-                0x0000cb60        0x1 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/GCC/ARM_CM4F/port.o
- *fill*         0x0000cb61        0x3 
+                0x0000eb60        0x1 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/GCC/ARM_CM4F/port.o
+ *fill*         0x0000eb61        0x3 
  .bss.xBlockAllocatedBit
-                0x0000cb64        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+                0x0000eb64        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
  .bss.xNumberOfSuccessfulFrees
-                0x0000cb68        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+                0x0000eb68        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
  .bss.xNumberOfSuccessfulAllocations
-                0x0000cb6c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+                0x0000eb6c        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
  .bss.xMinimumEverFreeBytesRemaining
-                0x0000cb70        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+                0x0000eb70        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
  .bss.xFreeBytesRemaining
-                0x0000cb74        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
- .bss.pxEnd     0x0000cb78        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
- .bss.xStart    0x0000cb7c        0x8 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
- .bss.ucHeap    0x0000cb84     0xc800 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+                0x0000eb74        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+ .bss.pxEnd     0x0000eb78        0x4 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+ .bss.xStart    0x0000eb7c        0x8 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
+ .bss.ucHeap    0x0000eb84     0xc800 ./gecko_sdk_4.4.1/util/third_party/freertos/kernel/portable/MemMang/heap_4.o
  .bss.scdc_sleep
-                0x00019384        0x2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
-                0x00019384                scdc_sleep
+                0x0001b384        0x2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
+                0x0001b384                scdc_sleep
  .bss.scdc_active
-                0x00019386        0x2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
-                0x00019386                scdc_active
+                0x0001b386        0x2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/iPMU_prog/iPMU_dotc/ipmu_apis.o
+                0x0001b386                scdc_active
  .bss.package_type
-                0x00019388        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
-                0x00019388                package_type
+                0x0001b388        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
+                0x0001b388                package_type
  .bss.SiliconRev
-                0x0001938c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
-                0x0001938c                SiliconRev
- .bss.__sp      0x00019390        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
-                0x00019390                __sp
+                0x0001b38c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
+                0x0001b38c                SiliconRev
+ .bss.__sp      0x0001b390        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
+                0x0001b390                __sp
  .bss.system_clocks
-                0x00019394       0x50 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
-                0x00019394                system_clocks
+                0x0001b394       0x50 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/chip/src/system_si91x.o
+                0x0001b394                system_clocks
  .bss.recv_done
-                0x000193e4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/rsi_debug.o
-                0x000193e4                recv_done
+                0x0001b3e4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/rsi_debug.o
+                0x0001b3e4                recv_done
  .bss.send_done
-                0x000193e8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/rsi_debug.o
-                0x000193e8                send_done
- .bss.buf       0x000193ec       0x14 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/syscalls.o
-                0x000193ec                buf
+                0x0001b3e8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/rsi_debug.o
+                0x0001b3e8                send_done
+ .bss.buf       0x0001b3ec       0x14 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/syscalls.o
+                0x0001b3ec                buf
  .bss.GSPI_MASTER_TransferInfo
-                0x00019400       0x1c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x0001b400       0x1c ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .bss.GSPI_MASTER_Info
-                0x0001941c       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
+                0x0001b41c       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/GSPI.o
  .bss.udma1_chnl_info
-                0x0001942c       0xf0 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
-                0x0001942c                udma1_chnl_info
+                0x0001b42c       0xf0 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
+                0x0001b42c                udma1_chnl_info
  .bss.udma0_chnl_info
-                0x0001951c      0x280 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
-                0x0001951c                udma0_chnl_info
+                0x0001b51c      0x280 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
+                0x0001b51c                udma0_chnl_info
  .bss.dma_rom_buff1
-                0x0001979c       0x78 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
-                0x0001979c                dma_rom_buff1
+                0x0001b79c       0x78 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
+                0x0001b79c                dma_rom_buff1
  .bss.dma_rom_buff0
-                0x00019814       0x78 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
-                0x00019814                dma_rom_buff0
+                0x0001b814       0x78 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
+                0x0001b814                dma_rom_buff0
  .bss.udmaHandle1
-                0x0001988c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
-                0x0001988c                udmaHandle1
+                0x0001b88c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
+                0x0001b88c                udmaHandle1
  .bss.udmaHandle0
-                0x00019890        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
-                0x00019890                udmaHandle0
+                0x0001b890        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/UDMA.o
+                0x0001b890                udmaHandle0
  .bss.ULP_UART_Info
-                0x00019894       0x30 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x0001b894       0x30 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .bss.UART1_Info
-                0x000198c4       0x30 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x0001b8c4       0x30 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .bss.USART0_Info
-                0x000198f4       0x30 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
+                0x0001b8f4       0x30 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/cmsis_driver/USART.o
  .bss.local_gspi_handle
-                0x00019924        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
+                0x0001b924        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
  .bss.user_callback
-                0x00019928        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
+                0x0001b928        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.o
  .bss.rx_packet_pending_flag
-                0x0001992c        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
-                0x0001992c                rx_packet_pending_flag
- *fill*         0x0001992d        0x3 
+                0x0001b92c        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
+                0x0001b92c                rx_packet_pending_flag
+ *fill*         0x0001b92d        0x3 
  .bss.ta_events
-                0x00019930        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
-                0x00019930                ta_events
+                0x0001b930        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/rsi_hal_mcu_m4_rom.o
+                0x0001b930                ta_events
  .bss.rx_pkt_buffer
-                0x00019934        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
-                0x00019934                rx_pkt_buffer
- .bss.rx_desc   0x00019938       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
-                0x00019938                rx_desc
- .bss.tx_desc   0x00019948       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
-                0x00019948                tx_desc
+                0x0001b934        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+                0x0001b934                rx_pkt_buffer
+ .bss.rx_desc   0x0001b938       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+                0x0001b938                rx_desc
+ .bss.tx_desc   0x0001b948       0x10 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/ahb_interface/src/sl_si91x_bus.o
+                0x0001b948                tx_desc
  .bss.interrupt_errno
-                0x00019958        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/errno/src/sl_si91x_errno.o
+                0x0001b958        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/errno/src/sl_si91x_errno.o
  .bss.freed_buffers
-                0x0001995c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
-                0x0001995c                freed_buffers
+                0x0001b95c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
+                0x0001b95c                freed_buffers
  .bss.allocated_buffers
-                0x00019960        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
-                0x00019960                allocated_buffers
+                0x0001b960        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
+                0x0001b960                allocated_buffers
  .bss.allocated_wifi_buffer
-                0x00019964        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
- .bss.mem_pool  0x00019968        0xc ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
+                0x0001b964        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
+ .bss.mem_pool  0x0001b968        0xc ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/memory/mem_pool_buffers.o
  .bss.is_configured
-                0x00019974        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
- *fill*         0x00019975        0x3 
+                0x0001b974        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
+ *fill*         0x0001b975        0x3 
  .bss.user_remote_socket_termination_callback
-                0x00019978        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
+                0x0001b978        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
  .bss.user_select_callback
-                0x0001997c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
- .bss.sockets   0x00019980     0x1c70 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
+                0x0001b97c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
+ .bss.sockets   0x0001b980     0x1c70 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/socket/src/sl_si91x_socket_utility.o
  .bss.coex_mode
-                0x0001b5f0        0x2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d5f0        0x2 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
  .bss.current_performance_profile
-                0x0001b5f2        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b5f2                current_performance_profile
- *fill*         0x0001b5f3        0x1 
+                0x0001d5f2        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d5f2                current_performance_profile
+ *fill*         0x0001d5f3        0x1 
  .bss.ap_configuration
-                0x0001b5f4       0x40 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d5f4       0x40 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
  .bss.saved_wifi_data_rate
-                0x0001b634        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d634        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
  .bss.tcp_auto_close_enabled
-                0x0001b635        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
- *fill*         0x0001b636        0x2 
+                0x0001d635        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+ *fill*         0x0001d636        0x2 
  .bss.cmd_queues
-                0x0001b638      0x118 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b638                cmd_queues
+                0x0001d638      0x118 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d638                cmd_queues
  .bss.malloc_free_mutex
-                0x0001b750        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b750                malloc_free_mutex
+                0x0001d750        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d750                malloc_free_mutex
  .bss.si91x_async_events
-                0x0001b754        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b754                si91x_async_events
+                0x0001d754        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d754                si91x_async_events
  .bss.si91x_bus_events
-                0x0001b758        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b758                si91x_bus_events
+                0x0001d758        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d758                si91x_bus_events
  .bss.si91x_events
-                0x0001b75c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b75c                si91x_events
+                0x0001d75c        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d75c                si91x_events
  .bss.si91x_event_thread
-                0x0001b760        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b760                si91x_event_thread
+                0x0001d760        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d760                si91x_event_thread
  .bss.si91x_thread
-                0x0001b764        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
-                0x0001b764                si91x_thread
+                0x0001d764        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_rsi_utility.o
+                0x0001d764                si91x_thread
  .bss.net_event_handler
-                0x0001b768        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_callback_framework.o
+                0x0001d768        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_callback_framework.o
  .bss.performance_profile
-                0x0001b76c       0x40 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
-                0x0001b76c                performance_profile
+                0x0001d76c       0x40 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x0001d76c                performance_profile
  .bss.packet_id
-                0x0001b7ac        0xa ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
- *fill*         0x0001b7b6        0x2 
+                0x0001d7ac        0xa ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+ *fill*         0x0001d7b6        0x2 
  .bss.frontend_switch_control
-                0x0001b7b8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
-                0x0001b7b8                frontend_switch_control
+                0x0001d7b8        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x0001d7b8                frontend_switch_control
  .bss.bg_enabled
-                0x0001b7bc        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
-                0x0001b7bc                bg_enabled
+                0x0001d7bc        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x0001d7bc                bg_enabled
  .bss.interface_is_up
-                0x0001b7bd        0x5 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
-                0x0001b7bd                interface_is_up
+                0x0001d7bd        0x5 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x0001d7bd                interface_is_up
  .bss.device_initialized
-                0x0001b7c2        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
-                0x0001b7c2                device_initialized
+                0x0001d7c2        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x0001d7c2                device_initialized
  .bss.default_interface
-                0x0001b7c3        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
-                0x0001b7c3                default_interface
+                0x0001d7c3        0x1 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x0001d7c3                default_interface
  .bss.si91x_event_handler
-                0x0001b7c4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
-                0x0001b7c4                si91x_event_handler
+                0x0001d7c4        0x4 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_driver.o
+                0x0001d7c4                si91x_event_handler
  .bss.registered_callback
-                0x0001b7c8       0x18 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
+                0x0001d7c8       0x18 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/wireless/src/sl_si91x_http_client_callback_framework.o
  .bss.advanced_client_configuration
-                0x0001b7e0       0x14 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x0001d7e0       0x14 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
  .bss.advanced_scan_configuration
-                0x0001b7f4       0x10 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
+                0x0001d7f4       0x10 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/si91x/sl_wifi.o
  .bss.registered_callbacks
-                0x0001b804       0x60 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/src/sl_wifi_callback_framework.o
-                0x0001b804                registered_callbacks
+                0x0001d804       0x60 ./wiseconnect3_sdk_3.1.4/components/protocol/wifi/src/sl_wifi_callback_framework.o
+                0x0001d804                registered_callbacks
  .bss.http_client_handle
-                0x0001b864       0x40 ./wiseconnect3_sdk_3.1.4/components/service/http_client/si91x_socket/sl_http_client.o
+                0x0001d864       0x40 ./wiseconnect3_sdk_3.1.4/components/service/http_client/si91x_socket/sl_http_client.o
  .bss.wifi_btr_profiles
-                0x0001b8a4       0x40 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
+                0x0001d8a4       0x40 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
  .bss.wifi_ap_profiles
-                0x0001b8e4       0xf0 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
+                0x0001d8e4       0xf0 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
  .bss.wifi_client_profiles
-                0x0001b9d4       0xe0 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
+                0x0001d9d4       0xe0 ./wiseconnect3_sdk_3.1.4/components/service/network_manager/src/sl_net_basic_profiles.o
  .bss.__malloc_sbrk_start
-                0x0001bab4        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mallocr.o)
-                0x0001bab4                __malloc_sbrk_start
+                0x0001dab4        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mallocr.o)
+                0x0001dab4                __malloc_sbrk_start
  .bss.__malloc_free_list
-                0x0001bab8        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mallocr.o)
-                0x0001bab8                __malloc_free_list
- .bss.__sf      0x0001babc      0x138 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-findfp.o)
-                0x0001babc                __sf
+                0x0001dab8        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-mallocr.o)
+                0x0001dab8                __malloc_free_list
+ .bss.__sf      0x0001dabc      0x138 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-findfp.o)
+                0x0001dabc                __sf
  .bss.__stdio_exit_handler
-                0x0001bbf4        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-findfp.o)
-                0x0001bbf4                __stdio_exit_handler
- .bss.errno     0x0001bbf8        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-reent.o)
-                0x0001bbf8                errno
+                0x0001dbf4        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-findfp.o)
+                0x0001dbf4                __stdio_exit_handler
+ .bss.errno     0x0001dbf8        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-reent.o)
+                0x0001dbf8                errno
  .bss.__lock___malloc_recursive_mutex
-                0x0001bbfc        0x1 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-lock.o)
-                0x0001bbfc                __lock___malloc_recursive_mutex
+                0x0001dbfc        0x1 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-lock.o)
+                0x0001dbfc                __lock___malloc_recursive_mutex
  .bss.__lock___sfp_recursive_mutex
-                0x0001bbfd        0x1 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-lock.o)
-                0x0001bbfd                __lock___sfp_recursive_mutex
- *fill*         0x0001bbfe        0x2 
+                0x0001dbfd        0x1 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libc_nano.a(libc_a-lock.o)
+                0x0001dbfd                __lock___sfp_recursive_mutex
+ *fill*         0x0001dbfe        0x2 
  .bss.heap_end.0
-                0x0001bc00        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libnosys.a(sbrk.o)
+                0x0001dc00        0x4 c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin/../lib/gcc/arm-none-eabi/12.2.1/thumb/v7e-m+fp/softfp\libnosys.a(sbrk.o)
  *(COMMON)
-                0x0001bc04                . = ALIGN (0x4)
-                0x0001bc04                __bss_end__ = .
+                0x0001dc04                . = ALIGN (0x4)
+                0x0001dc04                __bss_end__ = .
 
-.stack          0x0001bc08     0x3000 load address 0x082150fc
-                0x0001bc08                __StackLimit = .
+.stack          0x0001dc08     0x3000 load address 0x082150fc
+                0x0001dc08                __StackLimit = .
  *(.stack*)
- .stack         0x0001bc08     0x3000 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/sl_si91x_stack_object_declare.o
-                0x0001ec08                . = ALIGN (0x4)
-                0x0001ec08                __StackTop = .
-                0x0001ec08                PROVIDE (__stack = __StackTop)
+ .stack         0x0001dc08     0x3000 ./wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/core/common/src/sl_si91x_stack_object_declare.o
+                0x00020c08                . = ALIGN (0x4)
+                0x00020c08                __StackTop = .
+                0x00020c08                PROVIDE (__stack = __StackTop)
 
-.heap           0x0001ec08    0x11004 load address 0x082150fc
-                0x0001ec08                __HeapBase = .
-                0x0001ec08                __end__ = .
-                0x0001ec08                end = __end__
-                0x0001ec08                _end = __end__
+.heap           0x00020c08     0xf004 load address 0x082150fc
+                0x00020c08                __HeapBase = .
+                0x00020c08                __end__ = .
+                0x00020c08                end = __end__
+                0x00020c08                _end = __end__
  *(.heap*)
                 0x0002fc0c                . = (ORIGIN (ram) + LENGTH (ram))
- *fill*         0x0001ec08    0x11004 
+ *fill*         0x00020c08     0xf004 
                 0x0002fc0c                __HeapLimit = .
-                0x00011004                __heap_size = (__HeapLimit - __HeapBase)
+                0x0000f004                __heap_size = (__HeapLimit - __HeapBase)
 
 .udma_addr0     0x0002fc00      0x400 load address 0x082150fc
  *(.udma_addr0*)

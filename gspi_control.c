@@ -16,6 +16,7 @@
  ***************************  Defines / Macros  ********************************
  ******************************************************************************/
 #define GSPI_BUFFER_SIZE             1024      // Size of buffer
+/* TODO eliminate unused macro */
 #define GSPI_INTF_PLL_CLK            180000000 // Intf pll clock frequency
 #define GSPI_INTF_PLL_REF_CLK        40000000  // Intf pll reference clock frequency
 #define GSPI_SOC_PLL_CLK             20000000  // Soc pll clock frequency
