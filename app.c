@@ -219,9 +219,9 @@ void app_init(const void *unused)
 {
   UNUSED_PARAMETER(unused);
 
-  MUX_LOG("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
-  MUX_LOG("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
-  MUX_LOG("pdMS_TO_TICKS(1000): (%lu ticks)\r\n", pdMS_TO_TICKS(1000));
+  printf("\r\nTick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
+  printf("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
+  printf("pdMS_TO_TICKS(1000): (%lu ticks)\r\n", pdMS_TO_TICKS(1000));
 
   if(mux_debug_init() == NULL)
   {

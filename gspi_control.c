@@ -41,7 +41,6 @@ uint8_t gspi_data_out[RING_BUFFER_LENGTH];
 uint16_t gspi_data_in[GSPI_BUFFER_SIZE];
 static uint16_t gspi_division_factor       = 1;
 static sl_gspi_handle_t gspi_driver_handle = NULL;
-static boolean_t transfer_complete  = false;
 
 static osSemaphoreId_t gspi_transfer_complete_sem;
 
@@ -51,7 +50,9 @@ static osSemaphoreId_t gspi_transfer_complete_sem;
  **********************  Local Function prototypes   ***************************
  ******************************************************************************/
 static void callback_event(uint32_t event);
+#if 0
 static sl_status_t gspi_transfer_test(void);
+#endif
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
  ******************************************************************************/
@@ -61,7 +62,6 @@ void callback_event(uint32_t event)
   {
     case SL_GSPI_TRANSFER_COMPLETE:
       http_debug_log("T");
-      transfer_complete = true;
       osSemaphoreRelease(gspi_transfer_complete_sem);
       break;
     case SL_GSPI_DATA_LOST:
@@ -169,7 +169,13 @@ void gspi_task(void* arguments)
 
   while(1)
   {
-    osSemaphoreAcquire(pRingBuff->read, osWaitForever);
+    rb_status = ringBuffer_acquire_read(pRingBuff);
+    if(rb_status != RINGBUFF_OK)
+    {
+      ringBuffer_debug("o");
+      osThreadYield();
+      continue;
+    }
 
     rb_status = ringBuffer_readTailSlot(pRingBuff, gspi_data_out, &data_len);
     if(rb_status != RINGBUFF_OK)
@@ -177,7 +183,6 @@ void gspi_task(void* arguments)
       ringBuffer_debug("S");
     }
 
-    transfer_complete = false;
     while(osSemaphoreAcquire(gspi_transfer_complete_sem, 100) != osOK)
     {
       ringBuffer_debug("t");

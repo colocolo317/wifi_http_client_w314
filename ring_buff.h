@@ -16,8 +16,11 @@
 #define RINGBUFF_OK       0
 #define RINGBUFF_FAILED   1
 
-#define RINGBUFF_ACQ_WRITE_TIME  2
-#define RINGBUFF_ACQ_WRITE_RETRY 10
+#define RINGBUFF_ACQ_WRITE_TIME  5
+#define RINGBUFF_ACQ_WRITE_RETRY 20
+
+#define RINGBUFF_ACQ_READ_TIME  1000
+#define RINGBUFF_ACQ_READ_RETRY 5
 
 #define MAX_WRITE_SIZE 512
 #define RING_BUFFER_SLOTS 3
@@ -61,10 +64,6 @@ bool ringBuffer_expand(RingBuffer *rb);
 ringbuff_status ringBuffer_reduce(RingBuffer *rb);
 #endif
 
-/*
- * TODO implement acquire read function
- * For acquire read semaphore and retry
- */
 ringbuff_status ringBuffer_acquire_read(RingBuffer *rb);
 ringbuff_status ringBuffer_check_ready_to_write(RingBuffer *rb);
 ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len);

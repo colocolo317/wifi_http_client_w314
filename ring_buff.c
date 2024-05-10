@@ -144,6 +144,24 @@ ringbuff_status ringBuffer_write(RingBuffer *rb, const void* data, size_t len)
   return status;
 }
 
+ringbuff_status ringBuffer_acquire_read(RingBuffer *rb)
+{
+  ringbuff_status status = RINGBUFF_OK;
+  osStatus_t read_acq = osOK;
+
+  for(uint8_t i = 0 ; i < RINGBUFF_ACQ_READ_RETRY ; i++)
+  {
+    read_acq = osSemaphoreAcquire(rb->read, RINGBUFF_ACQ_READ_TIME);
+    if(read_acq == osOK)
+    { break; }
+  }
+
+  if(read_acq != osOK)
+  { return RINGBUFF_FAILED; }
+
+  return status;
+}
+
 ringbuff_status ringBuffer_readTailSlot(RingBuffer *rb, void* receive_buff, size_t *len)
 {
   ringbuff_status status = RINGBUFF_OK;
