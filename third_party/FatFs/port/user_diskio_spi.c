@@ -28,7 +28,7 @@
 
 
 #include "cmsis_os2.h"
-#include "sl_si91x_gspi.h"
+
 #include "sl_si91x_gspi_common_config.h"
 #include "sl_si91x_peripheral_gpio.h"
 #include "sl_si91x_gpio.h"
@@ -46,7 +46,7 @@ static boolean_t transfer_complete = false;
 
 static void callback_event(uint32_t event);
 
-extern osSemaphoreId_t sdcard_thread_sem;
+//extern osSemaphoreId_t sdcard_thread_sem;
 /* Function prototypes */
 
 
@@ -109,24 +109,9 @@ static BYTE CardType;			/* Card type flags */
 static uint32_t spiTimerTickStart;
 static uint32_t spiTimerTickDelay;
 
-
-typedef struct{
-  uint8_t port;
-  uint8_t pin;
-} soft_cs_t;
-
-typedef struct{
-  sl_gspi_control_config_t config;
-  sl_gspi_handle_t         handle;
-  soft_cs_t                soft_cs;
-  osSemaphoreId_t          lock;
-  osSemaphoreId_t          done;
-}sdcard_spi_t;
-
 sdcard_spi_t sdcard_spi =
 {
     .handle = NULL,
-
     .config =
     {
         .bit_width = GSPI_BIT_WIDTH,
@@ -136,16 +121,18 @@ sdcard_spi_t sdcard_spi =
         .swap_read = SWAP_READ_DATA,
         .swap_write = SWAP_WRITE_DATA,
      },
-
      .soft_cs =  { 0, 49 } ,
      .lock = NULL,
      .done = NULL,
-
 };
 
 //(Note that the _256 is used as a mask to clear the prescalar bits as it provides binary 111 in the correct position)
-#define FCLK_SLOW() { sdcard_spi.config.bitrate = 400000; sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }  /* Set SCLK = slow, approx 280 KBits/s*/
-#define FCLK_FAST() { sdcard_spi.config.bitrate = 40000000; sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }  /* Set SCLK = fast, approx 4.5 MBits/s */
+/* Set SCLK = slow, approx 280 KBits/s*/
+#define FCLK_SLOW() { sdcard_spi.config.bitrate = 400000; \
+                      sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }
+/* Set SCLK = fast, approx 4.5 MBits/s */
+#define FCLK_FAST() { sdcard_spi.config.bitrate = 40000000; \
+                      sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }
 
 //
 #define CS_HIGH() { sl_gpio_set_pin_output(sdcard_spi.soft_cs.port, sdcard_spi.soft_cs.pin); }
@@ -230,7 +217,7 @@ void init_gspi(void)
     version = sl_si91x_gspi_get_version();
     printf("GSPI version is fetched successfully \n");
     printf("API version is %d.%d.%d\n", version.release, version.major, version.minor);
-#if !EPD_USE_SSI_CLOCK
+#if USE_GSPI_SET_CLOCK
     // Filling up the structure with the default clock parameters
     status = init_clock_configuration_structure(&clock_config);
     if (status != SL_STATUS_OK) {

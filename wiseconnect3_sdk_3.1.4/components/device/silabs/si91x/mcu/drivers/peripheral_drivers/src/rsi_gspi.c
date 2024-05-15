@@ -181,6 +181,8 @@ int32_t GSPI_Initialize(ARM_SPI_SignalEvent_t cb_event,
     if (gspi->io.miso->pin >= 25 && gspi->io.miso->pin <= 30) {
       RSI_EGPIO_HostPadsGpioModeEnable(gspi->io.miso->pin);
     }
+    //hank++ sdcard fats porting
+    RSI_EGPIO_PadDriverDisableState(gspi->io.miso->pin, Pullup);
     RSI_EGPIO_PadReceiverEnable(gspi->io.miso->pin);
     RSI_EGPIO_SetPinMux(EGPIO, gspi->io.miso->port, gspi->io.miso->pin, gspi->io.miso->mode);
   }

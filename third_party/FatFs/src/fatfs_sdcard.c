@@ -42,7 +42,7 @@ static uint32_t bytesWrote;
 
 //extern StreamBufferHandle_t stream_buf_gspi;
 //extern osMutexId_t stream_buf_mutex;
-extern RingBuffer* ring_buff_p;
+//extern RingBuffer* ring_buff_p;
 
 static uint32_t sdcard_event_map=0;
 //static uint8_t sdcard_buf[SDCARD_BUF_SIZE];
@@ -74,7 +74,7 @@ int32_t sdcard_get_event(void)
 
 void sdcard_task(void const *argument)
 {
-  UNUSED_PARAMETER(argument);
+  //UNUSED_PARAMETER(argument);
   int32_t event_id = 0;
   while(1)
   {
@@ -146,7 +146,8 @@ void sdcard_task(void const *argument)
 #if 0
             if(!ringBuffer_IsOne(ring_buff_p))
             {
-              MUX_LOG("Write: h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head], ring_buff_p->data_len[ring_buff_p->tail]);
+              MUX_LOG("Write: h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head, ring_buff_p->tail,
+                      ring_buff_p->data_len[ring_buff_p->head], ring_buff_p->data_len[ring_buff_p->tail]);
               fres = f_write(&file_write, ring_buff_p->buffer[ring_buff_p->tail], ring_buff_p->data_len[ring_buff_p->tail], &bytesWrote);
 
               if(fres != FR_OK)
@@ -157,7 +158,9 @@ void sdcard_task(void const *argument)
               ringBuffer_reduce(ring_buff_p);
 
               MUX_LOG("reduce ring buffer\r\n");
-              MUX_LOG("h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head], ring_buff_p->data_len[ring_buff_p->tail]);
+              MUX_LOG("h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head,
+                      ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head],
+                      ring_buff_p->data_len[ring_buff_p->tail]);
             }
 #endif
             sdcard_clear_event(SDCARD_FILE_WRITE_STATE);
@@ -171,7 +174,7 @@ void sdcard_task(void const *argument)
         case SDCARD_FILE_CLOSE_STATE:
           {
             MUX_LOG("SDCARD_FILE_CLOSE_STATE\r\n");
-
+#if 0
             while(!ringBuffer_IsEmpty(ring_buff_p))
             {
 #if AMPAK_USE_SDCARD_WRITE
@@ -192,6 +195,7 @@ void sdcard_task(void const *argument)
                 ring_buff_p->data_len[ring_buff_p->tail] = 0;
               }
             }
+#endif
 #if AMPAK_USE_SDCARD_WRITE
             fres=f_close(&file_write);
             sdcard_status_print("f_close", fres);

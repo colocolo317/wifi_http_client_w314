@@ -37,6 +37,9 @@
 #include "gspi_util.h"
 #include "mux_debug.h"
 #include "ring_buff.h"
+#include "user_diskio_spi.h"
+#include "fatfs.h"
+#include "fatfs_sdcard.h"
 
 //! Include index html page
 #include "index.html.h"
@@ -156,7 +159,8 @@ const osThreadAttr_t gspi_thread_attributes = {
 };
 
 osSemaphoreId_t http_client_thread_sem;
-osSemaphoreId_t gspi_thread_sem;
+//osSemaphoreId_t gspi_thread_sem;
+osSemaphoreId_t sdcard_thread_sem;
 osThreadId_t http_client_tid;
 osThreadId_t gspi_tid;
 
@@ -233,9 +237,9 @@ void app_init(const void *unused)
       printf("Failed to create http_client_thread_sem\r\n");
       return;
   }
-  gspi_thread_sem = osSemaphoreNew(1, 0, NULL);
-  if (gspi_thread_sem == NULL) {
-      printf("Failed to create gspi_thread_sem\r\n");
+  sdcard_thread_sem = osSemaphoreNew(1, 0, NULL);
+  if (sdcard_thread_sem == NULL) {
+      printf("Failed to create sdcard_thread_sem\r\n");
       return;
   }
 
@@ -245,12 +249,15 @@ void app_init(const void *unused)
   {
       printf("Failed to new thread http client\r\n");
   }
-  if(osThreadNew((osThreadFunc_t)gspi_task, NULL, &gspi_thread_attributes) == NULL)
+  if(osThreadNew((osThreadFunc_t)sdcard_task, NULL, &gspi_thread_attributes) == NULL)
   {
       printf("Failed to new thread gspi\r\n");
   }
 
-  gspi_init();
+  //gspi_init();
+  init_gspi();
+  sdcard_set_event(SDCARD_INIT_STATE);
+
 }
 
 static void application_start(void *argument)
@@ -273,7 +280,7 @@ static void application_start(void *argument)
   }
   MUX_LOG("Wi-Fi Client Connected\r\n");
 
-  osSemaphoreRelease(http_client_thread_sem); //do once
+  //osSemaphoreRelease(http_client_thread_sem); //do once
 //#endif //!AMPAK_HTTP_GET_ONLY
 
 #if HTTPS_ENABLE && LOAD_CERTIFICATE
