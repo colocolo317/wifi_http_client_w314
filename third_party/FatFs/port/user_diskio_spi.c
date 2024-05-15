@@ -35,9 +35,9 @@
 #include "sl_si91x_gspi.h"
 #include "user_diskio_spi.h"
 #include "sl_si91x_driver_gpio.h"
-#include "peripheral_init.h"
+//#include "peripheral_init.h"
 #include "rsi_debug.h"
-#include "rsi_common_apis.h"
+//#include "rsi_common_apis.h"
 
 //sl_gspi_handle_t gspi_driver_handle = NULL;
 
@@ -224,7 +224,7 @@ void init_gspi(void)
     sl_gspi_status_t gspi_status;
     //uint8_t division_factor  = 1;
 
-    Set_Extender_IO(SDCARD_SW, true); // AMPAK_FATFS_DRIVER
+    //Set_Extender_IO(SDCARD_SW, true); // AMPAK_FATFS_DRIVER
 
     // Version information of GSPI driver
     version = sl_si91x_gspi_get_version();
@@ -585,9 +585,9 @@ inline DSTATUS USER_SPI_initialize (
 	uint8_t retry = 0;
 	do{
 	    printf("Trial %u \r\n",retry);
-	    Set_Extender_IO(SDCARD_SW,false);
+	    //Set_Extender_IO(SDCARD_SW,false);
 	    for(uint16_t i = 0; i < 20000 ; i++){}
-	    Set_Extender_IO(SDCARD_SW,true);
+	    //Set_Extender_IO(SDCARD_SW,true);
 
     for (n = 10; n; n--) xchg_spi(0xFF);	/* Send 80 dummy clocks */
 

@@ -47,11 +47,11 @@
 // [PWM]$
 
 // $[CUSTOM_PIN_NAME]
-#ifndef _PORT
-#define _PORT 0
+#ifndef _PORT                                   
+#define _PORT                                    0
 #endif
-#ifndef _PIN
-#define _PIN 6
+#ifndef _PIN                                    
+#define _PIN                                     6
 #endif
 
 // [CUSTOM_PIN_NAME]$

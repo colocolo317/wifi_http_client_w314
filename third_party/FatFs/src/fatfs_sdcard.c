@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "rsi_common_apis.h"
+//#include "rsi_common_apis.h"
+#include "mux_debug.h"
 #include "rsi_debug.h"
 #include "FreeRTOS.h"
 //! FatFS
@@ -78,9 +79,9 @@ void sdcard_task(void const *argument)
   while(1)
   {
       event_id = sdcard_get_event();
-      //LOG_PRINT("sdcard get event %d \r\n", event_id);
+      //MUX_LOG("sdcard get event %d \r\n", event_id);
       if (event_id == -1) {
-        //LOG_PRINT("sdcard hold with no event\r\n");
+        //MUX_LOG("sdcard hold with no event\r\n");
         osSemaphoreAcquire(sdcard_thread_sem, osWaitForever);
         // if events are not received loop will be continued.
         continue;
@@ -90,14 +91,14 @@ void sdcard_task(void const *argument)
       {
         case SDCARD_INIT_STATE:
           {
-            LOG_PRINT("SDCARD_INIT_STATE\r\n");
+            MUX_LOG("SDCARD_INIT_STATE\r\n");
             sdcard_clear_event(SDCARD_INIT_STATE);
             MX_FATFS_Init();
             sdcard_set_event(SDCARD_MOUNT_STATE);
           }break;
         case SDCARD_MOUNT_STATE:
           {
-            LOG_PRINT("SDCARD_MOUNT_STATE\r\n");
+            MUX_LOG("SDCARD_MOUNT_STATE\r\n");
             sdcard_clear_event(SDCARD_MOUNT_STATE);
             /* GSPI init here*/
             fres = f_mount(&FatFs, (const TCHAR*) USERPath, 1); // 1 -> Mount now
@@ -106,7 +107,7 @@ void sdcard_task(void const *argument)
           }break;
         case SDCARD_CHANGE_DIR_STATE:
           {
-            LOG_PRINT("SDCARD_CHANGE_DIR_STATE\r\n");
+            MUX_LOG("SDCARD_CHANGE_DIR_STATE\r\n");
             sdcard_clear_event(SDCARD_CHANGE_DIR_STATE);
             fres = f_mkdir("DEMO");
             sdcard_status_print("mkdir DEMO",fres);
@@ -120,7 +121,7 @@ void sdcard_task(void const *argument)
           }break;
         case SDCARD_FILE_OPEN_TO_WRITE_STATE:
           {
-            LOG_PRINT("SDCARD_FILE_OPEN_TO_WRITE_STATE\r\n");
+            MUX_LOG("SDCARD_FILE_OPEN_TO_WRITE_STATE\r\n");
             sdcard_clear_event(SDCARD_FILE_OPEN_TO_WRITE_STATE);
 #if AMPAK_USE_SDCARD_WRITE
             fres = f_unlink("download.bin");
@@ -133,30 +134,30 @@ void sdcard_task(void const *argument)
           }break;
         case SDCARD_FILE_OPEN_TO_READ_STATE:
           {
-            LOG_PRINT("SDCARD_FILE_OPEN_TO_READ_STATE\r\n");
+            MUX_LOG("SDCARD_FILE_OPEN_TO_READ_STATE\r\n");
             sdcard_clear_event(SDCARD_FILE_OPEN_TO_READ_STATE);
             fres = f_open(&file_read, "download.bin", FA_READ);
             sdcard_status_print("open file to read",fres);
           }break;
         case SDCARD_FILE_WRITE_STATE:
           {
-            //LOG_PRINT("SDCARD_FILE_WRITE_STATE\r\n");
-            //LOG_PRINT("h %u, t %u, l %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head]);
+            //MUX_LOG("SDCARD_FILE_WRITE_STATE\r\n");
+            //MUX_LOG("h %u, t %u, l %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head]);
 #if 0
             if(!ringBuffer_IsOne(ring_buff_p))
             {
-              LOG_PRINT("Write: h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head], ring_buff_p->data_len[ring_buff_p->tail]);
+              MUX_LOG("Write: h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head], ring_buff_p->data_len[ring_buff_p->tail]);
               fres = f_write(&file_write, ring_buff_p->buffer[ring_buff_p->tail], ring_buff_p->data_len[ring_buff_p->tail], &bytesWrote);
 
               if(fres != FR_OK)
               {
-                LOG_PRINT("bytesWrote: %u\r\n",bytesWrote);
+                MUX_LOG("bytesWrote: %u\r\n",bytesWrote);
                 sdcard_status_print("f_write sdcard", fres);
               }
               ringBuffer_reduce(ring_buff_p);
 
-              LOG_PRINT("reduce ring buffer\r\n");
-              LOG_PRINT("h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head], ring_buff_p->data_len[ring_buff_p->tail]);
+              MUX_LOG("reduce ring buffer\r\n");
+              MUX_LOG("h %u, t %u, hl %lu, tl %lu\r\n", ring_buff_p->head, ring_buff_p->tail, ring_buff_p->data_len[ring_buff_p->head], ring_buff_p->data_len[ring_buff_p->tail]);
             }
 #endif
             sdcard_clear_event(SDCARD_FILE_WRITE_STATE);
@@ -164,12 +165,12 @@ void sdcard_task(void const *argument)
           }break;
         case SDCARD_FILE_READ_STATE:
           {
-            LOG_PRINT("SDCARD_FILE_READ_STATE\r\n");
+            MUX_LOG("SDCARD_FILE_READ_STATE\r\n");
             sdcard_clear_event(SDCARD_FILE_READ_STATE);
           }break;
         case SDCARD_FILE_CLOSE_STATE:
           {
-            LOG_PRINT("SDCARD_FILE_CLOSE_STATE\r\n");
+            MUX_LOG("SDCARD_FILE_CLOSE_STATE\r\n");
 
             while(!ringBuffer_IsEmpty(ring_buff_p))
             {
@@ -178,7 +179,7 @@ void sdcard_task(void const *argument)
 
               if(fres != FR_OK)
               {
-                LOG_PRINT("bytesWrote: %u\r\n",bytesWrote);
+                MUX_LOG("bytesWrote: %u\r\n",bytesWrote);
                 sdcard_status_print("f_write sdcard", fres);
               }
 #endif
@@ -204,7 +205,7 @@ void sdcard_task(void const *argument)
           }break;
         case SDCARD_UNMOUNT_STATE:
           {
-            LOG_PRINT("SDCARD_UNMOUNT_STATE\r\n");
+            MUX_LOG("SDCARD_UNMOUNT_STATE\r\n");
             ls("");
             fres=f_unmount((const TCHAR*) USERPath);
             sdcard_status_print("f_unmount((const TCHAR*) USERPath)", fres);
@@ -214,7 +215,7 @@ void sdcard_task(void const *argument)
           }break;
         case SDCARD_DEINIT_STATE:
           {
-            LOG_PRINT("SDCARD_DEINIT_STATE\r\n");
+            MUX_LOG("SDCARD_DEINIT_STATE\r\n");
             sdcard_clear_event(SDCARD_DEINIT_STATE);
             fres= (FRESULT) FATFS_UnLinkDriver(USERPath);
             sdcard_status_print("FATFS_UnLinkDriver", fres);
@@ -222,7 +223,7 @@ void sdcard_task(void const *argument)
           }break;
         default:
           {
-            LOG_PRINT("SD card UNKNOWN state: %lu\r\n",(uint32_t)event_id);
+            MUX_LOG("SD card UNKNOWN state: %lu\r\n",(uint32_t)event_id);
             sdcard_clear_event((uint32_t)event_id);
           }break;
       }
@@ -247,83 +248,83 @@ FIL* sdcard_get_wfile(){
 
 void sdcard_status_print(const char* msg, FRESULT fres)
 {
-  LOG_PRINT("[FatFS]: %s : ", msg);
+  MUX_LOG("[FatFS]: %s : ", msg);
   dmesg(fres);
 }
 
 void dmesg(FRESULT fres) {
   switch (fres) {
   case FR_OK:
-    LOG_PRINT("Succeeded \r\n");
+    MUX_LOG("Succeeded \r\n");
     break;
   case FR_DISK_ERR:
-    LOG_PRINT("A hard error occurred in the low level disk I/O layer \r\n");
+    MUX_LOG("A hard error occurred in the low level disk I/O layer \r\n");
     break;
   case FR_INT_ERR:
-    LOG_PRINT("Assertion failed \r\n");
+    MUX_LOG("Assertion failed \r\n");
     break;
   case FR_NOT_READY:
-    LOG_PRINT("The physical drive cannot work\r\n");
+    MUX_LOG("The physical drive cannot work\r\n");
     break;
   case FR_NO_FILE:
-    LOG_PRINT("Could not find the file \r\n");
+    MUX_LOG("Could not find the file \r\n");
     break;
   case FR_NO_PATH:
-    LOG_PRINT("Could not find the path \r\n");
+    MUX_LOG("Could not find the path \r\n");
     break;
   case FR_INVALID_NAME:
-    LOG_PRINT("The path name format is invalid \r\n");
+    MUX_LOG("The path name format is invalid \r\n");
     break;
   case FR_DENIED:
-    LOG_PRINT("Access denied due to prohibited access or directory full \r\n");
+    MUX_LOG("Access denied due to prohibited access or directory full \r\n");
     break;
   case FR_EXIST:
-    LOG_PRINT("Exist or access denied due to prohibited access \r\n");
+    MUX_LOG("Exist or access denied due to prohibited access \r\n");
     break;
   case FR_INVALID_OBJECT:
-    LOG_PRINT("The file/directory object is invalid \r\n");
+    MUX_LOG("The file/directory object is invalid \r\n");
     break;
   case FR_WRITE_PROTECTED:
-    LOG_PRINT("The physical drive is write protected \r\n");
+    MUX_LOG("The physical drive is write protected \r\n");
     break;
   case FR_INVALID_DRIVE:
-    LOG_PRINT("The logical drive number is invalid \r\n");
+    MUX_LOG("The logical drive number is invalid \r\n");
     break;
   case FR_NOT_ENABLED:
-    LOG_PRINT("The volume has no work area\r\n");
+    MUX_LOG("The volume has no work area\r\n");
     break;
   case FR_NO_FILESYSTEM:
-    LOG_PRINT("There is no valid FAT volume\r\n");
+    MUX_LOG("There is no valid FAT volume\r\n");
     break;
   case FR_MKFS_ABORTED:
-    LOG_PRINT("The f_mkfs() aborted due to any parameter error \r\n");
+    MUX_LOG("The f_mkfs() aborted due to any parameter error \r\n");
     break;
   case FR_TIMEOUT:
-    LOG_PRINT(
+    MUX_LOG(
         "Could not get a grant to access the volume within defined period \r\n");
     break;
   case FR_LOCKED:
-    LOG_PRINT(
+    MUX_LOG(
         "The operation is rejected according to the file sharing policy \r\n");
     break;
   case FR_NOT_ENOUGH_CORE:
-    LOG_PRINT("LFN working buffer could not be allocated \r\n");
+    MUX_LOG("LFN working buffer could not be allocated \r\n");
     break;
   case FR_TOO_MANY_OPEN_FILES:
-    LOG_PRINT("Number of open files > _FS_SHARE \r\n");
+    MUX_LOG("Number of open files > _FS_SHARE \r\n");
     break;
   case FR_INVALID_PARAMETER:
-    LOG_PRINT("Given parameter is invalid \r\n");
+    MUX_LOG("Given parameter is invalid \r\n");
     break;
   default:
-    LOG_PRINT("An error occured. (%d)\r\n", fres);
+    MUX_LOG("An error occured. (%d)\r\n", fres);
   }
 
 }
 
 void ls(char *path) {
 
-  LOG_PRINT("\r\nFiles/Folder List:\r\n");
+  MUX_LOG("\r\nFiles/Folder List:\r\n");
   fres = f_opendir(&dir, path);
 
   if (fres == FR_OK) {
@@ -334,7 +335,7 @@ void ls(char *path) {
       if ((fres != FR_OK) || (fno.fname[0] == 0)) {
         break;
       }
-      LOG_PRINT(" %c%c%c%c%c %u-%02u-%02u, %02u:%02u %10d %s/%s\r\n",
+      MUX_LOG(" %c%c%c%c%c %u-%02u-%02u, %02u:%02u %10d %s/%s\r\n",
           ((fno.fattrib & AM_DIR) ? 'D' : '-'),
           ((fno.fattrib & AM_RDO) ? 'R' : '-'),
           ((fno.fattrib & AM_SYS) ? 'S' : '-'),
@@ -345,5 +346,5 @@ void ls(char *path) {
           (int) fno.fsize, path, fno.fname);
     }
   }
-  LOG_PRINT("\r\n");
+  MUX_LOG("\r\n");
 }
