@@ -66,7 +66,7 @@ ringbuff_status ringBuffer_check_ready_to_write(RingBuffer *rb)
     {
       for(uint8_t i = 0 ; i < RINGBUFF_ACQ_WRITE_RETRY ; i++)
       {
-        write_Sem_Acq = osSemaphoreAcquire(rb->write, RINGBUFF_ACQ_WRITE_TIME);
+        write_Sem_Acq = osSemaphoreAcquire(rb->write, RINGBUFF_ACQ_WRITE_DELAY);
         if(write_Sem_Acq == osOK)
         {
           ringBuffer_debug("P");
@@ -151,7 +151,7 @@ ringbuff_status ringBuffer_acquire_read(RingBuffer *rb)
 
   for(uint8_t i = 0 ; i < RINGBUFF_ACQ_READ_RETRY ; i++)
   {
-    read_acq = osSemaphoreAcquire(rb->read, RINGBUFF_ACQ_READ_TIME);
+    read_acq = osSemaphoreAcquire(rb->read, RINGBUFF_ACQ_READ_DELAY);
     if(read_acq == osOK)
     { break; }
   }
@@ -184,6 +184,36 @@ ringbuff_status ringBuffer_readTailSlot(RingBuffer *rb, void* receive_buff, size
 
       osSemaphoreRelease(rb->write);
       ringBuffer_debug("R");
+  }
+  while(false);
+
+  osMutexRelease(rb->lock);
+
+  return status;
+}
+
+ringbuff_status ringBuffer_readLastData(RingBuffer *rb, void* receive_buff, size_t *len)
+{
+  ringbuff_status status = RINGBUFF_OK;
+  *len = 0;
+  osMutexAcquire(rb->lock, osWaitForever);
+  do
+  {
+      if(ringBuffer_IsOne(rb) != true)
+      {
+        status = RINGBUFF_FAILED;
+        break;
+      }
+      /* head == tail */
+      /* copy content and data len */
+      memcpy(receive_buff, pRingBuff->buffer[pRingBuff->tail], pRingBuff->data_len[pRingBuff->tail]);
+      *len = pRingBuff->data_len[pRingBuff->tail];
+
+      /* reduce ring buffer */
+      rb->data_len[rb->tail] = 0;
+
+      osSemaphoreRelease(rb->write);
+      ringBuffer_debug("L");
   }
   while(false);
 

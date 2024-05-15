@@ -38,6 +38,7 @@
 //#include "peripheral_init.h"
 #include "rsi_debug.h"
 //#include "rsi_common_apis.h"
+#include "mux_debug.h"
 
 //sl_gspi_handle_t gspi_driver_handle = NULL;
 
@@ -123,7 +124,7 @@ sdcard_spi_t sdcard_spi =
             },
             .soft_cs =  { 0, 49 } ,
             .lock = NULL,
-            .done = NULL,
+            .free2use = NULL,
     };
 
 //(Note that the _256 is used as a mask to clear the prescalar bits as it provides binary 111 in the correct position)
@@ -163,8 +164,8 @@ static void callback_event(uint32_t event)
   switch (event) {
     case SL_GSPI_TRANSFER_COMPLETE:
       transfer_complete = true;
-
-      osSemaphoreRelease(sdcard_spi.done);
+      ringBuffer_debug("T");
+      osSemaphoreRelease(sdcard_spi.free2use);
 
       break;
     case SL_GSPI_DATA_LOST:
@@ -292,8 +293,8 @@ if (sdcard_spi.lock == NULL) {
   osSemaphoreRelease(sdcard_spi.lock);
 }
 
-if (sdcard_spi.done == NULL) {
-  sdcard_spi.done = osSemaphoreNew(1, 0, NULL);
+if (sdcard_spi.free2use == NULL) {
+  sdcard_spi.free2use = osSemaphoreNew(1, 1, NULL);
 }
 }
 
@@ -302,11 +303,33 @@ static BYTE xchg_spi (	BYTE dat	/* Data to send */ )
 {
   BYTE rxDat = 0xff;
   transfer_complete = false;
+  osStatus_t osStatus = osOK;
+
 
   osSemaphoreAcquire(sdcard_spi.lock, osWaitForever);
+  do
+  {
+    for(uint8_t i = 0 ; i < SPI_FREE_ACQ_WRITE_RETRY ; i++)
+    {
+      osStatus = osSemaphoreAcquire(sdcard_spi.free2use, SPI_FREE_ACQ_WRITE_DELAY);
 
-  sl_si91x_gspi_transfer_data(sdcard_spi.handle, &dat, &rxDat, 1);
-  osSemaphoreAcquire(sdcard_spi.done, osWaitForever);
+      if(osStatus == osOK)
+      {
+        //ringBuffer_debug("EX");
+        break;
+      }
+      ringBuffer_debug("ex");
+    }
+
+    if(osStatus != osOK)
+    {
+      ringBuffer_debug("xchg_TO");
+      break;
+    }
+
+    sl_si91x_gspi_transfer_data(sdcard_spi.handle, &dat, &rxDat, 1);
+  }
+  while(false);
 
   osSemaphoreRelease(sdcard_spi.lock);
   return rxDat;
@@ -317,7 +340,7 @@ static BYTE xchg_spi (	BYTE dat	/* Data to send */ )
 static void rcvr_spi_multi ( BYTE *buff,		/* Pointer to data buffer */
                              UINT btr		    /* Number of bytes to receive (even number) */ )
 {
-
+  osStatus_t osStatus = osOK;
 
   transfer_complete = false;
 #if 0
@@ -328,14 +351,35 @@ static void rcvr_spi_multi ( BYTE *buff,		/* Pointer to data buffer */
 
   static uint8_t dummy[FF_MIN_SS] ;
   osSemaphoreAcquire(sdcard_spi.lock, osWaitForever);
+  do
+  {
+    for(uint8_t i = 0 ; i < SPI_FREE_ACQ_WRITE_RETRY ; i++)
+    {
+      osStatus = osSemaphoreAcquire(sdcard_spi.free2use, SPI_FREE_ACQ_WRITE_DELAY);
+
+      if(osStatus == osOK)
+      {
+        //ringBuffer_debug("RMT");
+        break;
+      }
+      ringBuffer_debug("rmt");
+    }
+
+    if(osStatus != osOK)
+    {
+      ringBuffer_debug("mrt_TO");
+      break;
+    }
 
   //FIXME. we should use sl_si91x_gspi_receive_data()
   //uint8_t * dummy = (uint8_t*) malloc(btr);
   memset(dummy, 0xff, btr);
   sl_si91x_gspi_transfer_data(sdcard_spi.handle, dummy, buff, btr);
-  osSemaphoreAcquire(sdcard_spi.done, osWaitForever);
+
   //wait done
   //free(dummy);
+  }
+  while(false);
 
   osSemaphoreRelease(sdcard_spi.lock);
 
@@ -353,25 +397,46 @@ void xmit_spi_multi (
 {
 
   static uint8_t dummy[FF_MIN_SS] ;
-  //printf("xmit_spi_multi tx len%d\r\n", btx);
+  osStatus_t osStatus = osOK;
+  //ringBuffer_debug("xmit_spi_multi tx len%d\r\n", btx);
 #if 0
   for(UINT i=0; i<btx; i++) {
     xchg_spi(*(buff+i));
   }
 #else
   transfer_complete=false;
-  osSemaphoreAcquire(sdcard_spi.lock, osWaitForever);
 
+  osSemaphoreAcquire(sdcard_spi.lock, osWaitForever);
+  do
+  {
+    for(uint8_t i = 0 ; i < SPI_FREE_ACQ_WRITE_RETRY ; i++)
+    {
+      osStatus = osSemaphoreAcquire(sdcard_spi.free2use, SPI_FREE_ACQ_WRITE_DELAY);
+
+      if(osStatus == osOK)
+      {
+        //ringBuffer_debug("XMT");
+        break;
+      }
+      ringBuffer_debug("xmt");
+    }
+
+    if(osStatus != osOK)
+    {
+      ringBuffer_debug("xmt_TO");
+      break;
+    }
   //sl_si91x_gspi_send_data(sdcard_spi.handle, buff, btx);
   sl_si91x_gspi_transfer_data(sdcard_spi.handle, buff, dummy, btx);
 #if 0
   while(!transfer_complete){
 
   }
-#else
-  osSemaphoreAcquire(sdcard_spi.done, osWaitForever);
+#elif 0
+  osSemaphoreAcquire(sdcard_spi.free2use, osWaitForever);
 #endif
-
+  }
+  while(false);
   osSemaphoreRelease(sdcard_spi.lock);
 #endif
 }

@@ -4,7 +4,7 @@
 #include "cmsis_os2.h"
 #include <stdio.h>
 #include <string.h>
-
+#include "sl_constants.h"
 //#include "rsi_common_apis.h"
 #include "mux_debug.h"
 #include "rsi_debug.h"
@@ -40,6 +40,7 @@ extern char USERPath[4];   /* USER logical drive path */
 static uint32_t bytesRead;
 static uint32_t bytesWrote;
 
+uint8_t sdcard_buffer[RING_BUFFER_LENGTH];
 //extern StreamBufferHandle_t stream_buf_gspi;
 //extern osMutexId_t stream_buf_mutex;
 //extern RingBuffer* ring_buff_p;
@@ -74,7 +75,7 @@ int32_t sdcard_get_event(void)
 
 void sdcard_task(void const *argument)
 {
-  //UNUSED_PARAMETER(argument);
+  UNUSED_PARAMETER(argument);
   int32_t event_id = 0;
   while(1)
   {
@@ -142,6 +143,43 @@ void sdcard_task(void const *argument)
       case SDCARD_FILE_WRITE_STATE:
       {
         MUX_LOG("SDCARD_FILE_WRITE_STATE\r\n");
+        //sl_status_t status;
+        ringbuff_status rb_status;
+        size_t data_len;
+
+        while(1)
+        {
+          if(sdcard_event_map & BIT(SDCARD_FILE_CLOSE_WRITE_STATE))
+          { break; /* exit condition */}
+
+          rb_status = ringBuffer_acquire_read(pRingBuff);
+          if(rb_status != RINGBUFF_OK)
+          {
+            ringBuffer_debug("o");
+            osThreadYield();
+            continue;
+          }
+
+          rb_status = ringBuffer_readTailSlot(pRingBuff, sdcard_buffer, &data_len);
+          if(rb_status != RINGBUFF_OK)
+          {
+            ringBuffer_debug("S");
+          }
+          /*
+          while(osSemaphoreAcquire(sdcard_spi.done, 100) != osOK)
+          {
+            ringBuffer_debug("t");
+            osThreadYield();
+          }
+          status = sl_si91x_gspi_transfer_data(sdcard_spi.handle,
+                                               gspi_data_out,
+                                               gspi_data_in,
+                                               data_len);
+                                               */
+          fres = f_write(&file_write, sdcard_buffer, data_len, &bytesWrote);
+          if (fres != FR_OK)
+          { sdcard_status_print("write data", fres); }
+        }
 
         sdcard_clear_event(SDCARD_FILE_WRITE_STATE);
 
@@ -151,12 +189,32 @@ void sdcard_task(void const *argument)
         MUX_LOG("SDCARD_FILE_READ_STATE\r\n");
         sdcard_clear_event(SDCARD_FILE_READ_STATE);
       }break;
-      case SDCARD_FILE_CLOSE_STATE:
+      case SDCARD_FILE_CLOSE_WRITE_STATE:
       {
         MUX_LOG("SDCARD_FILE_CLOSE_STATE\r\n");
+        ringbuff_status rb_status;
+        size_t data_len;
+        while(!ringBuffer_IsEmpty(pRingBuff))
+        {
+          rb_status = ringBuffer_readTailSlot(pRingBuff, sdcard_buffer, &data_len);
+          if(rb_status != RINGBUFF_OK)
+          {
+            MUX_LOG("Last slot not been filled\r\n");
+            rb_status = ringBuffer_readLastData(pRingBuff, sdcard_buffer, &data_len);
+          }
 
-        sdcard_clear_event(SDCARD_FILE_CLOSE_STATE);
-        //sdcard_set_event(SDCARD_UNMOUNT_STATE);
+          if(rb_status != RINGBUFF_OK)
+          { break; }
+
+          fres = f_write(&file_write, sdcard_buffer, data_len, &bytesWrote);
+          sdcard_status_print("write last data", fres);
+        }
+
+        fres = f_close(&file_write);
+        sdcard_status_print("close write file", fres);
+
+        sdcard_clear_event(SDCARD_FILE_CLOSE_WRITE_STATE);
+        sdcard_set_event(SDCARD_UNMOUNT_STATE);
       }break;
       case SDCARD_FILE_CLOSE_READ_STATE:
       {

@@ -34,7 +34,7 @@
 #include "sl_net.h"
 #include "sl_http_client.h"
 #include <string.h>
-#include "gspi_util.h"
+//#include "gspi_util.h"
 #include "mux_debug.h"
 #include "ring_buff.h"
 #include "user_diskio_spi.h"
@@ -280,7 +280,8 @@ static void application_start(void *argument)
   }
   MUX_LOG("Wi-Fi Client Connected\r\n");
 
-  //osSemaphoreRelease(http_client_thread_sem); //do once
+  //http client do once
+  osSemaphoreRelease(http_client_thread_sem);
   //#endif //!AMPAK_HTTP_GET_ONLY
 
 #if HTTPS_ENABLE && LOAD_CERTIFICATE
@@ -427,8 +428,10 @@ sl_status_t http_client_application(void)
   //! Initialize callback method for HTTP GET request
   status = sl_http_client_request_init(&client_request, http_get_response_callback_handler, "This is HTTP client");
   CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
+
   MUX_LOG("HTTP Get request init success\r\n");
 
+  sdcard_set_event(SDCARD_FILE_WRITE_STATE);
   MUX_LOG("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
   MUX_LOG("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
   MUX_LOG("pdMS_TO_TICKS(1000): (%lu ticks)\r\n", pdMS_TO_TICKS(1000));
@@ -563,6 +566,7 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
       /* TODO clear buffer last data */
 
       app_buff_index += get_response->data_length;
+      sdcard_set_event(SDCARD_FILE_CLOSE_WRITE_STATE);
       http_debug_log(".\r\n");
     }
     http_rsp_received = HTTP_SUCCESS_RESPONSE;
