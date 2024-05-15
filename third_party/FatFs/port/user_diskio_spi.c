@@ -1,19 +1,19 @@
 /**
  ******************************************************************************
-  * @file    user_diskio_spi.c
-  * @brief   This file contains the implementation of the user_diskio_spi FatFs
-  *          driver.
-  ******************************************************************************
-  * Portions copyright (C) 2014, ChaN, all rights reserved.
-  * Portions copyright (C) 2017, kiwih, all rights reserved.
-  *
-  * This software is a free software and there is NO WARRANTY.
-  * No restriction on use. You can use, modify and redistribute it for
-  * personal, non-profit or commercial products UNDER YOUR RESPONSIBILITY.
-  * Redistributions of source code must retain the above copyright notice.
-  *
-  ******************************************************************************
-  */
+ * @file    user_diskio_spi.c
+ * @brief   This file contains the implementation of the user_diskio_spi FatFs
+ *          driver.
+ ******************************************************************************
+ * Portions copyright (C) 2014, ChaN, all rights reserved.
+ * Portions copyright (C) 2017, kiwih, all rights reserved.
+ *
+ * This software is a free software and there is NO WARRANTY.
+ * No restriction on use. You can use, modify and redistribute it for
+ * personal, non-profit or commercial products UNDER YOUR RESPONSIBILITY.
+ * Redistributions of source code must retain the above copyright notice.
+ *
+ ******************************************************************************
+ */
 
 //This code was ported by kiwih from a copywrited (C) library written by ChaN
 //available at http://elm-chan.org/fsw/ff/ffsample.zip
@@ -110,29 +110,29 @@ static uint32_t spiTimerTickStart;
 static uint32_t spiTimerTickDelay;
 
 sdcard_spi_t sdcard_spi =
-{
-    .handle = NULL,
-    .config =
     {
-        .bit_width = GSPI_BIT_WIDTH,
-        .bitrate = GSPI_BITRATE,
-        .clock_mode = SL_GSPI_MODE_3,
-        .slave_select_mode = SL_GSPI_MASTER_HW_OUTPUT,
-        .swap_read = SWAP_READ_DATA,
-        .swap_write = SWAP_WRITE_DATA,
-     },
-     .soft_cs =  { 0, 49 } ,
-     .lock = NULL,
-     .done = NULL,
-};
+        .handle = NULL,
+        .config =
+            {
+                .bit_width = GSPI_BIT_WIDTH,
+                .bitrate = GSPI_BITRATE,
+                .clock_mode = SL_GSPI_MODE_3,
+                .slave_select_mode = SL_GSPI_MASTER_HW_OUTPUT,
+                .swap_read = SWAP_READ_DATA,
+                .swap_write = SWAP_WRITE_DATA,
+            },
+            .soft_cs =  { 0, 49 } ,
+            .lock = NULL,
+            .done = NULL,
+    };
 
 //(Note that the _256 is used as a mask to clear the prescalar bits as it provides binary 111 in the correct position)
 /* Set SCLK = slow, approx 280 KBits/s*/
 #define FCLK_SLOW() { sdcard_spi.config.bitrate = 400000; \
-                      sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }
+    sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }
 /* Set SCLK = fast, approx 4.5 MBits/s */
 #define FCLK_FAST() { sdcard_spi.config.bitrate = 40000000; \
-                      sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }
+    sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config); }
 
 //
 #define CS_HIGH() { sl_gpio_set_pin_output(sdcard_spi.soft_cs.port, sdcard_spi.soft_cs.pin); }
@@ -145,12 +145,12 @@ static sl_status_t init_clock_configuration_structure(sl_gspi_clock_config_t *cl
 /*-----------------------------------------------------------------------*/
 
 void SPI_Timer_On(uint32_t waitTicks) {
-    spiTimerTickStart = osKernelGetTickCount();
-    spiTimerTickDelay = waitTicks;
+  spiTimerTickStart = osKernelGetTickCount();
+  spiTimerTickDelay = waitTicks;
 }
 
 uint8_t SPI_Timer_Status() {
-    return ((osKernelGetTickCount() - spiTimerTickStart) < spiTimerTickDelay);
+  return ((osKernelGetTickCount() - spiTimerTickStart) < spiTimerTickDelay);
 }
 
 /*******************************************************************************
@@ -205,107 +205,107 @@ static sl_status_t init_clock_configuration_structure(sl_gspi_clock_config_t *cl
 
 void init_gspi(void)
 {
-    sl_status_t status;
-    sl_gspi_clock_config_t clock_config;
-    sl_gspi_version_t version;
-    sl_gspi_status_t gspi_status;
-    //uint8_t division_factor  = 1;
+  sl_status_t status;
+  sl_gspi_clock_config_t clock_config;
+  sl_gspi_version_t version;
+  sl_gspi_status_t gspi_status;
+  //uint8_t division_factor  = 1;
 
-    //Set_Extender_IO(SDCARD_SW, true); // AMPAK_FATFS_DRIVER
+  //Set_Extender_IO(SDCARD_SW, true); // AMPAK_FATFS_DRIVER
 
-    // Version information of GSPI driver
-    version = sl_si91x_gspi_get_version();
-    printf("GSPI version is fetched successfully \n");
-    printf("API version is %d.%d.%d\n", version.release, version.major, version.minor);
+  // Version information of GSPI driver
+  version = sl_si91x_gspi_get_version();
+  printf("GSPI version is fetched successfully \n");
+  printf("API version is %d.%d.%d\n", version.release, version.major, version.minor);
 #if USE_GSPI_SET_CLOCK
-    // Filling up the structure with the default clock parameters
-    status = init_clock_configuration_structure(&clock_config);
-    if (status != SL_STATUS_OK) {
-        printf("init_clock_configuration_structure: Error Code : %lu \n", status);
-    }
+  // Filling up the structure with the default clock parameters
+  status = init_clock_configuration_structure(&clock_config);
+  if (status != SL_STATUS_OK) {
+    printf("init_clock_configuration_structure: Error Code : %lu \n", status);
+  }
 
-    // Configuration of clock with the default clock parameters
-    status = sl_si91x_gspi_configure_clock(&clock_config);
-    if (status != SL_STATUS_OK) {
-        printf("sl_si91x_gspi_clock_configuration: Error Code : %lu \n", status);
-    }
-    printf("Clock configuration is successful \n");
+  // Configuration of clock with the default clock parameters
+  status = sl_si91x_gspi_configure_clock(&clock_config);
+  if (status != SL_STATUS_OK) {
+    printf("sl_si91x_gspi_clock_configuration: Error Code : %lu \n", status);
+  }
+  printf("Clock configuration is successful \n");
 #endif
-    // Pass the address of void pointer, it will be updated with the address
-    // of GSPI instance which can be used in other APIs.
-    status = sl_si91x_gspi_init(SL_GSPI_MASTER, &sdcard_spi.handle);
-    if (status != SL_STATUS_OK) {
-        printf("sl_si91x_gspi_init: Error Code : %lu \n", status);
+  // Pass the address of void pointer, it will be updated with the address
+  // of GSPI instance which can be used in other APIs.
+  status = sl_si91x_gspi_init(SL_GSPI_MASTER, &sdcard_spi.handle);
+  if (status != SL_STATUS_OK) {
+    printf("sl_si91x_gspi_init: Error Code : %lu \n", status);
+  }
+  printf("GSPI initialization is successful \n");
+  // Fetching the status of GSPI i.e., busy, data lost and mode fault
+  gspi_status = sl_si91x_gspi_get_status(sdcard_spi.handle);
+  printf("GSPI status is fetched successfully \n");
+  printf("Busy: %d\n", gspi_status.busy);
+  printf("Data_Lost: %d\n", gspi_status.data_lost);
+  printf("Mode_Fault: %d\n", gspi_status.mode_fault);
+  //Configuration of all other parameters that are required by GSPI
+  // gspi_configuration structure is from sl_si91x_gspi_init.h file.
+  // The user can modify this structure with the configuration of
+  // his choice by filling this structure.
+  status = sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config);
+  if (status != SL_STATUS_OK) {
+    printf("sl_si91x_gspi_control: Error Code : %lu \n", status);
+  }
+  printf("GSPI configuration is successful \n");
+  // Register user callback function
+  status = sl_si91x_gspi_register_event_callback(sdcard_spi.handle, callback_event);
+  if (status != SL_STATUS_OK) {
+    printf("sl_si91x_gspi_register_event_callback: Error Code : %lu \n", status);
+  }
+  printf("GSPI user event callback registered successfully \n");
+  // Fetching and printing the current clock division factor
+  printf("Current Clock division factor is %lu \n", sl_si91x_gspi_get_clock_division_factor(sdcard_spi.handle));
+  // Fetching and printing the current frame length
+  printf("Current Frame Length is %lu \n", sl_si91x_gspi_get_frame_length());
+
+
+  sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
+
+#if 1
+  sl_si91x_gpio_driver_enable_clock((sl_si91x_gpio_select_clock_t)M4CLK_GPIO); // Enable GPIO M4_CLK
+
+  // Enable pad selection for GPIO pins
+  // PadSelection-9 related GPIOS are pre-configured for Other Functions
+#define PAD_SELECT_9   9  // GPIO PAD selection number
+#define MAX_PAD_SELECT 34 // Maximum GPIO PAD selection number
+  uint8_t pad_sel = 1;
+  for (pad_sel = 1; pad_sel < MAX_PAD_SELECT; pad_sel++) {
+    if (pad_sel != PAD_SELECT_9) {
+      sl_si91x_gpio_enable_pad_selection(pad_sel);
     }
-    printf("GSPI initialization is successful \n");
-      // Fetching the status of GSPI i.e., busy, data lost and mode fault
-      gspi_status = sl_si91x_gspi_get_status(sdcard_spi.handle);
-      printf("GSPI status is fetched successfully \n");
-      printf("Busy: %d\n", gspi_status.busy);
-      printf("Data_Lost: %d\n", gspi_status.data_lost);
-      printf("Mode_Fault: %d\n", gspi_status.mode_fault);
-      //Configuration of all other parameters that are required by GSPI
-      // gspi_configuration structure is from sl_si91x_gspi_init.h file.
-      // The user can modify this structure with the configuration of
-      // his choice by filling this structure.
-      status = sl_si91x_gspi_set_configuration(sdcard_spi.handle, &sdcard_spi.config);
-      if (status != SL_STATUS_OK) {
-          printf("sl_si91x_gspi_control: Error Code : %lu \n", status);
-      }
-      printf("GSPI configuration is successful \n");
-      // Register user callback function
-      status = sl_si91x_gspi_register_event_callback(sdcard_spi.handle, callback_event);
-      if (status != SL_STATUS_OK) {
-          printf("sl_si91x_gspi_register_event_callback: Error Code : %lu \n", status);
-      }
-      printf("GSPI user event callback registered successfully \n");
-      // Fetching and printing the current clock division factor
-      printf("Current Clock division factor is %lu \n", sl_si91x_gspi_get_clock_division_factor(sdcard_spi.handle));
-      // Fetching and printing the current frame length
-      printf("Current Frame Length is %lu \n", sl_si91x_gspi_get_frame_length());
+  }
+
+  sl_gpio_set_pin_mode(0, 49, _MODE0, 1);
+  sl_si91x_gpio_set_pin_direction(0, 49, (sl_si91x_gpio_direction_t)GPIO_OUTPUT);
+  sl_gpio_set_pin_output(0, 49);
+#endif
 
 
-      sl_si91x_gspi_set_slave_number(GSPI_SLAVE_0);
+if (sdcard_spi.lock == NULL) {
+  sdcard_spi.lock = osSemaphoreNew(1, 0, NULL);
+  osSemaphoreRelease(sdcard_spi.lock);
+}
 
-  #if 1
-      sl_si91x_gpio_driver_enable_clock((sl_si91x_gpio_select_clock_t)M4CLK_GPIO); // Enable GPIO M4_CLK
-
-      // Enable pad selection for GPIO pins
-      // PadSelection-9 related GPIOS are pre-configured for Other Functions
-  #define PAD_SELECT_9   9  // GPIO PAD selection number
-  #define MAX_PAD_SELECT 34 // Maximum GPIO PAD selection number
-      uint8_t pad_sel = 1;
-      for (pad_sel = 1; pad_sel < MAX_PAD_SELECT; pad_sel++) {
-       if (pad_sel != PAD_SELECT_9) {
-          sl_si91x_gpio_enable_pad_selection(pad_sel);
-        }
-      }
-
-      sl_gpio_set_pin_mode(0, 49, _MODE0, 1);
-      sl_si91x_gpio_set_pin_direction(0, 49, (sl_si91x_gpio_direction_t)GPIO_OUTPUT);
-      sl_gpio_set_pin_output(0, 49);
-  #endif
-
-
-      if (sdcard_spi.lock == NULL) {
-          sdcard_spi.lock = osSemaphoreNew(1, 0, NULL);
-          osSemaphoreRelease(sdcard_spi.lock);
-      }
-
-      if (sdcard_spi.done == NULL) {
-          sdcard_spi.done = osSemaphoreNew(1, 0, NULL);
-      }
+if (sdcard_spi.done == NULL) {
+  sdcard_spi.done = osSemaphoreNew(1, 0, NULL);
+}
 }
 
 /* Exchange a byte */
 static BYTE xchg_spi (	BYTE dat	/* Data to send */ )
 {
-	BYTE rxDat = 0xff;
-	transfer_complete = false;
+  BYTE rxDat = 0xff;
+  transfer_complete = false;
 
   osSemaphoreAcquire(sdcard_spi.lock, osWaitForever);
 
-	sl_si91x_gspi_transfer_data(sdcard_spi.handle, &dat, &rxDat, 1);
+  sl_si91x_gspi_transfer_data(sdcard_spi.handle, &dat, &rxDat, 1);
   osSemaphoreAcquire(sdcard_spi.done, osWaitForever);
 
   osSemaphoreRelease(sdcard_spi.lock);
@@ -315,27 +315,27 @@ static BYTE xchg_spi (	BYTE dat	/* Data to send */ )
 
 /* Receive multiple byte */
 static void rcvr_spi_multi ( BYTE *buff,		/* Pointer to data buffer */
-	                           UINT btr		    /* Number of bytes to receive (even number) */ )
+                             UINT btr		    /* Number of bytes to receive (even number) */ )
 {
 
 
   transfer_complete = false;
 #if 0
-	for(UINT i=0; i<btr; i++) {
-		*(buff+i) = xchg_spi(0xFF);
-	}
+  for(UINT i=0; i<btr; i++) {
+    *(buff+i) = xchg_spi(0xFF);
+  }
 #else
 
-	static uint8_t dummy[FF_MIN_SS] ;
+  static uint8_t dummy[FF_MIN_SS] ;
   osSemaphoreAcquire(sdcard_spi.lock, osWaitForever);
 
   //FIXME. we should use sl_si91x_gspi_receive_data()
   //uint8_t * dummy = (uint8_t*) malloc(btr);
   memset(dummy, 0xff, btr);
-	sl_si91x_gspi_transfer_data(sdcard_spi.handle, dummy, buff, btr);
+  sl_si91x_gspi_transfer_data(sdcard_spi.handle, dummy, buff, btr);
   osSemaphoreAcquire(sdcard_spi.done, osWaitForever);
   //wait done
-	//free(dummy);
+  //free(dummy);
 
   osSemaphoreRelease(sdcard_spi.lock);
 
@@ -347,22 +347,22 @@ static void rcvr_spi_multi ( BYTE *buff,		/* Pointer to data buffer */
 /* Send multiple byte */
 static
 void xmit_spi_multi (
-	const BYTE *buff,	/* Pointer to the data */
-	UINT btx			/* Number of bytes to send (even number) */
+    const BYTE *buff,	/* Pointer to the data */
+    UINT btx			/* Number of bytes to send (even number) */
 )
 {
 
   static uint8_t dummy[FF_MIN_SS] ;
   //printf("xmit_spi_multi tx len%d\r\n", btx);
 #if 0
-	for(UINT i=0; i<btx; i++) {
-		xchg_spi(*(buff+i));
-	}
+  for(UINT i=0; i<btx; i++) {
+    xchg_spi(*(buff+i));
+  }
 #else
-	transfer_complete=false;
+  transfer_complete=false;
   osSemaphoreAcquire(sdcard_spi.lock, osWaitForever);
 
-	//sl_si91x_gspi_send_data(sdcard_spi.handle, buff, btx);
+  //sl_si91x_gspi_send_data(sdcard_spi.handle, buff, btx);
   sl_si91x_gspi_transfer_data(sdcard_spi.handle, buff, dummy, btx);
 #if 0
   while(!transfer_complete){
@@ -384,23 +384,23 @@ void xmit_spi_multi (
 
 static
 int wait_ready (	/* 1:Ready, 0:Timeout */
-	UINT wt			/* Timeout [ms] */
+    UINT wt			/* Timeout [ms] */
 )
 {
-	BYTE d;
-	//wait_ready needs its own timer, unfortunately, so it can't use the
-	//spi_timer functions
-	uint32_t waitSpiTimerTickStart;
-	uint32_t waitSpiTimerTickDelay;
+  BYTE d;
+  //wait_ready needs its own timer, unfortunately, so it can't use the
+  //spi_timer functions
+  uint32_t waitSpiTimerTickStart;
+  uint32_t waitSpiTimerTickDelay;
 
-	waitSpiTimerTickStart = osKernelGetTickCount();
-	waitSpiTimerTickDelay = (uint32_t)wt;
-	do {
-		d = xchg_spi(0xFF);
-		/* This loop takes a time. Insert rot_rdq() here for multitask envilonment. */
-	} while (d != 0xFF && ((osKernelGetTickCount() - waitSpiTimerTickStart) < waitSpiTimerTickDelay));	/* Wait for card goes ready or timeout */
+  waitSpiTimerTickStart = osKernelGetTickCount();
+  waitSpiTimerTickDelay = (uint32_t)wt;
+  do {
+    d = xchg_spi(0xFF);
+    /* This loop takes a time. Insert rot_rdq() here for multitask envilonment. */
+  } while (d != 0xFF && ((osKernelGetTickCount() - waitSpiTimerTickStart) < waitSpiTimerTickDelay));	/* Wait for card goes ready or timeout */
 
-	return (d == 0xFF) ? 1 : 0;
+  return (d == 0xFF) ? 1 : 0;
 }
 
 
@@ -412,8 +412,8 @@ int wait_ready (	/* 1:Ready, 0:Timeout */
 static
 void despiselect (void)
 {
-	CS_HIGH();		/* Set CS# high */
-	xchg_spi(0xFF);	/* Dummy clock (force DO hi-z for multiple slave SPI) */
+  CS_HIGH();		/* Set CS# high */
+  xchg_spi(0xFF);	/* Dummy clock (force DO hi-z for multiple slave SPI) */
 
 }
 
@@ -426,12 +426,12 @@ void despiselect (void)
 static
 int spiselect (void)	/* 1:OK, 0:Timeout */
 {
-	CS_LOW();		/* Set CS# low */
-	xchg_spi(0xFF);	/* Dummy clock (force DO enabled) */
-	if (wait_ready(500)) return 1;	/* Wait for card ready */
+  CS_LOW();		/* Set CS# low */
+  xchg_spi(0xFF);	/* Dummy clock (force DO enabled) */
+  if (wait_ready(500)) return 1;	/* Wait for card ready */
 
-	despiselect();
-	return 0;	/* Timeout */
+  despiselect();
+  return 0;	/* Timeout */
 }
 
 
@@ -442,23 +442,23 @@ int spiselect (void)	/* 1:OK, 0:Timeout */
 
 static
 int rcvr_datablock (	/* 1:OK, 0:Error */
-	BYTE *buff,			/* Data buffer */
-	UINT btr			/* Data block length (byte) */
+    BYTE *buff,			/* Data buffer */
+    UINT btr			/* Data block length (byte) */
 )
 {
-	BYTE token;
+  BYTE token;
 
-	SPI_Timer_On(200);
-	do {							/* Wait for DataStart token in timeout of 200ms */
-		token = xchg_spi(0xFF);
-		/* This loop will take a time. Insert rot_rdq() here for multitask envilonment. */
-	} while ((token == 0xFF) && SPI_Timer_Status());
-	if(token != 0xFE) return 0;		/* Function fails if invalid DataStart token or timeout */
+  SPI_Timer_On(200);
+  do {							/* Wait for DataStart token in timeout of 200ms */
+    token = xchg_spi(0xFF);
+    /* This loop will take a time. Insert rot_rdq() here for multitask envilonment. */
+  } while ((token == 0xFF) && SPI_Timer_Status());
+  if(token != 0xFE) return 0;		/* Function fails if invalid DataStart token or timeout */
 
-	rcvr_spi_multi(buff, btr);		/* Store trailing data to the buffer */
-	xchg_spi(0xFF); xchg_spi(0xFF);			/* Discard CRC */
+  rcvr_spi_multi(buff, btr);		/* Store trailing data to the buffer */
+  xchg_spi(0xFF); xchg_spi(0xFF);			/* Discard CRC */
 
-	return 1;						/* Function succeeded */
+  return 1;						/* Function succeeded */
 }
 
 
@@ -470,25 +470,25 @@ int rcvr_datablock (	/* 1:OK, 0:Error */
 #if _USE_WRITE
 static
 int xmit_datablock (	/* 1:OK, 0:Failed */
-	const BYTE *buff,	/* Ponter to 512 byte data to be sent */
-	BYTE token			/* Token */
+    const BYTE *buff,	/* Ponter to 512 byte data to be sent */
+    BYTE token			/* Token */
 )
 {
-	BYTE resp;
+  BYTE resp;
 
   //printf("xmit_datablock");
 
-	if (!wait_ready(500)) return 0;		/* Wait for card ready */
+  if (!wait_ready(500)) return 0;		/* Wait for card ready */
 
-	xchg_spi(token);					/* Send token */
-	if (token != 0xFD) {				/* Send data if token is other than StopTran */
-		xmit_spi_multi(buff, 512);		/* Data */
-		xchg_spi(0xFF); xchg_spi(0xFF);	/* Dummy CRC */
+  xchg_spi(token);					/* Send token */
+  if (token != 0xFD) {				/* Send data if token is other than StopTran */
+    xmit_spi_multi(buff, 512);		/* Data */
+    xchg_spi(0xFF); xchg_spi(0xFF);	/* Dummy CRC */
 
-		resp = xchg_spi(0xFF);				/* Receive data resp */
-		if ((resp & 0x1F) != 0x05) return 0;	/* Function fails if the data packet was not accepted */
-	}
-	return 1;
+    resp = xchg_spi(0xFF);				/* Receive data resp */
+    if ((resp & 0x1F) != 0x05) return 0;	/* Function fails if the data packet was not accepted */
+  }
+  return 1;
 }
 #endif
 
@@ -499,43 +499,43 @@ int xmit_datablock (	/* 1:OK, 0:Failed */
 
 static
 BYTE send_cmd (		/* Return value: R1 resp (bit7==1:Failed to send) */
-	BYTE cmd,		/* Command index */
-	DWORD arg		/* Argument */
+    BYTE cmd,		/* Command index */
+    DWORD arg		/* Argument */
 )
 {
-	BYTE n, res;
+  BYTE n, res;
 
-	if (cmd & 0x80) {	/* Send a CMD55 prior to ACMD<n> */
-		cmd &= 0x7F;
-		res = send_cmd(CMD55, 0);
-		if (res > 1) return res;
-	}
+  if (cmd & 0x80) {	/* Send a CMD55 prior to ACMD<n> */
+    cmd &= 0x7F;
+    res = send_cmd(CMD55, 0);
+    if (res > 1) return res;
+  }
 
-	/* Select the card and wait for ready except to stop multiple block read */
-	if (cmd != CMD12) {
-		despiselect();
-		if (!spiselect()) return 0xFF;
-	}
+  /* Select the card and wait for ready except to stop multiple block read */
+  if (cmd != CMD12) {
+    despiselect();
+    if (!spiselect()) return 0xFF;
+  }
 
-	/* Send command packet */
-	xchg_spi(0x40 | cmd);				/* Start + command index */
-	xchg_spi((BYTE)(arg >> 24));		/* Argument[31..24] */
-	xchg_spi((BYTE)(arg >> 16));		/* Argument[23..16] */
-	xchg_spi((BYTE)(arg >> 8));			/* Argument[15..8] */
-	xchg_spi((BYTE)arg);				/* Argument[7..0] */
-	n = 0x01;							/* Dummy CRC + Stop */
-	if (cmd == CMD0) n = 0x95;			/* Valid CRC for CMD0(0) */
-	if (cmd == CMD8) n = 0x87;			/* Valid CRC for CMD8(0x1AA) */
-	xchg_spi(n);
+  /* Send command packet */
+  xchg_spi(0x40 | cmd);				/* Start + command index */
+  xchg_spi((BYTE)(arg >> 24));		/* Argument[31..24] */
+  xchg_spi((BYTE)(arg >> 16));		/* Argument[23..16] */
+  xchg_spi((BYTE)(arg >> 8));			/* Argument[15..8] */
+  xchg_spi((BYTE)arg);				/* Argument[7..0] */
+  n = 0x01;							/* Dummy CRC + Stop */
+  if (cmd == CMD0) n = 0x95;			/* Valid CRC for CMD0(0) */
+  if (cmd == CMD8) n = 0x87;			/* Valid CRC for CMD8(0x1AA) */
+  xchg_spi(n);
 
-	/* Receive command resp */
-	if (cmd == CMD12) xchg_spi(0xFF);	/* Diacard following one byte when CMD12 */
-	n = 10;								/* Wait for response (10 bytes max) */
-	do {
-		res = xchg_spi(0xFF);
-	} while ((res & 0x80) && --n);
+  /* Receive command resp */
+  if (cmd == CMD12) xchg_spi(0xFF);	/* Diacard following one byte when CMD12 */
+  n = 10;								/* Wait for response (10 bytes max) */
+  do {
+    res = xchg_spi(0xFF);
+  } while ((res & 0x80) && --n);
 
-	return res;							/* Return received response */
+  return res;							/* Return received response */
 }
 
 
@@ -557,68 +557,83 @@ BYTE send_cmd (		/* Return value: R1 resp (bit7==1:Failed to send) */
 /*-----------------------------------------------------------------------*/
 
 inline DSTATUS USER_SPI_initialize (
-	BYTE drv		/* Physical drive number (0) */
+    BYTE drv		/* Physical drive number (0) */
 )
 {
-	BYTE n, cmd, ty, ocr[4];
+  BYTE n, cmd, ty, ocr[4];
 
-	if (drv != 0) return STA_NOINIT;		/* Supports only drive 0 */
+  if (drv != 0) return STA_NOINIT;		/* Supports only drive 0 */
 
-	//init_gspi(); /* Initialize SPI */
+  //init_gspi(); /* Initialize SPI */
 
-	if (Stat & STA_NODISK) return Stat;	/* Is card existing in the soket? */
+  if (Stat & STA_NODISK) return Stat;	/* Is card existing in the soket? */
 
-	FCLK_SLOW();
-	uint8_t retry = 0;
-	do{
-	    printf("Trial %u \r\n",retry);
-	    //Set_Extender_IO(SDCARD_SW,false);
-	    for(uint16_t i = 0; i < 20000 ; i++){}
-	    //Set_Extender_IO(SDCARD_SW,true);
+  FCLK_SLOW();
+  uint8_t retry = 0;
+  do
+  {
+    printf("Trial %u \r\n",retry);
+    //Set_Extender_IO(SDCARD_SW,false);
+    for(uint16_t i = 0; i < 20000 ; i++){}
+    //Set_Extender_IO(SDCARD_SW,true);
 
     for (n = 10; n; n--) xchg_spi(0xFF);	/* Send 80 dummy clocks */
 
     ty = 0;
-    if (send_cmd(CMD0, 0) == 1) {			/* Put the card SPI/Idle state */
+    if (send_cmd(CMD0, 0) == 1)
+    {			/* Put the card SPI/Idle state */
       SPI_Timer_On(1000);					/* Initialization timeout = 1 sec */
-      if (send_cmd(CMD8, 0x1AA) == 1) {	/* SDv2? */
-        for (n = 0; n < 4; n++) ocr[n] = xchg_spi(0xFF);	/* Get 32 bit return value of R7 resp */
-        if (ocr[2] == 0x01 && ocr[3] == 0xAA) {				/* Is the card supports vcc of 2.7-3.6V? */
+      if (send_cmd(CMD8, 0x1AA) == 1)
+      {	/* SDv2? */
+        for (n = 0; n < 4; n++)
+        {  ocr[n] = xchg_spi(0xFF); }	/* Get 32 bit return value of R7 resp */
+        if (ocr[2] == 0x01 && ocr[3] == 0xAA)
+        {				/* Is the card supports vcc of 2.7-3.6V? */
           while (SPI_Timer_Status() && send_cmd(ACMD41, 1UL << 30)) ;	/* Wait for end of initialization with ACMD41(HCS) */
-          if (SPI_Timer_Status() && send_cmd(CMD58, 0) == 0) {		/* Check CCS bit in the OCR */
+
+          if (SPI_Timer_Status() && send_cmd(CMD58, 0) == 0)
+          {		/* Check CCS bit in the OCR */
             for (n = 0; n < 4; n++) ocr[n] = xchg_spi(0xFF);
             ty = (ocr[0] & 0x40) ? CT_SD2 | CT_BLOCK : CT_SD2;	/* Card id SDv2 */
           }
         }
-      } else {	/* Not SDv2 card */
-        if (send_cmd(ACMD41, 0) <= 1) 	{	/* SDv1 or MMC? */
+      }
+      else
+      {	/* Not SDv2 card */
+        if (send_cmd(ACMD41, 0) <= 1)
+        {	/* SDv1 or MMC? */
           ty = CT_SD1; cmd = ACMD41;	/* SDv1 (ACMD41(0)) */
-        } else {
+        } else
+        {
           ty = CT_MMC; cmd = CMD1;	/* MMCv3 (CMD1(0)) */
         }
         while (SPI_Timer_Status() && send_cmd(cmd, 0)) ;		/* Wait for end of initialization */
+
         if (!SPI_Timer_Status() || send_cmd(CMD16, 512) != 0)	/* Set block length: 512 */
-          ty = 0;
+        {  ty = 0; }
       }
     }
     CardType = ty;	/* Card type */
     despiselect();
 
-    if(++retry >= 10){ break; }
-	} while(ty == 0);
-	printf("cardType:%02x\r\n", ty);
+    if(++retry >= 10)
+    { break; }
+  } while(ty == 0);
+  printf("cardType:%02x\r\n", ty);
 
 
-	if (ty) {			/* OK */
-		FCLK_FAST();			/* Set fast clock */
-		Stat &= ~STA_NOINIT;	/* Clear STA_NOINIT flag */
-		printf("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
-		printf("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
-	} else {			/* Failed */
-		Stat = STA_NOINIT;
-	}
+  if (ty)
+  {			/* OK */
+    FCLK_FAST();			/* Set fast clock */
+    Stat &= ~STA_NOINIT;	/* Clear STA_NOINIT flag */
+    printf("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
+    printf("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
+  } else
+  {			/* Failed */
+    Stat = STA_NOINIT;
+  }
 
-	return Stat;
+  return Stat;
 }
 
 
@@ -628,12 +643,12 @@ inline DSTATUS USER_SPI_initialize (
 /*-----------------------------------------------------------------------*/
 
 inline DSTATUS USER_SPI_status (
-	BYTE drv		/* Physical drive number (0) */
+    BYTE drv		/* Physical drive number (0) */
 )
 {
-	if (drv) return STA_NOINIT;		/* Supports only drive 0 */
+  if (drv) return STA_NOINIT;		/* Supports only drive 0 */
 
-	return Stat;	/* Return disk status */
+  return Stat;	/* Return disk status */
 }
 
 
@@ -643,36 +658,36 @@ inline DSTATUS USER_SPI_status (
 /*-----------------------------------------------------------------------*/
 
 inline DRESULT USER_SPI_read (
-	BYTE drv,		/* Physical drive number (0) */
-	BYTE *buff,		/* Pointer to the data buffer to store read data */
-	DWORD sector,	/* Start sector number (LBA) */
-	UINT count		/* Number of sectors to read (1..128) */
+    BYTE drv,		/* Physical drive number (0) */
+    BYTE *buff,		/* Pointer to the data buffer to store read data */
+    DWORD sector,	/* Start sector number (LBA) */
+    UINT count		/* Number of sectors to read (1..128) */
 )
 {
 
-	if (drv || !count) return RES_PARERR;		/* Check parameter */
-	if (Stat & STA_NOINIT) return RES_NOTRDY;	/* Check if drive is ready */
+  if (drv || !count) return RES_PARERR;		/* Check parameter */
+  if (Stat & STA_NOINIT) return RES_NOTRDY;	/* Check if drive is ready */
 
-	if (!(CardType & CT_BLOCK)) sector *= 512;	/* LBA ot BA conversion (byte addressing cards) */
+  if (!(CardType & CT_BLOCK)) sector *= 512;	/* LBA ot BA conversion (byte addressing cards) */
 
-	if (count == 1) {	/* Single sector read */
-		if ((send_cmd(CMD17, sector) == 0)	/* READ_SINGLE_BLOCK */
-			&& rcvr_datablock(buff, 512)) {
-			count = 0;
-		}
-	}
-	else {				/* Multiple sector read */
-		if (send_cmd(CMD18, sector) == 0) {	/* READ_MULTIPLE_BLOCK */
-			do {
-				if (!rcvr_datablock(buff, 512)) break;
-				buff += 512;
-			} while (--count);
-			send_cmd(CMD12, 0);				/* STOP_TRANSMISSION */
-		}
-	}
-	despiselect();
+  if (count == 1) {	/* Single sector read */
+    if ((send_cmd(CMD17, sector) == 0)	/* READ_SINGLE_BLOCK */
+        && rcvr_datablock(buff, 512)) {
+      count = 0;
+    }
+  }
+  else {				/* Multiple sector read */
+    if (send_cmd(CMD18, sector) == 0) {	/* READ_MULTIPLE_BLOCK */
+      do {
+        if (!rcvr_datablock(buff, 512)) break;
+        buff += 512;
+      } while (--count);
+      send_cmd(CMD12, 0);				/* STOP_TRANSMISSION */
+    }
+  }
+  despiselect();
 
-	return count ? RES_ERROR : RES_OK;	/* Return result */
+  return count ? RES_ERROR : RES_OK;	/* Return result */
 }
 
 
@@ -683,38 +698,38 @@ inline DRESULT USER_SPI_read (
 
 #if _USE_WRITE
 inline DRESULT USER_SPI_write (
-	BYTE drv,			/* Physical drive number (0) */
-	const BYTE *buff,	/* Ponter to the data to write */
-	DWORD sector,		/* Start sector number (LBA) */
-	UINT count			/* Number of sectors to write (1..128) */
+    BYTE drv,			/* Physical drive number (0) */
+    const BYTE *buff,	/* Ponter to the data to write */
+    DWORD sector,		/* Start sector number (LBA) */
+    UINT count			/* Number of sectors to write (1..128) */
 )
 {
 
-	if (drv || !count) return RES_PARERR;		/* Check parameter */
-	if (Stat & STA_NOINIT) return RES_NOTRDY;	/* Check drive status */
-	if (Stat & STA_PROTECT) return RES_WRPRT;	/* Check write protect */
+  if (drv || !count) return RES_PARERR;		/* Check parameter */
+  if (Stat & STA_NOINIT) return RES_NOTRDY;	/* Check drive status */
+  if (Stat & STA_PROTECT) return RES_WRPRT;	/* Check write protect */
 
-	if (!(CardType & CT_BLOCK)) sector *= 512;	/* LBA ==> BA conversion (byte addressing cards) */
+  if (!(CardType & CT_BLOCK)) sector *= 512;	/* LBA ==> BA conversion (byte addressing cards) */
 
-	if (count == 1) {	/* Single sector write */
-		if ((send_cmd(CMD24, sector) == 0)	/* WRITE_BLOCK */
-			&& xmit_datablock(buff, 0xFE)) {
-			count = 0;
-		}
-	}
-	else {				/* Multiple sector write */
-		if (CardType & CT_SDC) send_cmd(ACMD23, count);	/* Predefine number of sectors */
-		if (send_cmd(CMD25, sector) == 0) {	/* WRITE_MULTIPLE_BLOCK */
-			do {
-				if (!xmit_datablock(buff, 0xFC)) break;
-				buff += 512;
-			} while (--count);
-			if (!xmit_datablock(0, 0xFD)) count = 1;	/* STOP_TRAN token */
-		}
-	}
-	despiselect();
+  if (count == 1) {	/* Single sector write */
+    if ((send_cmd(CMD24, sector) == 0)	/* WRITE_BLOCK */
+        && xmit_datablock(buff, 0xFE)) {
+      count = 0;
+    }
+  }
+  else {				/* Multiple sector write */
+    if (CardType & CT_SDC) send_cmd(ACMD23, count);	/* Predefine number of sectors */
+    if (send_cmd(CMD25, sector) == 0) {	/* WRITE_MULTIPLE_BLOCK */
+      do {
+        if (!xmit_datablock(buff, 0xFC)) break;
+        buff += 512;
+      } while (--count);
+      if (!xmit_datablock(0, 0xFD)) count = 1;	/* STOP_TRAN token */
+    }
+  }
+  despiselect();
 
-	return count ? RES_ERROR : RES_OK;	/* Return result */
+  return count ? RES_ERROR : RES_OK;	/* Return result */
 }
 #endif
 
@@ -725,81 +740,81 @@ inline DRESULT USER_SPI_write (
 
 #if _USE_IOCTL
 inline DRESULT USER_SPI_ioctl (
-	BYTE drv,		/* Physical drive number (0) */
-	BYTE cmd,		/* Control command code */
-	void *buff		/* Pointer to the conrtol data */
+    BYTE drv,		/* Physical drive number (0) */
+    BYTE cmd,		/* Control command code */
+    void *buff		/* Pointer to the conrtol data */
 )
 {
-	DRESULT res;
-	BYTE n, csd[16];
-	DWORD *dp, st, ed, csize;
+  DRESULT res;
+  BYTE n, csd[16];
+  DWORD *dp, st, ed, csize;
 
 
-	if (drv) return RES_PARERR;					/* Check parameter */
-	if (Stat & STA_NOINIT) return RES_NOTRDY;	/* Check if drive is ready */
+  if (drv) return RES_PARERR;					/* Check parameter */
+  if (Stat & STA_NOINIT) return RES_NOTRDY;	/* Check if drive is ready */
 
-	res = RES_ERROR;
+  res = RES_ERROR;
 
-	switch (cmd) {
-	case CTRL_SYNC :		/* Wait for end of internal write process of the drive */
-		if (spiselect()) res = RES_OK;
-		break;
+  switch (cmd) {
+    case CTRL_SYNC :		/* Wait for end of internal write process of the drive */
+      if (spiselect()) res = RES_OK;
+      break;
 
-	case GET_SECTOR_COUNT :	/* Get drive capacity in unit of sector (DWORD) */
-		if ((send_cmd(CMD9, 0) == 0) && rcvr_datablock(csd, 16)) {
-			if ((csd[0] >> 6) == 1) {	/* SDC ver 2.00 */
-				csize = csd[9] + ((WORD)csd[8] << 8) + ((DWORD)(csd[7] & 63) << 16) + 1;
-				*(DWORD*)buff = csize << 10;
-			} else {					/* SDC ver 1.XX or MMC ver 3 */
-				n = (csd[5] & 15) + ((csd[10] & 128) >> 7) + ((csd[9] & 3) << 1) + 2;
-				csize = (csd[8] >> 6) + ((WORD)csd[7] << 2) + ((WORD)(csd[6] & 3) << 10) + 1;
-				*(DWORD*)buff = csize << (n - 9);
-			}
-			res = RES_OK;
-		}
-		break;
+    case GET_SECTOR_COUNT :	/* Get drive capacity in unit of sector (DWORD) */
+      if ((send_cmd(CMD9, 0) == 0) && rcvr_datablock(csd, 16)) {
+        if ((csd[0] >> 6) == 1) {	/* SDC ver 2.00 */
+          csize = csd[9] + ((WORD)csd[8] << 8) + ((DWORD)(csd[7] & 63) << 16) + 1;
+          *(DWORD*)buff = csize << 10;
+        } else {					/* SDC ver 1.XX or MMC ver 3 */
+          n = (csd[5] & 15) + ((csd[10] & 128) >> 7) + ((csd[9] & 3) << 1) + 2;
+          csize = (csd[8] >> 6) + ((WORD)csd[7] << 2) + ((WORD)(csd[6] & 3) << 10) + 1;
+          *(DWORD*)buff = csize << (n - 9);
+        }
+        res = RES_OK;
+      }
+      break;
 
-	case GET_BLOCK_SIZE :	/* Get erase block size in unit of sector (DWORD) */
-		if (CardType & CT_SD2) {	/* SDC ver 2.00 */
-			if (send_cmd(ACMD13, 0) == 0) {	/* Read SD status */
-				xchg_spi(0xFF);
-				if (rcvr_datablock(csd, 16)) {				/* Read partial block */
-					for (n = 64 - 16; n; n--) xchg_spi(0xFF);	/* Purge trailing data */
-					*(DWORD*)buff = 16UL << (csd[10] >> 4);
-					res = RES_OK;
-				}
-			}
-		} else {					/* SDC ver 1.XX or MMC */
-			if ((send_cmd(CMD9, 0) == 0) && rcvr_datablock(csd, 16)) {	/* Read CSD */
-				if (CardType & CT_SD1) {	/* SDC ver 1.XX */
-					*(DWORD*)buff = (((csd[10] & 63) << 1) + ((WORD)(csd[11] & 128) >> 7) + 1) << ((csd[13] >> 6) - 1);
-				} else {					/* MMC */
-					*(DWORD*)buff = ((WORD)((csd[10] & 124) >> 2) + 1) * (((csd[11] & 3) << 3) + ((csd[11] & 224) >> 5) + 1);
-				}
-				res = RES_OK;
-			}
-		}
-		break;
+    case GET_BLOCK_SIZE :	/* Get erase block size in unit of sector (DWORD) */
+      if (CardType & CT_SD2) {	/* SDC ver 2.00 */
+        if (send_cmd(ACMD13, 0) == 0) {	/* Read SD status */
+          xchg_spi(0xFF);
+          if (rcvr_datablock(csd, 16)) {				/* Read partial block */
+            for (n = 64 - 16; n; n--) xchg_spi(0xFF);	/* Purge trailing data */
+            *(DWORD*)buff = 16UL << (csd[10] >> 4);
+            res = RES_OK;
+          }
+        }
+      } else {					/* SDC ver 1.XX or MMC */
+        if ((send_cmd(CMD9, 0) == 0) && rcvr_datablock(csd, 16)) {	/* Read CSD */
+          if (CardType & CT_SD1) {	/* SDC ver 1.XX */
+            *(DWORD*)buff = (((csd[10] & 63) << 1) + ((WORD)(csd[11] & 128) >> 7) + 1) << ((csd[13] >> 6) - 1);
+          } else {					/* MMC */
+            *(DWORD*)buff = ((WORD)((csd[10] & 124) >> 2) + 1) * (((csd[11] & 3) << 3) + ((csd[11] & 224) >> 5) + 1);
+          }
+          res = RES_OK;
+        }
+      }
+      break;
 
-	case CTRL_TRIM :	/* Erase a block of sectors (used when _USE_ERASE == 1) */
-		if (!(CardType & CT_SDC)) break;				/* Check if the card is SDC */
-		if (USER_SPI_ioctl(drv, MMC_GET_CSD, csd)) break;	/* Get CSD */
-		if (!(csd[0] >> 6) && !(csd[10] & 0x40)) break;	/* Check if sector erase can be applied to the card */
-		dp = buff; st = dp[0]; ed = dp[1];				/* Load sector block */
-		if (!(CardType & CT_BLOCK)) {
-			st *= 512; ed *= 512;
-		}
-		if (send_cmd(CMD32, st) == 0 && send_cmd(CMD33, ed) == 0 && send_cmd(CMD38, 0) == 0 && wait_ready(30000)) {	/* Erase sector block */
-			res = RES_OK;	/* FatFs does not check result of this command */
-		}
-		break;
+    case CTRL_TRIM :	/* Erase a block of sectors (used when _USE_ERASE == 1) */
+      if (!(CardType & CT_SDC)) break;				/* Check if the card is SDC */
+      if (USER_SPI_ioctl(drv, MMC_GET_CSD, csd)) break;	/* Get CSD */
+      if (!(csd[0] >> 6) && !(csd[10] & 0x40)) break;	/* Check if sector erase can be applied to the card */
+      dp = buff; st = dp[0]; ed = dp[1];				/* Load sector block */
+      if (!(CardType & CT_BLOCK)) {
+        st *= 512; ed *= 512;
+      }
+      if (send_cmd(CMD32, st) == 0 && send_cmd(CMD33, ed) == 0 && send_cmd(CMD38, 0) == 0 && wait_ready(30000)) {	/* Erase sector block */
+        res = RES_OK;	/* FatFs does not check result of this command */
+      }
+      break;
 
-	default:
-		res = RES_PARERR;
-	}
+    default:
+      res = RES_PARERR;
+  }
 
-	despiselect();
+  despiselect();
 
-	return res;
+  return res;
 }
 #endif

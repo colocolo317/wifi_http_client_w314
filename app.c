@@ -47,12 +47,12 @@
  *                      Macros
  ******************************************************/
 #define CLEAN_HTTP_CLIENT_IF_FAILED(status, client_handle, is_sync) \
-  {                                                                 \
-    if (status != SL_STATUS_OK) {                                   \
-      sl_http_client_deinit(client_handle);                         \
-      return ((is_sync == 0) ? status : callback_status);           \
-    }                                                               \
-  }
+    {                                                                 \
+  if (status != SL_STATUS_OK) {                                   \
+    sl_http_client_deinit(client_handle);                         \
+    return ((is_sync == 0) ? status : callback_status);           \
+  }                                                               \
+    }
 
 /******************************************************
  *                    Constants
@@ -135,27 +135,27 @@
  *               Variable Definitions
  ******************************************************/
 const osThreadAttr_t http_client_thread_attributes = {
-  .name       = "http_client_thread",
-  .attr_bits  = 0,
-  .cb_mem     = 0,
-  .cb_size    = 0,
-  .stack_mem  = 0,
-  .stack_size = 3072,
-  .priority   = osPriorityLow,
-  .tz_module  = 0,
-  .reserved   = 0,
+    .name       = "http_client_thread",
+    .attr_bits  = 0,
+    .cb_mem     = 0,
+    .cb_size    = 0,
+    .stack_mem  = 0,
+    .stack_size = 3072,
+    .priority   = osPriorityLow,
+    .tz_module  = 0,
+    .reserved   = 0,
 };
 
 const osThreadAttr_t gspi_thread_attributes = {
-  .name       = "gspi_thread",
-  .attr_bits  = 0,
-  .cb_mem     = 0,
-  .cb_size    = 0,
-  .stack_mem  = 0,
-  .stack_size = 2048,
-  .priority   = osPriorityLow,
-  .tz_module  = 0,
-  .reserved   = 0,
+    .name       = "gspi_thread",
+    .attr_bits  = 0,
+    .cb_mem     = 0,
+    .cb_size    = 0,
+    .stack_mem  = 0,
+    .stack_size = 2048,
+    .priority   = osPriorityLow,
+    .tz_module  = 0,
+    .reserved   = 0,
 };
 
 osSemaphoreId_t http_client_thread_sem;
@@ -165,24 +165,24 @@ osThreadId_t http_client_tid;
 osThreadId_t gspi_tid;
 
 static const sl_wifi_device_configuration_t http_client_configuration = {
-  .boot_option = LOAD_NWP_FW,
-  .mac_address = NULL,
-  .band        = SL_SI91X_WIFI_BAND_2_4GHZ,
-  .boot_config = { .oper_mode                  = SL_SI91X_CLIENT_MODE,
-                   .coex_mode                  = SL_SI91X_WLAN_ONLY_MODE,
-                   .feature_bit_map            = (SL_SI91X_FEAT_SECURITY_OPEN),
-                   .tcp_ip_feature_bit_map     = (SL_SI91X_TCP_IP_FEAT_DHCPV4_CLIENT | SL_SI91X_TCP_IP_FEAT_HTTP_CLIENT
-                                              | SL_SI91X_TCP_IP_FEAT_DNS_CLIENT | SL_SI91X_TCP_IP_FEAT_SSL),
-                   .custom_feature_bit_map     = SL_SI91X_CUSTOM_FEAT_EXTENTION_VALID,
-                   .ext_custom_feature_bit_map = (SL_SI91X_EXT_FEAT_XTAL_CLK | MEMORY_CONFIG
+    .boot_option = LOAD_NWP_FW,
+    .mac_address = NULL,
+    .band        = SL_SI91X_WIFI_BAND_2_4GHZ,
+    .boot_config = { .oper_mode                  = SL_SI91X_CLIENT_MODE,
+        .coex_mode                  = SL_SI91X_WLAN_ONLY_MODE,
+        .feature_bit_map            = (SL_SI91X_FEAT_SECURITY_OPEN),
+        .tcp_ip_feature_bit_map     = (SL_SI91X_TCP_IP_FEAT_DHCPV4_CLIENT | SL_SI91X_TCP_IP_FEAT_HTTP_CLIENT
+            | SL_SI91X_TCP_IP_FEAT_DNS_CLIENT | SL_SI91X_TCP_IP_FEAT_SSL),
+            .custom_feature_bit_map     = SL_SI91X_CUSTOM_FEAT_EXTENTION_VALID,
+            .ext_custom_feature_bit_map = (SL_SI91X_EXT_FEAT_XTAL_CLK | MEMORY_CONFIG
 #ifdef SLI_SI917
-                                                  | SL_SI91X_EXT_FEAT_FRONT_END_SWITCH_PINS_ULP_GPIO_4_5_0
+| SL_SI91X_EXT_FEAT_FRONT_END_SWITCH_PINS_ULP_GPIO_4_5_0
 #endif
-                                                  ),
-                   .bt_feature_bit_map      = 0,
-                   .ble_feature_bit_map     = 0,
-                   .ble_ext_feature_bit_map = 0,
-                   .config_feature_bit_map  = 0 }
+            ),
+            .bt_feature_bit_map      = 0,
+            .ble_feature_bit_map     = 0,
+            .ble_ext_feature_bit_map = 0,
+            .config_feature_bit_map  = 0 }
 };
 
 //! Application buffer
@@ -229,29 +229,29 @@ void app_init(const void *unused)
 
   if(mux_debug_init() == NULL)
   {
-      printf("Failed to init mux log\r\n");
+    printf("Failed to init mux log\r\n");
   }
 
   http_client_thread_sem = osSemaphoreNew(1, 0, NULL);
   if (http_client_thread_sem == NULL) {
-      printf("Failed to create http_client_thread_sem\r\n");
-      return;
+    printf("Failed to create http_client_thread_sem\r\n");
+    return;
   }
   sdcard_thread_sem = osSemaphoreNew(1, 0, NULL);
   if (sdcard_thread_sem == NULL) {
-      printf("Failed to create sdcard_thread_sem\r\n");
-      return;
+    printf("Failed to create sdcard_thread_sem\r\n");
+    return;
   }
 
   ringBuffer_Init(pRingBuff);
 
   if(osThreadNew((osThreadFunc_t)application_start, NULL, &http_client_thread_attributes) == NULL)
   {
-      printf("Failed to new thread http client\r\n");
+    printf("Failed to new thread http client\r\n");
   }
   if(osThreadNew((osThreadFunc_t)sdcard_task, NULL, &gspi_thread_attributes) == NULL)
   {
-      printf("Failed to new thread gspi\r\n");
+    printf("Failed to new thread gspi\r\n");
   }
 
   //gspi_init();
@@ -265,7 +265,7 @@ static void application_start(void *argument)
   UNUSED_PARAMETER(argument);
   sl_status_t status;
 
-//#if !AMPAK_HTTP_GET_ONLY
+  //#if !AMPAK_HTTP_GET_ONLY
   status = sl_net_init(SL_NET_WIFI_CLIENT_INTERFACE, &http_client_configuration, NULL, NULL);
   if (status != SL_STATUS_OK) {
     MUX_LOG("Failed to start Wi-Fi client interface: 0x%lx\r\n", status);
@@ -281,7 +281,7 @@ static void application_start(void *argument)
   MUX_LOG("Wi-Fi Client Connected\r\n");
 
   //osSemaphoreRelease(http_client_thread_sem); //do once
-//#endif //!AMPAK_HTTP_GET_ONLY
+  //#endif //!AMPAK_HTTP_GET_ONLY
 
 #if HTTPS_ENABLE && LOAD_CERTIFICATE
   // Load SSL CA certificate
@@ -402,8 +402,8 @@ sl_status_t http_client_application(void)
   while (!end_of_file) {
     //! Get the current length that you want to send
     chunk_length = ((total_put_data_len - offset) > SL_HTTP_CLIENT_MAX_WRITE_BUFFER_LENGTH)
-                     ? SL_HTTP_CLIENT_MAX_WRITE_BUFFER_LENGTH
-                     : (total_put_data_len - offset);
+                         ? SL_HTTP_CLIENT_MAX_WRITE_BUFFER_LENGTH
+                             : (total_put_data_len - offset);
 
     status = sl_http_client_write_chunked_data(&client_handle, (uint8_t *)(sl_index + offset), chunk_length, 0);
 
@@ -584,12 +584,12 @@ sl_status_t http_put_response_callback_handler(const sl_http_client_t *client,
 
   MUX_LOG("\r\n===========HTTP PUT RESPONSE START===========\r\n");
   MUX_LOG(
-    "\r\n> Status: 0x%X\n> PUT response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
-    put_response->status,
-    put_response->http_response_code,
-    put_response->end_of_data,
-    put_response->data_length,
-    (char *)request_context);
+      "\r\n> Status: 0x%X\n> PUT response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
+      put_response->status,
+      put_response->http_response_code,
+      put_response->end_of_data,
+      put_response->data_length,
+      (char *)request_context);
 
   if (put_response->status != SL_STATUS_OK) {
     http_rsp_received = 2;
@@ -625,12 +625,12 @@ sl_status_t http_post_response_callback_handler(const sl_http_client_t *client,
 
   MUX_LOG("\r\n===========HTTP POST RESPONSE START===========\r\n");
   MUX_LOG(
-    "\r\n> Status: 0x%X\n> POST response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
-    post_response->status,
-    post_response->http_response_code,
-    post_response->end_of_data,
-    post_response->data_length,
-    (char *)request_context);
+      "\r\n> Status: 0x%X\n> POST response: %u\n> End of data: %lu\n> Data Length: %u\n> Request Context: %s\r\n",
+      post_response->status,
+      post_response->http_response_code,
+      post_response->end_of_data,
+      post_response->data_length,
+      (char *)request_context);
 
   if (post_response->status != SL_STATUS_OK
       || (post_response->http_response_code >= 400 && post_response->http_response_code <= 599
