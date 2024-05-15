@@ -2638,7 +2638,7 @@
 //   <i> CS0 of GSPI0
 //   </e>
 #ifndef GSPI_MASTER_CS0_LOC
-#define RTE_GSPI_MASTER_CS0_PORT_ID 1
+#define RTE_GSPI_MASTER_CS0_PORT_ID 2
 
 #if (RTE_GSPI_MASTER_CS0_PORT_ID == 0)
 #define RTE_GSPI_MASTER_CS0      1
