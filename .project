@@ -1359,11 +1359,6 @@
 			<locationURI>STUDIO_SDK_LOC/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_egpio.c</locationURI>
 		</link>
 		<link>
-			<name>wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_gspi.c</name>
-			<type>1</type>
-			<locationURI>STUDIO_SDK_LOC/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_gspi.c</locationURI>
-		</link>
-		<link>
 			<name>wiseconnect3_sdk_3.1.4/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_timers.c</name>
 			<type>1</type>
 			<locationURI>STUDIO_SDK_LOC/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/peripheral_drivers/src/rsi_timers.c</locationURI>
