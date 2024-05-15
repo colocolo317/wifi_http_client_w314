@@ -184,11 +184,24 @@
                 <folder name="unified_api">
                   <folder name="src">
                     <file name="sl_si91x_dma.c" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_dma.c"/>
+                    <file name="sl_si91x_driver_gpio.c" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_driver_gpio.c"/>
                     <file name="sl_si91x_gspi.c" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/src/sl_si91x_gspi.c"/>
                   </folder>
                   <folder name="inc">
                     <file name="sl_si91x_dma.h" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/inc/sl_si91x_dma.h"/>
+                    <file name="sl_si91x_driver_gpio.h" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/inc/sl_si91x_driver_gpio.h"/>
+                    <file name="sl_driver_gpio.h" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/inc/sl_driver_gpio.h"/>
                     <file name="sl_si91x_gspi.h" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/inc/sl_si91x_gspi.h"/>
+                  </folder>
+                </folder>
+                <folder name="unified_peripheral_drivers">
+                  <folder name="src">
+                    <file name="sl_si91x_peripheral_gpio.c" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_peripheral_drivers/src/sl_si91x_peripheral_gpio.c"/>
+                  </folder>
+                  <folder name="inc">
+                    <file name="sl_si91x_peripheral_gpio.h" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_peripheral_drivers/inc/sl_si91x_peripheral_gpio.h"/>
+                    <file name="sl_si91x_gpio.h" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_peripheral_drivers/inc/sl_si91x_gpio.h"/>
+                    <file name="sl_si91x_gpio_common.h" uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_peripheral_drivers/inc/sl_si91x_gpio_common.h"/>
                   </folder>
                 </folder>
                 <folder name="systemlevel">
@@ -592,6 +605,7 @@
   <includePath uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/core/config"/>
   <includePath uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/core/common/inc"/>
   <includePath uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_api/inc"/>
+  <includePath uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/mcu/drivers/unified_peripheral_drivers/inc"/>
   <includePath uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/wireless/errno/inc"/>
   <includePath uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/wireless/icmp"/>
   <includePath uri="studio:/sdk/extension/wiseconnect/components/device/silabs/si91x/wireless/firmware_upgrade"/>
