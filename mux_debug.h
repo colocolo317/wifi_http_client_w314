@@ -13,7 +13,7 @@
 #include <stdarg.h>
 
 #define AMPAK_HTTP_DEBUG_LOG 1
-#define AMPAK_RINGBUFF_DEBUG_LOG 1
+#define AMPAK_RINGBUFF_DEBUG_LOG 0
 
 #if AMPAK_OS_DEBUG_LOG
 #define MUX_LOG(...) _MUX_LOG(__VA_ARGS__)

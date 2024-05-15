@@ -6,8 +6,8 @@
 #include "rsi_board.h"
 #include "rsi_debug.h"
 #include "cmsis_os2.h"
-#define INTF_PLL_CLK    (80000000)
-#define INTF_PLL_REF_CLK  (40000000)
+#define INTF_PLL_CLK      (160000000)
+#define INTF_PLL_REF_CLK  (80000000)
 
 void up_cpu_clk() {
   int32_t status = 0;

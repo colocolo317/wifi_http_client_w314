@@ -165,17 +165,7 @@ void sdcard_task(void const *argument)
           {
             ringBuffer_debug("S");
           }
-          /*
-          while(osSemaphoreAcquire(sdcard_spi.done, 100) != osOK)
-          {
-            ringBuffer_debug("t");
-            osThreadYield();
-          }
-          status = sl_si91x_gspi_transfer_data(sdcard_spi.handle,
-                                               gspi_data_out,
-                                               gspi_data_in,
-                                               data_len);
-                                               */
+
           fres = f_write(&file_write, sdcard_buffer, data_len, &bytesWrote);
           if (fres != FR_OK)
           { sdcard_status_print("write data", fres); }

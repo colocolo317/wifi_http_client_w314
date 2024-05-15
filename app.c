@@ -431,6 +431,8 @@ sl_status_t http_client_application(void)
 
   MUX_LOG("HTTP Get request init success\r\n");
 
+  MUX_LOG("%s\r\n",HTTP_URL);
+
   sdcard_set_event(SDCARD_FILE_WRITE_STATE);
   MUX_LOG("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
   MUX_LOG("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
@@ -446,8 +448,8 @@ sl_status_t http_client_application(void)
     CLEAN_HTTP_CLIENT_IF_FAILED(status, &client_handle, HTTP_SYNC_RESPONSE);
   }
 
+  /* FIXME time not real time */
   uint32_t duration = osKernelGetTickCount() - starttime;
-
   MUX_LOG("Length\t\t| Time\t\t| Datarate\r\n");
   MUX_LOG("%lu\t\t| %lu\t\t| %lu\r\n", app_buff_index, duration, app_buff_index / duration);
 
