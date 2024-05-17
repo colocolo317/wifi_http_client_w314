@@ -506,7 +506,7 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
   sl_http_client_response_t *get_response = (sl_http_client_response_t *)data;
   callback_status                         = get_response->status;
 #if AMPAK_HTTP_RESPONSE_CHECK
-  MUX_LOG(
+  printf(
       "\r\n[HTTP GET RESPONSE] Status: 0x%X | GET response: %u | End of data: %lu | Data Length: %u | Request Context: %s\r\n",
       get_response->status,
       get_response->http_response_code,
@@ -519,15 +519,13 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
           && get_response->http_response_code != 0))
   {
     http_rsp_received = HTTP_FAILURE_RESPONSE;
-    MUX_LOG("get_response->http_response_code: %u\r\n", get_response->http_response_code);
+    printf("get_response->http_response_code: %u\r\n", get_response->http_response_code);
     return get_response->status;
   }
 
   if (!get_response->end_of_data)
   {
-    //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
     // copy to ring buffer for sd card write
-
     if(ringBuffer_check_ready_to_write(pRingBuff) == RINGBUFF_OK)
     {
       if(ringBuffer_write(pRingBuff, get_response->data_buffer, get_response->data_length) != RINGBUFF_OK)
@@ -549,7 +547,6 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
   {
     if (get_response->data_length)
     {
-      //memcpy(app_buffer + app_buff_index, get_response->data_buffer, get_response->data_length);
       // copy to ring buffer for sd card write
       if(ringBuffer_check_ready_to_write(pRingBuff) == RINGBUFF_OK)
       {
@@ -564,9 +561,6 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
         http_debug_log("z");
         return SL_STATUS_FAIL;
       }
-
-      /* TODO clear buffer last data */
-
       app_buff_index += get_response->data_length;
       sdcard_set_event(SDCARD_FILE_CLOSE_WRITE_STATE);
       http_debug_log(".\r\n");
