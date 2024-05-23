@@ -104,6 +104,8 @@ static void callback_event(uint32_t event);
 #define CT_SDC		(CT_SD1|CT_SD2)	/* SD */
 #define CT_BLOCK	0x08		/* Block addressing */
 
+#define SOFT_CS_PIN 49
+
 static volatile DSTATUS Stat = STA_NOINIT;	/* Physical drive status */
 static BYTE CardType;			/* Card type flags */
 
@@ -122,7 +124,7 @@ sdcard_spi_t sdcard_spi =
                 .swap_read = SWAP_READ_DATA,
                 .swap_write = SWAP_WRITE_DATA,
             },
-            .soft_cs =  { 0, 49 } ,
+            .soft_cs =  { 0, SOFT_CS_PIN } ,
             .lock = NULL,
             .free2use = NULL,
     };
@@ -282,9 +284,9 @@ void init_gspi(void)
     }
   }
 
-  sl_gpio_set_pin_mode(0, 49, _MODE0, 1);
-  sl_si91x_gpio_set_pin_direction(0, 49, (sl_si91x_gpio_direction_t)GPIO_OUTPUT);
-  sl_gpio_set_pin_output(0, 49);
+  sl_gpio_set_pin_mode(0, SOFT_CS_PIN, _MODE0, 1);
+  sl_si91x_gpio_set_pin_direction(0, SOFT_CS_PIN, (sl_si91x_gpio_direction_t)GPIO_OUTPUT);
+  sl_gpio_set_pin_output(0, SOFT_CS_PIN);
 #endif
 
 
