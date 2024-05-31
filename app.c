@@ -34,12 +34,16 @@
 #include "sl_net.h"
 #include "sl_http_client.h"
 #include <string.h>
-//#include "gspi_util.h"
-#include "mux_debug.h"
-#include "ring_buff.h"
+#if AMPAK_USE_FAT_FS
 #include "user_diskio_spi.h"
 #include "fatfs.h"
 #include "fatfs_sdcard.h"
+#else
+#include "gspi_util.h"
+#endif
+#include "mux_debug.h"
+#include "ring_buff.h"
+
 
 //! Include index html page
 #include "index.html.h"
@@ -145,7 +149,19 @@ const osThreadAttr_t http_client_thread_attributes = {
     .tz_module  = 0,
     .reserved   = 0,
 };
-
+#if AMPAK_USE_FAT_FS
+const osThreadAttr_t sdcard_thread_attributes = {
+    .name       = "sdcard_thread",
+    .attr_bits  = 0,
+    .cb_mem     = 0,
+    .cb_size    = 0,
+    .stack_mem  = 0,
+    .stack_size = 2048,
+    .priority   = osPriorityLow,
+    .tz_module  = 0,
+    .reserved   = 0,
+};
+#else
 const osThreadAttr_t gspi_thread_attributes = {
     .name       = "gspi_thread",
     .attr_bits  = 0,
@@ -157,12 +173,18 @@ const osThreadAttr_t gspi_thread_attributes = {
     .tz_module  = 0,
     .reserved   = 0,
 };
+#endif
 
 osSemaphoreId_t http_client_thread_sem;
-//osSemaphoreId_t gspi_thread_sem;
-osSemaphoreId_t sdcard_thread_sem;
 osThreadId_t http_client_tid;
+#if AMPAK_USE_FAT_FS
+osSemaphoreId_t sdcard_thread_sem;
+osThreadId_t sdcard_tid;
+#else
+osSemaphoreId_t gspi_thread_sem;
 osThreadId_t gspi_tid;
+#endif
+
 
 static const sl_wifi_device_configuration_t http_client_configuration = {
     .boot_option = LOAD_NWP_FW,
@@ -237,11 +259,19 @@ void app_init(const void *unused)
     printf("Failed to create http_client_thread_sem\r\n");
     return;
   }
+#if AMPAK_USE_FAT_FS
   sdcard_thread_sem = osSemaphoreNew(1, 0, NULL);
   if (sdcard_thread_sem == NULL) {
     printf("Failed to create sdcard_thread_sem\r\n");
     return;
   }
+#else
+  gspi_thread_sem = osSemaphoreNew(1, 0, NULL);
+  if (gspi_thread_sem == NULL) {
+    printf("Failed to create gspi_thread_sem\r\n");
+    return;
+  }
+#endif
 
   ringBuffer_Init(pRingBuff);
 
@@ -249,15 +279,24 @@ void app_init(const void *unused)
   {
     printf("Failed to new thread http client\r\n");
   }
-  if(osThreadNew((osThreadFunc_t)sdcard_task, NULL, &gspi_thread_attributes) == NULL)
+#if AMPAK_USE_FAT_FS
+  if(osThreadNew((osThreadFunc_t)sdcard_task, NULL, &sdcard_thread_attributes) == NULL)
+  {
+    printf("Failed to new thread sdcard\r\n");
+  }
+#else
+  if(osThreadNew((osThreadFunc_t)gspi_task, NULL, &gspi_thread_attributes) == NULL)
   {
     printf("Failed to new thread gspi\r\n");
   }
+#endif
 
-  //gspi_init();
+#if AMPAK_USE_FAT_FS
   init_gspi();
   sdcard_set_event(SDCARD_INIT_STATE);
-
+#else
+  gspi_init();
+#endif
 }
 
 static void application_start(void *argument)
@@ -432,8 +471,9 @@ sl_status_t http_client_application(void)
   MUX_LOG("HTTP Get request init success\r\n");
 
   MUX_LOG("%s\r\n",HTTP_URL);
-
+#if AMPAK_USE_FAT_FS
   sdcard_set_event(SDCARD_FILE_WRITE_STATE);
+#endif
   MUX_LOG("Tick Freq: (%lu hz)\r\n",osKernelGetTickFreq());
   MUX_LOG("SysTimer Freq: (%lu hz)\r\n",osKernelGetSysTimerFreq());
   MUX_LOG("pdMS_TO_TICKS(1000): (%lu ticks)\r\n", pdMS_TO_TICKS(1000));
@@ -562,7 +602,9 @@ sl_status_t http_get_response_callback_handler(const sl_http_client_t *client,
         return SL_STATUS_FAIL;
       }
       app_buff_index += get_response->data_length;
+#if AMPAK_USE_FAT_FS
       sdcard_set_event(SDCARD_FILE_CLOSE_WRITE_STATE);
+#endif
       http_debug_log(".\r\n");
     }
     http_rsp_received = HTTP_SUCCESS_RESPONSE;
