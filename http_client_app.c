@@ -219,7 +219,7 @@ static void reset_http_handles(void);
 /******************************************************
  *               Function Definitions
  ******************************************************/
-void app_init(const void *unused)
+void http_client_init(const void *unused)
 {
   UNUSED_PARAMETER(unused);
 
